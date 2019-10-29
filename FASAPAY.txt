@@ -1,0 +1,27 @@
+Untuk menjadi merchant di fasapay.co.id, silakan ikuti langkah sederhana berikut ini :
+
+1. Mendaftar menjadi member fasapay.co.id melalui link : https://www.fasapay.co.id/ 
+2. Upload gambar Identitas (KTP/SIM/Paspor) pemilik/personal yang bertanggung jawab atas akun fasapay : Login > Profil > Upload ID. Upload identitas ini digunakan untuk mengaktifkan akun agar dapat digunakan bertransaksi (status : ACTIVE)
+3. Upload gambar Rekening bank yang akan digunakan bertransaksi di fasapay.co.id : Login > Profile > Bank > Add Bank.
+4. Uploadkan Surat pernyataan resmi dari perusahaan yang menyatakan personal yang bertanggung jawab pada akun Fasapay merupakan karyawan perusahaan tersebut.
+5. Uploadkan gambar data usaha / legalitas perusahaan untuk menaikkan status akun ACTIVE menjadi CORPORATE : Login > Profil > Upload ID
+6. Integrasikan Fasapay SCI ke website perusahaan. Panduan mengenai penggunakan SCI ini dapat dilihat di dalam member area. Untuk informasi lebih lanjut, silakan kunjungi link berikut
+
+https://www.fasapay.co.id/sciguide/index 
+https://www.fasapay.co.id/apiguide/index 
+https://www.fasapay.co.id/sciguide/sandbox (untuk test transaksi)
+
+Dikarenakan prosedur SCI ini merupakan prosedur teknis, maka tim IT support kami siap membantu jika terjadi permasalahan : technical@fasapay.co.id 
+
+Jika SCI Fasapay telah berhasil terintegrasi dengan website perusahaan Anda, silakan konfirmasikan kepada kami melalui email dengan menyertakan logo perusahaan Anda agar dapat kami cantumkan logo perusahaan Anda tersebut di website Fasapay sebagai salah satu merchant Fasapay. Keuntungannya :
+
+Perusahaan Anda lebih dikenal ke seluruh member Fasapay (melalui sosial media : Facebook, Twitter, Google+).
+1. Dapat ikut serta dalam even-even fasapay.
+2. Email pomosi gratis untuk mempromosikan program perusahaan Anda.
+3. Email promosi berbayar untuk mempromosikan program perusahaan Anda.
+14:22
+Kami infokan juga nanti, Setelah proses SCI API selesai, silakan konfirmasi dan mengirimkan dummy account untuk proses selanjutnya yaitu SIT ke email technical@fasapay.co.id.
+Jika integrasi sudah dilakukan, merchant mengirim logo dengan ukuran 200 x 80 px dengan format gif dan alamat web perusahaan untuk dipasang pada web FasaPay.
+
+
+Boleh kami tahu, untuk usahanya dibidang apa ya pak?
