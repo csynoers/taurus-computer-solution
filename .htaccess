@@ -1,6 +1,6 @@
 RewriteEngine on
 
-RewriteRule ^home$ media2.php?module=home [L]
+RewriteRule ^home$ media.php?module=home [L]
 RewriteRule ^profil-kami\.html$ media2.php?module=profilkami&id=$1 [L]
 RewriteRule ^cara-pembelian\.html$ media2.php?module=carabeli&id=$1 [L]
 RewriteRule ^produk-(.*)\.html$ media2.php?module=detailproduk&id=$1 [L]
