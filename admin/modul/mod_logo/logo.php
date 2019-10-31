@@ -7,10 +7,11 @@
     }
     else{
 
-    $aksi="modul/mod_admin/aksi_admin.php";
+    $aksi="modul/mod_logo/aksi_logo.php";
     switch($_GET['act']){
         // Tampil User
         default:
+            print_r(read_file('../json/logo.json'));
             echo "
                 <div class='col-xs-12'>
                     <div class='box'>

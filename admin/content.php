@@ -5,6 +5,7 @@
    include "../config/fungsi_combobox.php";
    include "../config/class_paging.php";
    include "../config/fungsi_rupiah.php";
+   include "../config/helper_file.php";
 // Bagian Home
 if ($_GET['module']=='home'){
   
