@@ -4,7 +4,7 @@
 	$username 	= $_POST['username'];
 	$pass     	= md5($_POST['password']);
 	
-	print_r($_POST);
+	print_r("SELECT * FROM user WHERE username='$username' AND password='$pass' ");
 	die();
 	
 	$login		= mysql_query("SELECT * FROM user WHERE username='$username' AND password='$pass' ");
