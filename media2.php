@@ -1,4 +1,5 @@
 ﻿<?php
+	print_r($_SESSION);
 	// ob_start();
 	// session_start();	
 	// error_reporting(0);
