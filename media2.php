@@ -1,5 +1,4 @@
 ﻿<?php
-	ob_start();
 // error_reporting(0);
 	session_start();	
 	include "config/koneksi.php";
@@ -335,6 +334,3 @@
 	</script>
 </body>
 </html>
-<?php
-	ob_end_flush();
-?>
