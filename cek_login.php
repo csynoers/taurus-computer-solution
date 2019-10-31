@@ -1,17 +1,20 @@
 <?php
-include "config/koneksi.php";
-function anti_injection($data){
-  $filter = mysql_real_escape_string(stripslashes(strip_tags(htmlspecialchars($data,ENT_QUOTES))));
-  return $filter;
-}
+	include "config/koneksi.php";
+	function anti_injection($data){
+		$filter = mysql_real_escape_string(stripslashes(strip_tags(htmlspecialchars($data,ENT_QUOTES))));
+		return $filter;
+	}
 
-$email = $_POST['email'];
-$pass     = md5($_POST['password']);
+	$email 	= $_POST['email'];
+	$pass  	= md5($_POST['password']);
 
 
-$login=mysql_query("SELECT * FROM member WHERE email='$email' AND password='$pass'");
-$ketemu=mysql_num_rows($login);
-$r=mysql_fetch_array($login);
+	$login 	=mysql_query("SELECT * FROM member WHERE email='$email' AND password='$pass'");
+	$ketemu	=mysql_num_rows($login);
+	$r 		=mysql_fetch_array($login);
+
+	print_r($r);
+	die();
 
 // Apabila username dan password ditemukan
 if ($ketemu > 0){
