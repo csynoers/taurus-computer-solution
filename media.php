@@ -4,7 +4,7 @@
 
     function read_file()
     {
-        $myfile = fopen("json/logo.json", "r") or die("Unable to open file!");
+        $myfile = file_get_contents("json/logo.json");
         var_dump($myfile);
         // echo fread($myfile,filesize("webdictionary.txt"));
         // fclose($myfile);
