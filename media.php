@@ -4,7 +4,7 @@
 
     function read_file()
     {
-        return json_encode( file_get_contents("json/logo.json") );
+        return json_decode( file_get_contents("json/logo.json") );
     }
 
     /* load config required */
