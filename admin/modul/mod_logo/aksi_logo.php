@@ -15,7 +15,7 @@ else{
     
     if ($module=='logo' AND $act=='update')
     {
-        $json = '../../../json/json.json';
+        $json = '../../../json/logo.json';
         $row= read_file($json);
 
         $filename = img_resize($_FILES['fupload'],193,'../../../src/logo/'); 

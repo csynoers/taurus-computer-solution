@@ -22,7 +22,7 @@
                         <div class='box-body'>
                             <img class='img-responsive' src='../src/logo/{$row->filename}' alt='Logo Taurus Computer'>
                             <hr>
-                            <form method=POST action='$aksi?module=logo&act=update'>
+                            <form method=POST action='{$aksi}?module=logo&act=update'>
                                 <div class='form-group'>
                                     <label>Ganti Logo</label>
                                     <input type='file' name='fupload' required>
