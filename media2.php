@@ -1,6 +1,7 @@
 ﻿<?php
-// error_reporting(0);
+	ob_start();
 	session_start();	
+	// error_reporting(0);
 	include "config/koneksi.php";
 	include "config/fungsi_thumb.php";
 	include "config/fungsi_indotgl.php";
