@@ -142,6 +142,11 @@ elseif ($_GET['module']=='logo'){
 		include "modul/mod_logo/logo.php";
 	}
 }
+elseif ($_GET['module']=='slideshow'){
+	if ($_SESSION['leveluser']=='admin'){
+		include "modul/mod_slideshow/slideshow.php";
+	}
+}
 /* ==================== END MENU SUPPORT ==================== */
 
 // Apabila modul tidak ditemukan

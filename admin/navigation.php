@@ -41,12 +41,13 @@ echo"<li>
           </a>
 		</li>
 		<li class='treeview'>
-          <a href='#'>
-            <i class='fa fa-support'></i> <span>Support</span> <i class='fa fa-angle-left pull-right'></i>
-          </a>
-          <ul class='treeview-menu'>
-		    <li><a href='media.php?module=logo'><i class='fa fa-circle-o'></i> Logo</a></li>
-          </ul>
+        	<a href='#'>
+				<i class='fa fa-support'></i> <span>Support</span> <i class='fa fa-angle-left pull-right'></i>
+			</a>
+			<ul class='treeview-menu'>
+				<li><a href='media.php?module=logo'><i class='fa fa-circle-o'></i> Logo</a></li>
+				<li><a href='media.php?module=slideshow'><i class='fa fa-circle-o'></i> Slideshow</a></li>
+			</ul>
         </li>
         ";
 }
