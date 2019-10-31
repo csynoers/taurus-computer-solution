@@ -6,6 +6,11 @@
     {
         return json_decode( file_get_contents("json/logo.json") );
     }
+    function overwrite_file($rows)
+    {
+        return file_put_contents("json/logo.json", json_encode($rows) );
+    }
+    overwrite_file([]);
 
     /* load config required */
     include_once "config/koneksi.php";
