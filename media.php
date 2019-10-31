@@ -4,12 +4,8 @@
 
     function read_file()
     {
-        $myfile = file_get_contents("json/logo.json");
-        var_dump($myfile);
-        // echo fread($myfile,filesize("webdictionary.txt"));
-        // fclose($myfile);
+        return json_encode( file_get_contents("json/logo.json") );
     }
-    read_file();
 
     /* load config required */
     include_once "config/koneksi.php";
@@ -23,9 +19,9 @@
 	$failUrl = $serverUrlAndPath."fail.php";
     $statusUrl = $serverUrlAndPath."status.php";
 
-    // echo '<pre>';
-	// print_r($_SESSION);
-	// echo '</pre>';
+    echo '<pre>';
+	print_r(read_file());
+	echo '</pre>';
     
     /* load template */
     include_once('template.php');
