@@ -135,6 +135,14 @@ elseif ($_GET['module']=='servis'){
   }
 }
 
+/* ==================== START MENU SUPPORT ==================== */
+elseif ($_GET['module']=='logo'){
+	if ($_SESSION['leveluser']=='admin'){
+		include "modul/mod_logo/logo.php";
+	}
+}
+/* ==================== END MENU SUPPORT ==================== */
+
 // Apabila modul tidak ditemukan
 else{
   echo "<p><b>MODUL BELUM ADA ATAU BELUM LENGKAP</b></p>";
