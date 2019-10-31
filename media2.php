@@ -1,5 +1,7 @@
 ﻿<?php
+	echo '<pre>';
 	print_r($_SESSION);
+	echo '</pre>';
 	// ob_start();
 	// session_start();	
 	// error_reporting(0);
