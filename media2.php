@@ -1,6 +1,6 @@
 ﻿<?php
-	ob_start();
-	session_start();	
+	// ob_start();
+	// session_start();	
 	// error_reporting(0);
 	include "config/koneksi.php";
 	include "config/fungsi_thumb.php";
