@@ -9,6 +9,7 @@
         // echo fread($myfile,filesize("webdictionary.txt"));
         // fclose($myfile);
     }
+    read_file();
 
     /* load config required */
     include_once "config/koneksi.php";
