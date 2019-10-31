@@ -18,19 +18,17 @@ if ($ketemu > 0){
 	session_start();
 
 
-	$_SESSION[member_id]     = $r[id_member];
-	$_SESSION[namalengkap]  = $r[nama];
-	$_SESSION[passuser]     = $r[password];
-	$_SESSION[email]     = $r[email];
+	$_SESSION['member_id']    	= $r['id_member'];
+	$_SESSION['namalengkap']  	= $r['nama'];
+	$_SESSION['passuser']     	= $r['password'];
+	$_SESSION['email']			= $r['email'];
 
-	print_r($_SESSION);
-	die();
 	header('location:media2.php?module=home');
 }
 
 
 else{
- echo "<script>alert('Login Gagal, username atau password anda salah'); window.location = 'index.php'</script>";
+	echo "<script>alert('Login Gagal, username atau password anda salah'); window.location = 'index.php'</script>";
 }
 
 ?>
