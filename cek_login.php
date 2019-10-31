@@ -23,7 +23,7 @@ if ($ketemu > 0){
 	$_SESSION[passuser]     = $r[password];
 	$_SESSION[email]     = $r[email];
 
-	print_r($r);
+	print_r($_SESSION);
 	die();
 	header('location:media2.php?module=home');
 }
