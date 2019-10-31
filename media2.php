@@ -1,16 +1,16 @@
 ﻿<?php
-error_reporting(0);
-  session_start();	
-  include "config/koneksi.php";
+// error_reporting(0);
+	session_start();	
+	include "config/koneksi.php";
 	include "config/fungsi_thumb.php";
 	include "config/fungsi_indotgl.php";
 	include "config/class_paging.php";
 	include "config/fungsi_combobox.php";
 	include "config/library.php";
-  include "config/fungsi_rupiah.php";
-  $succesUrl = $serverUrlAndPath."success.php";
-$failUrl = $serverUrlAndPath."fail.php";
-$statusUrl = $serverUrlAndPath."status.php";
+	include "config/fungsi_rupiah.php";
+	$succesUrl = $serverUrlAndPath."success.php";
+	$failUrl = $serverUrlAndPath."fail.php";
+	$statusUrl = $serverUrlAndPath."status.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
