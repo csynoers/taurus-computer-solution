@@ -1,6 +1,6 @@
 <?php
 	ob_start();
 	session_start();
-	header('location:home');
+	include_once('media2.php');
 	ob_end_flush(); 
 ?>
