@@ -34,12 +34,12 @@
 					<?php
 						if ( empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser']) ){
 							?>
-								<a href="media2.php?module=daftarmember"><span class="btn btn-mini btn-primary">Register</span></a>
+								<a href="media.php?module=daftarmember"><span class="btn btn-mini btn-primary">Register</span></a>
 							<?php
 						}
 						
 					?>
-					<a href="media2.php?module=keranjangbelanja"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> Keranjang Belanja </span> </a> 
+					<a href="media.php?module=keranjangbelanja"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> Keranjang Belanja </span> </a> 
 				</div>
 			</div>
 		</div>
@@ -156,7 +156,7 @@
 				$sql=mysql_query("SELECT * FROM merk ORDER BY id_merk DESC");
 									while($r=mysql_fetch_array($sql)){
 									echo"
-				<li><a href='media2.php?module=detailmerk&id=$r[id_merk]'><i class='icon-chevron-right'></i>$r[nama_merk]</a></li>";
+				<li><a href='media.php?module=detailmerk&id=$r[id_merk]'><i class='icon-chevron-right'></i>$r[nama_merk]</a></li>";
 				}
 				?>
 				
@@ -175,7 +175,7 @@
 			<img src='foto_produk/medium_$r[gambar]' alt='$r[nama_produk]'/>
 			<div class='caption'>
 			  <h5>$r[nama_produk]</h5>
-				<h4 style='text-align:center'><a class='btn' href='media2.php?module=detailproduk&id=$r[id_produk]'> <i class='icon-zoom-in'></i></a> </h4>
+				<h4 style='text-align:center'><a class='btn' href='media.php?module=detailproduk&id=$r[id_produk]'> <i class='icon-zoom-in'></i></a> </h4>
 			</div>
 		  </div><br/>";
 		  }
@@ -207,17 +207,17 @@
 		  ?>
 			<div class="span3">
 				<h5>ACCOUNT</h5>
-				<a href="media2.php?module=editmember">AKUN ANDA</a>
-				<a href="media2.php?module=datatransaksi">RIWAYAT ORDER</a>
+				<a href="media.php?module=editmember">AKUN ANDA</a>
+				<a href="media.php?module=datatransaksi">RIWAYAT ORDER</a>
 			 </div>
 			<?php
 			}
 			?>
 			<div class="span3">
 				<h5>INFORMATION</h5>
-				<a href="media2.php?module=hubungikami">HUBUNGI KAMI</a>  
-				<a href="media2.php?module=profilkami">PROFIL</a>  
-				<a href="media2.php?module=carabeli">CARA PEMBELIAN</a> 
+				<a href="media.php?module=hubungikami">HUBUNGI KAMI</a>  
+				<a href="media.php?module=profilkami">PROFIL</a>  
+				<a href="media.php?module=carabeli">CARA PEMBELIAN</a> 
 			 </div>
 			
 			<div id="socialMedia" class="span3 pull-right">

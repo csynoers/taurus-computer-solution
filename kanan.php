@@ -13,7 +13,7 @@ echo"
 	echo"
 				<li class='span3'>
 				  <div class='thumbnail'>
-					<a  href='media2.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
+					<a  href='media.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
 					<div class='caption'>
 					  <h5>$r[nama_produk]</h5>
 					  <p> 
@@ -52,7 +52,7 @@ echo"
 	echo"
 				<li class='span3'>
 				  <div class='thumbnail'>
-					<a  href='media2.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
+					<a  href='media.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
 					<div class='caption'>
 					  <h5>$r[nama_produk]</h5>
 					  <p> 
@@ -105,7 +105,7 @@ echo"
 	echo"
 				<li class='span3'>
 				  <div class='thumbnail'>
-					<a  href='media2.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
+					<a  href='media.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
 					<div class='caption'>
 					  <h5>$r[nama_produk]</h5>
 					  <p> 
@@ -308,7 +308,7 @@ echo"
 <div class='span9'>
 <h3> Form Daftar Member</h3>	
 	<hr class='soft'/>
-<p align=center><b>Terimakasih telah mendaftar Sebagai Member. <br /> Silahkan Login Terlebih Dahulu. Klik <a href='media2.php?module=loginmember'> Disini </a>
+<p align=center><b>Terimakasih telah mendaftar Sebagai Member. <br /> Silahkan Login Terlebih Dahulu. Klik <a href='media.php?module=loginmember'> Disini </a>
 							</div>";
 		}
 		
@@ -477,7 +477,7 @@ $edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'")
   if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
 
 echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
-        window.location=('media2.php?module=loginmember')</script>";
+        window.location=('media.php?module=loginmember')</script>";
 }
 else {
 $sid = session_id();
@@ -587,7 +587,7 @@ echo"
 		  echo"<font color='green'>$r[status]</font>";
 		  }
 				echo"</td>
-		            <td><a href=media2.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
+		            <td><a href=media.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
       $no++;
     }
     echo "</tbody></table>
@@ -823,7 +823,7 @@ echo"
 	echo"
 				<li class='span3'>
 				  <div class='thumbnail'>
-					<a  href='media2.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
+					<a  href='media.php?module=detailproduk&id=$r[id_produk]'><img src='foto_produk/medium_$r[gambar]' alt=''/></a>
 					<div class='caption'>
 					  <h5>$r[nama_produk]</h5>
 					  <p> 

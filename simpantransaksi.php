@@ -34,7 +34,7 @@ $kode= ngacak(3);
 if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
 
 echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
-        window.location=('media2.php?module=login')</script>";
+        window.location=('media.php?module=login')</script>";
 }
 else {
 //$sql = "SELECT * FROM	kustomer WHERE email='$email' AND password='$password'";
@@ -94,6 +94,6 @@ mysql_query("INSERT INTO orders(id_orders,id_member, tanggal, jam,total,kode,ong
   mysql_query("DELETE FROM keranjang
 	  	         WHERE id_session='$sid'");
 
-header('location:media2.php?module=konfirmasipembayaran&id='.$hasil);						
+header('location:media.php?module=konfirmasipembayaran&id='.$hasil);						
 }
 ?>
