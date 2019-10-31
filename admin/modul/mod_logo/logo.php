@@ -11,8 +11,7 @@
     switch($_GET['act']){
         // Tampil User
         default:
-            overwrite_file('../json/logo.json',['filename'=>'logo.png']);
-            print_r(read_file('../json/logo.json'));
+            $row = read_file('../json/logo.json');
             echo "
                 <div class='col-xs-12'>
                     <div class='box'>
@@ -21,7 +20,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class='box-body'>
-
+                            <img class='img-responsive' src='../src/logo/{$row->filename}' alt='Logo Taurus Computer'>
                         </div>
                         <!-- /.box -->
                     </div>
