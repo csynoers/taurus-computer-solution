@@ -53,13 +53,13 @@
 	<div class="span6">
 	<div class="pull-right">
 	<?php
-		if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
-		?>
-		<a href="media2.php?module=daftarmember"><span class="btn btn-mini btn-primary">Register</span></a>
-		<?php
-		  }
+		if ( empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser']) ){
+			?>
+				<a href="media2.php?module=daftarmember"><span class="btn btn-mini btn-primary">Register</span></a>
+			<?php
+		}
 		  
-		  ?>
+	?>
 		<a href="media2.php?module=keranjangbelanja"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> Keranjang Belanja </span> </a> 
 	</div>
 	</div>
