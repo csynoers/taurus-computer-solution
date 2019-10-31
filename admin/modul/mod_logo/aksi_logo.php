@@ -17,8 +17,6 @@ else{
     {
         $json = '../../../json/logo.json';
         $row= read_file($json);
-        print_r($_FILES);
-        die();
         $filename = img_resize($_FILES['fupload'],193,'../../../src/logo/'); 
         
         if ( $filename != 'error' ) {
