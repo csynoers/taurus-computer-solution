@@ -13,7 +13,7 @@ else{
     include "../../../config/helper_file.php";
     include "../../../config/helper_upload.php";
     
-    if ($module=='admin' AND $act=='update')
+    if ($module=='logo' AND $act=='update')
     {
         $json = '../../../json/json.json';
         $row= read_file($json);
