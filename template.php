@@ -46,13 +46,16 @@
 		
 <!-- Navbar ================================================== -->
 <div id="logoArea" class="navbar">
-<a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-</a>
-  <div class="navbar-inner">
-    <a class="brand" href="index.php"><img src="themes/images/logo.png" alt="Bootsshop"/></a>
+	<a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</a>
+	<div class="navbar-inner">
+		<?php
+			$row = read_file('json/logo.json');
+			echo "<a class='brand' href='index.php'><img src='src/logo/{$row->filename}' alt='Logo Taurus Computer'/></a>";
+		?>
 		<form class="form-inline navbar-search" action="hasil-pencarian.html" method="POST" >
 		<input id="srchFld" class="srchTxt" type="text" name="kata"/>
 		  <button type="submit" id="submitButton" class="btn btn-primary">Cari</button>
