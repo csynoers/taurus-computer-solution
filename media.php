@@ -2,6 +2,14 @@
     //start session
     session_start();
 
+    function read_file()
+    {
+        $myfile = fopen("json/logo.json", "r") or die("Unable to open file!");
+        var_dump($myfile);
+        // echo fread($myfile,filesize("webdictionary.txt"));
+        // fclose($myfile);
+    }
+
     /* load config required */
     include_once "config/koneksi.php";
 	include_once "config/fungsi_thumb.php";
@@ -14,9 +22,9 @@
 	$failUrl = $serverUrlAndPath."fail.php";
     $statusUrl = $serverUrlAndPath."status.php";
 
-    echo '<pre>';
-	print_r($_SESSION);
-	echo '</pre>';
+    // echo '<pre>';
+	// print_r($_SESSION);
+	// echo '</pre>';
     
     /* load template */
     include_once('template.php');
