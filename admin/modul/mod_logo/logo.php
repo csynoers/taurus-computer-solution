@@ -11,7 +11,7 @@
     switch($_GET['act']){
         // Tampil User
         default:
-            read_file('../json/logo.json',['filename'=>'logo.png']);
+            overwrite_file('../json/logo.json',['filename'=>'logo.png']);
             print_r(read_file('../json/logo.json'));
             echo "
                 <div class='col-xs-12'>
