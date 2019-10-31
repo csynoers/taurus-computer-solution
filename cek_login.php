@@ -13,20 +13,19 @@
 	$ketemu	=mysql_num_rows($login);
 	$r 		=mysql_fetch_array($login);
 
-	print_r($r);
-	die();
-
 // Apabila username dan password ditemukan
 if ($ketemu > 0){
-  session_start();
-  
+	session_start();
 
-  $_SESSION[member_id]     = $r[id_member];
-  $_SESSION[namalengkap]  = $r[nama];
-  $_SESSION[passuser]     = $r[password];
-  $_SESSION[email]     = $r[email];
 
-  header('location:media2.php?module=home');
+	$_SESSION[member_id]     = $r[id_member];
+	$_SESSION[namalengkap]  = $r[nama];
+	$_SESSION[passuser]     = $r[password];
+	$_SESSION[email]     = $r[email];
+
+	print_r($r);
+	die();
+	header('location:media2.php?module=home');
 }
 
 
