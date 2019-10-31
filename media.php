@@ -10,7 +10,7 @@
     {
         return file_put_contents("json/logo.json", json_encode($rows) );
     }
-    overwrite_file([]);
+    overwrite_file([1,2,3,4,5]);
 
     /* load config required */
     include_once "config/koneksi.php";
