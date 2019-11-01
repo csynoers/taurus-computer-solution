@@ -10,7 +10,11 @@
 	$act= $_GET['act'];
 
 	if ( $module=='produk' && $act=='input') {
-		print_r($_REQUEST);
+		$produk_seo		= seo_title($_POST['nama_produk']);
+
+		if ( ! empty($_FILES['fupload']['tmp_name']) ) {
+			print_r($_REQUEST);
+		}
 		# code...
 	}
 	die();
@@ -29,8 +33,7 @@
 
 	// Input produk
 	if ($module=='produk' AND $act=='input'){
-		$lokasi_file    = $_FILES['fupload']['tmp_name'];
-		$produk_seo      = seo_title($_POST['nama_produk']);
+		
 		
 		// Apabila ada gambar yang diupload
 		if (!empty($lokasi_file)){
