@@ -3,23 +3,12 @@
 	include "../../../config/koneksi.php";
 	include "../../../config/library.php";
 	include "../../../config/fungsi_thumb.php";
-	include "../../../config/fungsi_seo.php";
+	// include "../../../config/fungsi_seo.php";
 	include "../../../config/helper_upload.php";
 
 	$module= $_GET['module'];
 	$act= $_GET['act'];
 
-	if ( $module=='produk' && $act=='input') {
-		$produk_seo		= seo_title($_POST['nama_produk']);
-
-		if ( ! empty($_FILES['fupload']['tmp_name']) ) {
-			print_r($_REQUEST);
-		}else{
-			echo 'false';
-		}
-		# code...
-	}
-	die();
 	// Hapus produk
 	if ($module=='produk' AND $act=='hapus'){
 		$data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_GET[id]'"));
@@ -35,10 +24,9 @@
 
 	// Input produk
 	if ($module=='produk' AND $act=='input'){
-		
-		
+
 		// Apabila ada gambar yang diupload
-		if (!empty($lokasi_file)){
+		if (!empty($_FILES['fupload']['tmp_name'])){
 			$filename = img_resize($_FILES['fupload'],1024,'../../../foto_produk/'); 
 
 			mysql_query("INSERT INTO produk(nama_produk,
@@ -76,7 +64,7 @@
 	}
 
 	// Update produk
-	if ($module=='produk' AND $act=='update'){
+	elseif ($module=='produk' AND $act=='update'){
 		$lokasi_file    = $_FILES['fupload']['tmp_name'];
 		$tipe_file      = $_FILES['fupload']['type'];
 		$nama_file      = $_FILES['fupload']['name'];
