@@ -19,7 +19,7 @@ else{
         $rows= read_file($json);
         $id= $_GET['id'];
         
-        $rows[$id] = $_POST['deskripsi'];
+        $rows->$id = $_POST['deskripsi'];
         overwrite_file($json,$rows);
 
         echo "<script>window.alert('informasi berhasil diubah');
