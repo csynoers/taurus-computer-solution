@@ -19,7 +19,7 @@
                     </div>
                 ";
             }
-            $rows_html .= "<div class='row'>{$rows_html}</div>";    
+            $rows_html = "<div class='row'>{$rows_html}</div>";    
 
             echo "
                 <div class='col-xs-12'>
