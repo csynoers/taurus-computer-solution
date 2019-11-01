@@ -18,7 +18,7 @@
                         <img class='img-responsive' src='../src/informasi/{$value}' alt='{$value}'>
                         <hr>
                         <form method=POST enctype='multipart/form-data' action='{$aksi}?module=informasi&act=update&id={$key}'>
-                            <textarea class='textarea' name='deskripsi' rowsX='20' colsX='80' required=''>{$value}</textarea>
+                            <textarea class='textarea form-control' name='deskripsi' rowsX='20' colsX='80' required=''>{$value}</textarea>
                             <button type='submit' class='btn btn-primary'>Update</button>
                         </form>
                         <button type='button' onclick=\"window.location.href='{$aksi}?module=informasi&act=delete&id={$key}';\" class='btn btn-danger'>Delete</button>
