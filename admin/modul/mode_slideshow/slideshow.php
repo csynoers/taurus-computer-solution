@@ -11,7 +11,7 @@
     switch($_GET['act']){
         // Tampil User
         default:
-            print_r(read_file('../json/slideshow.json'));
+            print_r(read_file('../json/logo.json'));
             die();
             $rows_html = '';
             foreach ( read_file('../json/slideshow.json') as $key => $value) {
