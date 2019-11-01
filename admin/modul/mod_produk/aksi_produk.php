@@ -24,16 +24,12 @@ $data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='
 // Input produk
 elseif ($module=='produk' AND $act=='input'){
   $lokasi_file    = $_FILES['fupload']['tmp_name'];
-  $tipe_file      = $_FILES['fupload']['type'];
-  $nama_file      = $_FILES['fupload']['name'];
-  $acak           = rand(1,99);
-  $nama_file_unik = $acak.$nama_file; 
 
-  $produk_seo      = seo_title($_POST[nama_produk]);
+  $produk_seo      = seo_title($_POST['nama_produk']);
 
   // Apabila ada gambar yang diupload
   if (!empty($lokasi_file)){
-    UploadImage($nama_file_unik);
+    $filename = img_resize($_FILES['fupload'],1024,'../../../foto_produk/'); 
 
     mysql_query("INSERT INTO produk(nama_produk,
                                     id_merk,
@@ -48,7 +44,7 @@ elseif ($module=='produk' AND $act=='input'){
                                    '$_POST[harga]',
                                    '$_POST[stok]',
                                    '$_POST[deskripsi]',
-                                   '$nama_file_unik')");
+                                   '{$filename}')");
 								   
   }
   else{
