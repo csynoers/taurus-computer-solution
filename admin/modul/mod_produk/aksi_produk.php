@@ -27,10 +27,10 @@ elseif ($module=='produk' AND $act=='input'){
   $lokasi_file    = $_FILES['fupload']['tmp_name'];
   $produk_seo      = seo_title($_POST['nama_produk']);
 
+  print_r($_FILES);
+  die();
   // Apabila ada gambar yang diupload
   if (!empty($lokasi_file)){
-    print_r($_FILES);
-    die();
     $filename = img_resize($_FILES['fupload'],1024,'../../../foto_produk/'); 
 
     mysql_query("INSERT INTO produk(nama_produk,
