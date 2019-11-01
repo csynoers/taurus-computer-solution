@@ -14,6 +14,8 @@
 
 		if ( ! empty($_FILES['fupload']['tmp_name']) ) {
 			print_r($_REQUEST);
+		}else{
+			echo 'false';
 		}
 		# code...
 	}
