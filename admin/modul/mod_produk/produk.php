@@ -155,7 +155,7 @@ switch($_GET[act]){
 								}   
 
 							while($w=mysql_fetch_array($tampil)){
-								if ($r[id_merk]==$w[id_merk]){
+								if ($r['id_merk']==$w['id_merk']){
 								echo "<option value=$w[id_merk] selected>$w[nama_merk]</option>";
 								}
 								else{
@@ -184,7 +184,7 @@ switch($_GET[act]){
                 </div>
 				<div class='form-group'>
                   <label for='exampleInputFile'>Gambar</label>
-                  <p class='help-block'><img src='../foto_produk/small_$r[gambar]'></p>
+                  <p class='help-block'><img src='../foto_produk/$r[gambar]'></p>
                 </div>
 				<div class='form-group'>
                   <label for='exampleInputFile'>Ganti Gambar</label>
