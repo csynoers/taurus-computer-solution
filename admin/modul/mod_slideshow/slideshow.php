@@ -7,7 +7,7 @@
     }
     else{
 
-    $aksi="modul/mod_logo/aksi_logo.php";
+    $aksi="modul/mod_slideshow/aksi_slideshow.php";
     switch($_GET['act']){
         // Tampil User
         default:
@@ -17,7 +17,7 @@
                     <div class='col-xs-12 col-sm-6'>
                         <img class='img-responsive' src='../src/slideshow/{$value}' alt='{$value}'>
                         <hr>
-                        <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=update'>
+                        <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=update&id={$key}'>
                             <input type='file' name='fupload' required>
                             <button type='submit' class='btn btn-primary'>Update</button>
                         </form>
