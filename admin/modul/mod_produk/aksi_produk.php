@@ -9,7 +9,10 @@
 	$module= $_GET['module'];
 	$act= $_GET['act'];
 
-	print_r($_REQUEST);
+	if ( $module=='produk' ) {
+		print_r($_REQUEST);
+		# code...
+	}
 	die();
 	// Hapus produk
 	if ($module=='produk' AND $act=='hapus'){
