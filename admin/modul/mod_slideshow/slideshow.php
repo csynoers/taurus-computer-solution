@@ -17,12 +17,20 @@
                     <div class='col-xs-12 col-sm-6'>
                         <img class='img-responsive' src='../src/slideshow/{$value}' alt='{$value}'>
                         <hr>
-                        <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=update'>
-                            <div class='form-group'>
-                                <input type='file' name='fupload' required>
-                                <button type='submit' class='btn btn-primary'>Update</button>
+                        <div class='row'>
+                            <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=update'>
+                                <div class='col-xs-12 col-sm-4'>
+                                    <input type='file' name='fupload' required>
+                                </div>
+                                <div class='col-xs-12 col-sm-4'>
+                                    <button type='submit' class='btn btn-primary'>Update</button>
+                                </div>
+                            </form>
+
+                            <div class='col-xs-12 col-sm-4'>
+                                <button type='submit' class='btn btn-danger'>Delete</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 ";
             }
