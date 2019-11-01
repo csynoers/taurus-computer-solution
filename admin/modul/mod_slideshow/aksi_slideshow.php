@@ -13,6 +13,20 @@ else{
     include "../../../config/helper_file.php";
     include "../../../config/helper_upload.php";
     
+    if ($module=='slideshow' AND $act=='insert')
+    {
+        $json = '../../../json/slideshow.json';
+        $rows= read_file($json);
+
+        $filename = img_resize($_FILES['fupload'],1024,'../../../src/slideshow/'); 
+        
+        $rows[] = $filename;
+        overwrite_file($json,$rows);
+
+        echo "<script>window.alert('slideshow berhasil diubah');
+        window.location=('../../media.php?module={$module}')</script>";
+    }
+
     if ($module=='slideshow' AND $act=='update')
     {
         $json = '../../../json/slideshow.json';

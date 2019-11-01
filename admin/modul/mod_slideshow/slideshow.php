@@ -35,7 +35,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class='box-body'>
-                            <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=insert'>
+                            <form method=POST enctype='multipart/form-data' action='{$aksi}?module=slideshow&act=insert'>
                                 <div class='form-group'>
                                     <label>Tambah Slide Baru</label>
                                     <input type='file' name='fupload' required>
