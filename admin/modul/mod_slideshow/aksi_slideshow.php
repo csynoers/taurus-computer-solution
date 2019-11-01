@@ -52,13 +52,11 @@ else{
         $rows= read_file($json);
         $id= $_GET['id'];
         
-        if ( $filename != 'error' ) {
-            if( ($rows[$id] != '') && file_exists("../../../src/slideshow/{$rows[$id]}") ){
-                unlink("../../../src/slideshow/{$rows[$id]}");
-            }
-            unset($rows[$id]);
-            overwrite_file($json,$rows);
+        if( ($rows[$id] != '') && file_exists("../../../src/slideshow/{$rows[$id]}") ){
+            unlink("../../../src/slideshow/{$rows[$id]}");
         }
+        unset($rows[$id]);
+        overwrite_file($json,$rows);
 
         echo "<script>window.alert('slideshow berhasil dihapus');
         window.location=('../../media.php?module={$module}')</script>";
