@@ -21,7 +21,7 @@
                             <input type='file' name='fupload' required>
                             <button type='submit' class='btn btn-primary'>Update</button>
                         </form>
-                        <button type='submit' onclick=\"window.location.href='?module=slideshow&act=delete&id={$key}';\" class='btn btn-danger'>Delete</button>
+                        <button type='button' onclick=\"window.location.href='?module=slideshow&act=delete&id={$key}';\" class='btn btn-danger'>Delete</button>
                     </div>
                 ";
             }
