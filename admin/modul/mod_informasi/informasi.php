@@ -14,8 +14,7 @@
             $rows_html = '';
             foreach ( read_file('../json/informasi.json') as $key => $value) {
                 $rows_html .= "
-                    <div class='col-xs-12 col-sm-6'>
-                        <img class='img-responsive' src='../src/informasi/{$value}' alt='{$value}'>
+                    <div class='col-xs-12 col-sm-12'>
                         <hr>
                         <form method=POST enctype='multipart/form-data' action='{$aksi}?module=informasi&act=update&id={$key}'>
                             <textarea class='textarea form-control' name='deskripsi' rowsX='20' colsX='80' required=''>{$value}</textarea>
