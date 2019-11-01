@@ -6,8 +6,8 @@ include "../../../config/fungsi_thumb.php";
 include "../../../config/fungsi_seo.php";
 include "../../../config/helper_upload.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=$_GET['act'];
 
 // Hapus produk
 if ($module=='produk' AND $act=='hapus'){
@@ -25,11 +25,12 @@ $data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='
 // Input produk
 elseif ($module=='produk' AND $act=='input'){
   $lokasi_file    = $_FILES['fupload']['tmp_name'];
-
   $produk_seo      = seo_title($_POST['nama_produk']);
 
   // Apabila ada gambar yang diupload
   if (!empty($lokasi_file)){
+    print_r($_FILES);
+    die();
     $filename = img_resize($_FILES['fupload'],1024,'../../../foto_produk/'); 
 
     mysql_query("INSERT INTO produk(nama_produk,
