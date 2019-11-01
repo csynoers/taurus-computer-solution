@@ -9,7 +9,7 @@
 	$module= $_GET['module'];
 	$act= $_GET['act'];
 
-	if ( $module=='produk' ) {
+	if ( $module=='produk' && $act=='input') {
 		print_r($_REQUEST);
 		# code...
 	}
