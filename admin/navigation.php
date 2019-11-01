@@ -47,6 +47,7 @@ echo"<li>
 			<ul class='treeview-menu'>
 				<li><a href='media.php?module=logo'><i class='fa fa-circle-o'></i> Logo</a></li>
 				<li><a href='media.php?module=slideshow'><i class='fa fa-circle-o'></i> Slideshow</a></li>
+				<li><a href='media.php?module=informasi'><i class='fa fa-circle-o'></i> informasi</a></li>
 			</ul>
         </li>
         ";
