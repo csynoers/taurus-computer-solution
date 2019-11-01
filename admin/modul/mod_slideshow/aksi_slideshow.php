@@ -17,6 +17,8 @@ else{
     {
         $json = '../../../json/slideshow.json';
         $rows= read_file($json);
+        print_r($rows);
+        die()
         $id= $_GET['id'];
 
         $filename = img_resize($_FILES['fupload'],1024,'../../../src/slideshow/'); 
