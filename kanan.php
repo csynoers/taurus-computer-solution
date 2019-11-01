@@ -1,5 +1,5 @@
 <?php
-if ($_GET[module]=='home'){
+if ($_GET['module']=='home'){
 echo"
 <h4>Produk Terbaru </h4>
 			  <ul class='thumbnails'>";
@@ -29,7 +29,7 @@ echo"
 				
 			  </ul>";
 }
-elseif ($_GET[module]=='semuaproduk'){
+elseif ($_GET['module']=='semuaproduk'){
 echo"
 <h4>Semua Produk </h4>
 			  <ul class='thumbnails'>";
@@ -72,7 +72,7 @@ echo"
   $linkHalaman = $p->navHalaman($_GET[halproduk], $jmlhalaman);
   echo "<br><div class='center_title_bar'>Hal: $linkHalaman</div>";
 }
-elseif ($_GET[module]=='detailmerk'){
+elseif ($_GET['module']=='detailmerk'){
 $sq = mysql_query("SELECT nama_merk from merk where id_merk='$_GET[id]'");
   $n = mysql_fetch_array($sq);
 echo"
@@ -129,42 +129,42 @@ echo"
     echo "<p align=center>Belum ada produk pada merk ini.</p>";
   }
 }
-elseif ($_GET[module]=='carabeli'){
-echo"							
-<div class='span9'>
-<h2>Cara Pembelian Produk</h2>
-<p>
-&nbsp;Cara Pembelian ;
-</p>
-<ol>
-	<li>Klik pada tombol Beli pada produk yang ingin Anda pesan.</li>
-	<li>Produk yang Anda pesan akan masuk ke dalam Keranjang Belanja. Anda dapat melakukan perubahan jumlah produk yang diinginkan dengan mengganti angka di kolom Jumlah, kemudian klik tombol Update. Sedangkan untuk menghapus sebuah produk dari Keranjang Belanja, klik tombol Kali yang berada di kolom paling kanan.</li>
-	<li>Jika sudah selesai, klik tombol Selesai Belanja, maka akan tampil form untuk pengisian data kustomer/pembeli.</li>
-	<li>Setelah data pembeli selesai diisikan, klik tombol Proses, maka akan tampil data pembeli beserta produk yang dipesannya (jika diperlukan catat nomor ordersnya). Dan juga ada total pembayaran serta nomor rekening pembayaran.Harap Konfrimasi Ke nomor HP : 085292777746 jika sudah melakukan pembayaran.</li>
-	<li>Apabila telah melakukan pembayaran, maka produk/barang akan segera kami kirimkan.<br />
-	</li>
-</ol>
 
-							</div>";
 
+
+/* ==================== START MENU INFORMASI ==================== */
+elseif ($_GET['module']=='hubungikami'){
+	$row = read_file('json/informasi.json');
+	echo "							
+		<div class='span9'>
+			<h2>Hubungi Kami</h2>
+			{$row->hubungi_kami}
+		</div>
+	";
 }
-elseif ($_GET[module]=='profilkami'){
-echo"							
-<div class='span9'>
-<h2>Profil Kami</h2>
-<p>Toko Taurus Laptop yang beralamat di Jalan Dr. Sardjito Blimbingsari GK V No. 10 Yogyakarta. Taurus Computer Solution merupakan sebuah usaha yang bergerak di bidang penjualan Laptop, Komputer, dan servis segala jenis kerusakan laptop dan komputer</p>
-							</div>";
 
+elseif ($_GET['module']=='profilkami'){
+	$row = read_file('json/informasi.json');
+	echo "							
+		<div class='span9'>
+			<h2>Profil Kami</h2>
+			{$row->profil}
+		</div>
+	";
 }
-elseif ($_GET[module]=='hubungikami'){
-echo"							
-<div class='span9'>
-<h2>Hubungi Kami</h2>
-<p>Jalan Dr. Sardjito, Blimbingsari, GK V No. 10  Yogyakarta</p>
-							</div>";
 
+elseif ($_GET['module']=='carabeli'){
+	$row = read_file('json/informasi.json');
+	echo"							
+	<div class='span9'>
+		<h2>Cara Pembelian Produk</h2>
+		{$row->cara_pembelian}
+	</div>";
+	
 }
-elseif ($_GET[module]=='detailproduk'){
+/* ==================== END MENU INFORMASI ==================== */
+
+elseif ($_GET['module']=='detailproduk'){
 $detail=mysql_query("SELECT * FROM produk,merk    
                       WHERE produk.id_merk=merk.id_merk AND id_produk='$_GET[id]'");
 	$d   = mysql_fetch_array($detail);
@@ -222,7 +222,7 @@ echo"
 
 	</div>";
 }
-elseif ($_GET[module]=='daftarmember'){
+elseif ($_GET['module']=='daftarmember'){
 echo"
 <div class='span9'>
 <h4> Form Daftar Member</h4>
@@ -274,7 +274,7 @@ echo"
 	</form>
 							</div>";
 }
-elseif ($_GET[module]=='daftaraksi'){
+elseif ($_GET['module']=='daftaraksi'){
 
 	
 $sql = mysql_query("SELECT * FROM member WHERE email='$_POST[email]'
@@ -314,7 +314,7 @@ echo"
 		
 
 }
-elseif ($_GET[module]=='loginmember'){
+elseif ($_GET['module']=='loginmember'){
 echo"							
 <div class='span9'>
 <h3> Form Login Member</h3>	
@@ -350,7 +350,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='editmember'){
+elseif ($_GET['module']=='editmember'){
 $edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
     $r=mysql_fetch_array($edit);
 echo"
@@ -404,7 +404,7 @@ echo"
 	</form>
 							</div>";
 }
-elseif ($_GET[module]=='keranjangbelanja'){
+elseif ($_GET['module']=='keranjangbelanja'){
 $sid = session_id();
 	$sql = mysql_query("SELECT * FROM keranjang, produk 
 			                WHERE id_session='$sid' AND keranjang.id_produk=produk.id_produk");
@@ -470,7 +470,7 @@ echo"
 							</div>";
 							}
 }
-elseif ($_GET[module]=='selesaibelanja'){
+elseif ($_GET['module']=='selesaibelanja'){
 $edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
     $e=mysql_fetch_array($edit);
  $sid = session_id();
@@ -556,7 +556,7 @@ echo"
 							</div>";
 	}
 }
-elseif ($_GET[module]=='datatransaksi'){
+elseif ($_GET['module']=='datatransaksi'){
 session_start();
 
 echo"							
@@ -596,7 +596,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='detailtransaksi'){
+elseif ($_GET['module']=='detailtransaksi'){
 session_start();
 $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
     $r    = mysql_fetch_array($edit);
@@ -664,7 +664,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET[module]=='konfirmasipembayaran'){
+elseif ($_GET['module']=='konfirmasipembayaran'){
 $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
     $r    = mysql_fetch_array($edit);
 	$member=$r[id_member];
@@ -786,7 +786,7 @@ echo"
 	
 
 }
-elseif ($_GET[module]=='hasilcari'){
+elseif ($_GET['module']=='hasilcari'){
 echo"
 <h4>Produk Terbaru </h4>
 			  <ul class='thumbnails'>";
