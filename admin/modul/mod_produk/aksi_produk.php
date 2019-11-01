@@ -4,6 +4,7 @@ include "../../../config/koneksi.php";
 include "../../../config/library.php";
 include "../../../config/fungsi_thumb.php";
 include "../../../config/fungsi_seo.php";
+include "../../../config/helper_upload.php";
 
 $module=$_GET[module];
 $act=$_GET[act];
