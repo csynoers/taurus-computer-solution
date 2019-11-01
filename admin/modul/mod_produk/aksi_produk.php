@@ -29,7 +29,7 @@ elseif ($module=='produk' AND $act=='input'){
   $acak           = rand(1,99);
   $nama_file_unik = $acak.$nama_file; 
 
-  $produk_seo      = seo_title($_POST[nama_produk]);
+//   $produk_seo      = seo_title($_POST[nama_produk]);
 
   // Apabila ada gambar yang diupload
   if (!empty($lokasi_file)){
