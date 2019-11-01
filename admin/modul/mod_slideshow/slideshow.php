@@ -16,6 +16,12 @@
                 $rows_html .= "
                     <div class='col-xs-12 col-sm-6'>
                         <img class='img-responsive' src='../src/slideshow/{$value}' alt='{$value}'>
+                        <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=update'>
+                            <div class='form-group'>
+                                <input type='file' name='fupload' required>
+                                <button type='submit' class='btn btn-primary'>Update</button>
+                            </div>
+                        </form>
                     </div>
                 ";
             }
@@ -34,7 +40,7 @@
                                     <label>Tambah Slide Baru</label>
                                     <input type='file' name='fupload' required>
                                 </div>
-                                <button type='submit' class='btn btn-primary'>Update</button>
+                                <button type='submit' class='btn btn-primary'>Simpan</button>
                             </form>
                             <hr>
                             {$rows_html}
