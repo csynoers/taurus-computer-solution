@@ -12,6 +12,7 @@
         // Tampil User
         default:
             print_r(read_file('../json/slideshow.json'));
+            die();
             $rows_html = '';
             foreach ( read_file('../json/slideshow.json') as $key => $value) {
                 $rows_html .= "
