@@ -1,16 +1,14 @@
 <?php
-session_start();
-include "../../../config/koneksi.php";
-include "../../../config/library.php";
-include "../../../config/fungsi_thumb.php";
-include "../../../config/fungsi_seo.php";
-include "../../../config/helper_upload.php";
+	session_start();
+	include "../../../config/koneksi.php";
+	include "../../../config/library.php";
+	include "../../../config/fungsi_thumb.php";
+	include "../../../config/fungsi_seo.php";
+	include "../../../config/helper_upload.php";
 
-$module= $_GET['module'];
-$act= $_GET['act'];
+	$module= $_GET['module'];
+	$act= $_GET['act'];
 
-print_r($_REQUEST);
-die();
 // Hapus produk
 if ($module=='produk' AND $act=='hapus'){
 $data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_GET[id]'"));
@@ -24,48 +22,49 @@ $data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='
   header('location:../../media.php?module='.$module);
 }
 
-// Input produk
-elseif ($module=='produk' AND $act=='input'){
-  $lokasi_file    = $_FILES['fupload']['tmp_name'];
-  $produk_seo      = seo_title($_POST['nama_produk']);
+	// Input produk
+	elseif ($module=='produk' AND $act=='input'){
+		$lokasi_file    = $_FILES['fupload']['tmp_name'];
+		$produk_seo      = seo_title($_POST['nama_produk']);
+		print_r($_REQUEST);
+		die();
+		// Apabila ada gambar yang diupload
+		if (!empty($lokasi_file)){
+			$filename = img_resize($_FILES['fupload'],1024,'../../../foto_produk/'); 
 
-  // Apabila ada gambar yang diupload
-  if (!empty($lokasi_file)){
-    $filename = img_resize($_FILES['fupload'],1024,'../../../foto_produk/'); 
+			mysql_query("INSERT INTO produk(nama_produk,
+			id_merk,
+			berat,
+			harga,
+			stok,
+			deskripsi,
+			gambar) 
+			VALUES('$_POST[nama_produk]',
+			'$_POST[merk]',
+			'$_POST[berat]',
+			'$_POST[harga]',
+			'$_POST[stok]',
+			'$_POST[deskripsi]',
+			'{$filename}')");
 
-    mysql_query("INSERT INTO produk(nama_produk,
-                                    id_merk,
-									berat,
-                                    harga,
-                                    stok,
-                                    deskripsi,
-                                    gambar) 
-                            VALUES('$_POST[nama_produk]',
-                                   '$_POST[merk]',
-								   '$_POST[berat]',
-                                   '$_POST[harga]',
-                                   '$_POST[stok]',
-                                   '$_POST[deskripsi]',
-                                   '{$filename}')");
-								   
-  }
-  else{
-    mysql_query("INSERT INTO produk(nama_produk,
-                                    id_merk,
-									berat,
-                                    harga,
-                                    stok,
-                                    deskripsi) 
-                            VALUES('$_POST[nama_produk]',
-                                    '$_POST[merk]',
-									'$_POST[berat]',                               
-                                   '$_POST[harga]',
-                                   '$_POST[stok]',
-                                   '$_POST[deskripsi]')");
-		
-  }
-  header('location:../../media.php?module='.$module);
-}
+		}
+		else{
+			mysql_query("INSERT INTO produk(nama_produk,
+				id_merk,
+				berat,
+				harga,
+				stok,
+				deskripsi) 
+				VALUES('$_POST[nama_produk]',
+				'$_POST[merk]',
+				'$_POST[berat]',                               
+				'$_POST[harga]',
+				'$_POST[stok]',
+				'$_POST[deskripsi]')");
+
+		}
+		header('location:../../media.php?module='.$module);
+	}
 
 // Update produk
 elseif ($module=='produk' AND $act=='update'){
