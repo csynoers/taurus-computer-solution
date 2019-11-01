@@ -28,7 +28,6 @@
                             </div>
                             <button type='submit' class='btn btn-primary'>Update</button>
                         </form>
-                        <button type='button' onclick=\"window.location.href='{$aksi}?module=informasi&act=delete&id={$key}';\" class='btn btn-danger'>Delete</button>
                     </div>
                 ";
             }
