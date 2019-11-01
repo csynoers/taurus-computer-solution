@@ -29,15 +29,16 @@
                         </div>
                         <!-- /.box-header -->
                         <div class='box-body'>
-                            {$rows_html}
-                            <hr>
-                            <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=update'>
+                            <form method=POST enctype='multipart/form-data' action='{$aksi}?module=logo&act=insert'>
                                 <div class='form-group'>
-                                    <label>Ganti Logo</label>
+                                    <label>Tambah Slide Baru</label>
                                     <input type='file' name='fupload' required>
                                 </div>
                                 <button type='submit' class='btn btn-primary'>Update</button>
                             </form>
+                            <hr>
+                            {$rows_html}
+                            <hr>
                         </div>
                         <!-- /.box -->
                     </div>
