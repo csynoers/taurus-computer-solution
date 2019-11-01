@@ -10,7 +10,7 @@
 	$act= $_GET['act'];
 
 	if ( $module=='produk' && $act=='input') {
-		// $produk_seo		= seo_title($_POST['nama_produk']);
+		$produk_seo		= seo_title($_POST['nama_produk']);
 
 		if ( ! empty($_FILES['fupload']['tmp_name']) ) {
 			print_r($_REQUEST);
