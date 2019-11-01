@@ -3,10 +3,10 @@ session_start();
 include "../../../config/koneksi.php";
 include "../../../config/library.php";
 include "../../../config/fungsi_thumb.php";
-include "../../../config/fungsi_seo.php";
+// include "../../../config/fungsi_seo.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=$_GET['act'];
 
 // Hapus produk
 if ($module=='produk' AND $act=='hapus'){
@@ -77,7 +77,7 @@ elseif ($module=='produk' AND $act=='update'){
   $acak           = rand(1,99);
   $nama_file_unik = $acak.$nama_file; 
 
-  $produk_seo      = seo_title($_POST[nama_produk]);
+//   $produk_seo      = seo_title($_POST['nama_produk']);
 
   // Apabila gambar tidak diganti
   if (empty($lokasi_file)){
