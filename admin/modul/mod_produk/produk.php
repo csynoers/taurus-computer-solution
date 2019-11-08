@@ -100,6 +100,25 @@ switch($_GET[act]){
 									<label for='exampleInputPassword1'>Stok</label>
 									<input type='number' name='stok' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Stok Produk' required>
 								</div>
+								<div class='form-group col-sm-4'>
+									<label for='formKondisi'>Kondisi</label>
+									<select name='kondisi' required='' class='form-control'>
+										<option value='Baru' selected>Baru</option
+										<option value='Pernah Dipakai'>Pernah Dipakai</option
+									</select>
+								</div>
+								<div class='form-group col-sm-4'>
+									<label for='formWarna'>Warna</label>
+									<select name='warna' required='' class='form-control'>
+										<option value='Baru' selected>Hitam</option
+									</select>
+								</div>
+								<div class='form-group col-sm-4'>
+									<label for='formUkuran'>Ukuran</label>
+									<select name='ukuran' required='' class='form-control'>
+										<option value='Baru' selected>M</option
+									</select>
+								</div>
 							</div>
 							<div class='form-group'>
 								<label for='exampleInputPassword1'>Deskripsi</label>
