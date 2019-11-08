@@ -103,8 +103,8 @@ switch($_GET[act]){
 								<div class='form-group col-sm-4'>
 									<label for='formKondisi'>Kondisi</label>
 									<select name='kondisi' required='' class='form-control'>
-										<option value='Baru' selected>Baru</option
-										<option value='Pernah Dipakai'>Pernah Dipakai</option
+										<option value='Baru' selected>Baru</option>
+										<option value='Pernah Dipakai'>Pernah Dipakai</option>
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
@@ -116,7 +116,7 @@ switch($_GET[act]){
 								<div class='form-group col-sm-4'>
 									<label for='formUkuran'>Ukuran</label>
 									<select name='ukuran' required='' class='form-control'>
-										<option value='Baru' selected>M</option
+										<option value='Baru' selected>M</option>
 									</select>
 								</div>
 							</div>
