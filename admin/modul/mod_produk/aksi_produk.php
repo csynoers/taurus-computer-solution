@@ -87,37 +87,51 @@ elseif ($module=='produk' AND $act=='input'){
 
 // Update produk
 elseif ($module=='produk' AND $act=='update'){
-  $lokasi_file    = $_FILES['fupload']['tmp_name'];
-  $tipe_file      = $_FILES['fupload']['type'];
-  $nama_file      = $_FILES['fupload']['name'];
-  $acak           = rand(1,99);
-  $nama_file_unik = $acak.$nama_file; 
+    $lokasi_file    = $_FILES['fupload']['tmp_name'];
+    $tipe_file      = $_FILES['fupload']['type'];
+    $nama_file      = $_FILES['fupload']['name'];
+    $acak           = rand(1,99);
+    $nama_file_unik = $acak.$nama_file; 
 
-//   $produk_seo      = seo_title($_POST['nama_produk']);
+    //   $produk_seo      = seo_title($_POST['nama_produk']);
 
-  // Apabila gambar tidak diganti
-  if (empty($lokasi_file)){
-    mysql_query("UPDATE produk SET nama_produk = '$_POST[nama_produk]',
-                                  berat       = '$_POST[berat]',
-                                   id_merk = '$_POST[merk]',
-								   harga       = '$_POST[harga]',
-                                   stok        = '$_POST[stok]',
-                                   deskripsi   = '$_POST[deskripsi]'
-                             WHERE id_produk   = '$_POST[id]'");
+    // Apabila gambar tidak diganti
+    if (empty($lokasi_file)){
+        mysql_query("UPDATE produk
+                        SET
+                            nama_produk = '{$_POST["nama_produk"]}',
+                            berat       = '{$_POST["berat"]}',
+                            id_merk     = '{$_POST["merk"]}',
+							harga       = '{$_POST["harga"]}',
+                            stok        = '{$_POST["stok"]}',
+                            deskripsi   = '{$_POST["deskripsi"]}',
+                            kondisi     = '".(!empty($_POST["kondisi"]) ? $_POST["kondisi"] : NULL )."',
+                            warna       = '".(!empty($_POST["warna"]) ? $_POST["warna"] : NULL )."',
+                            ukuran      = '".(!empty($_POST["ukuran"]) ? $_POST["ukuran"] : NULL )."'
+                        WHERE
+                            id_produk   = '{$_POST["id"]}'
+        ");
 							 
-  }
-  else{
-    UploadImage($nama_file_unik);
-    mysql_query("UPDATE produk SET nama_produk = '$_POST[nama_produk]',
-                                   berat       = '$_POST[berat]',
-                                   id_merk = '$_POST[merk]',
-								   harga       = '$_POST[harga]',
-                                   stok        = '$_POST[stok]',
-                                   deskripsi   = '$_POST[deskripsi]',
-                                   gambar      = '$nama_file_unik'   
-                             WHERE id_produk   = '$_POST[id]'");
+    }
+
+    else{
+        UploadImage($nama_file_unik);
+        mysql_query("UPDATE produk
+                        SET
+                            nama_produk = '{$_POST["nama_produk"]}',
+                            berat       = '{$_POST["berat"]}',
+                            id_merk     = '{$_POST["merk"]}',
+							harga       = '{$_POST["harga"]}',
+                            stok        = '{$_POST["stok"]}',
+                            deskripsi   = '{$_POST["deskripsi"]}',
+                            kondisi     = '".(!empty($_POST["kondisi"]) ? $_POST["kondisi"] : NULL )."',
+                            warna       = '".(!empty($_POST["warna"]) ? $_POST["warna"] : NULL )."',
+                            ukuran      = '".(!empty($_POST["ukuran"]) ? $_POST["ukuran"] : NULL )."',
+                            gambar      = '{$nama_file_unik}'   
+                        WHERE id_produk   = '{$_POST["id"]}'
+        ");
 						 
-  }
-  header('location:../../media.php?module='.$module);
+    }
+    header('location:../../media.php?module='.$module);
 }
 ?>

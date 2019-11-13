@@ -194,7 +194,7 @@ switch($_GET[act]){
 
 					<form method=POST enctype='multipart/form-data' action=$aksi?module=produk&act=update>
 						<div class='box-body'>
-							<input type=hidden name=id value=$r[id_produk]>
+							<input type='hidden' name='id' value='{$r["id_produk"]}'>
 							<div class='form-group'>
 								<label for='exampleInputPassword1'>Nama Produk</label>
 								<input value='{$r['nama_produk']}' type='text' name='nama_produk' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Nama Produk' required>
