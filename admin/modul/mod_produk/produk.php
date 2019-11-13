@@ -6,7 +6,7 @@ session_start();
   echo "<a href=../../index.php><b>LOGIN</b></a></center>";
 }
 else{
-$aksi="modul/mod_produk/aksi_produk.php";
+	$aksi="modul/mod_produk/aksi_produk.php";
 switch($_GET[act]){
   // Tampil Produk
   default:
@@ -63,6 +63,11 @@ switch($_GET[act]){
 	break;
   
 	case "tambahproduk":
+		$option_warna = "";
+		foreach ( read_file('../json/warna.json') as $key => $value) {
+			print_r($value);
+		}
+
 		echo "
 			<div class='col-xs-12'>
 				<div class='box'>
@@ -110,13 +115,13 @@ switch($_GET[act]){
 								<div class='form-group col-sm-4'>
 									<label for='formWarna'>Warna</label>
 									<select name='warna' required='' class='form-control'>
-										<option value='Baru' selected>Hitam</option>
+										<option value='' selected disabled> -- Pilih Warna -- </option>
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
 									<label for='formUkuran'>Ukuran</label>
 									<select name='ukuran' required='' class='form-control'>
-										<option value='Baru' selected>M</option>
+										<option value='' selected disabled> -- Pilih Ukuran -- </option>
 									</select>
 								</div>
 							</div>
