@@ -98,16 +98,16 @@ switch($_GET[act]){
 									echo "</select>
 								</div>
 								<div class='form-group col-sm-6'>
-									<label for='exampleInputPassword1'>Berat</label>
-									<input type='number' step='0.1' name='berat' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Berat Produk' required>
+									<label>Berat (Gram)</label>
+									<input type='number' step='0.1' name='berat' class='form-control' placeholder='Masukkan Berat Produk' required>
 								</div>
 								<div class='form-group col-sm-6'>
-									<label for='exampleInputPassword1'>Harga</label>
-									<input type='number' name='harga' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Harga Produk' required>
+									<label>Harga</label>
+									<input type='number' name='harga' class='form-control' placeholder='Masukkan harga produk tipe angka' required>
 								</div>
 								<div class='form-group col-sm-6'>
-									<label for='exampleInputPassword1'>Stok</label>
-									<input type='number' name='stok' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Stok Produk' required>
+									<label>Stok</label>
+									<input type='number' name='stok' class='form-control' placeholder='Masukkan jumlah stok produk tipe angka' required>
 								</div>
 								<div class='form-group col-sm-4'>
 									<label for='formKondisi'>Kondisi</label>
@@ -117,14 +117,14 @@ switch($_GET[act]){
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
-									<label for='formWarna'>Warna</label>
+									<label for='formWarna'>Warna <small>(Optional)</small></label>
 									<select name='warna' class='form-control'>
 										<option value='' selected disabled> -- Pilih Warna -- </option>
 										{$option["warna"]}
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
-									<label for='formUkuran'>Ukuran</label>
+									<label for='formUkuran'>Ukuran <small>(Optional)</small></label>
 									<select name='ukuran' class='form-control'>
 										<option value='' selected disabled> -- Pilih Ukuran -- </option>
 										{$option["ukuran"]}

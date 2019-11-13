@@ -1,24 +1,24 @@
 <?php
-session_start();
-include "../../../config/koneksi.php";
-include "../../../config/library.php";
-include "../../../config/fungsi_thumb.php";
-// include "../../../config/fungsi_seo.php";
+    session_start();
+    include "../../../config/koneksi.php";
+    include "../../../config/library.php";
+    include "../../../config/fungsi_thumb.php";
+    // include "../../../config/fungsi_seo.php";
 
-$module=$_GET['module'];
-$act=$_GET['act'];
+    $module=$_GET['module'];
+    $act=$_GET['act'];
 
 // Hapus produk
 if ($module=='produk' AND $act=='hapus'){
-$data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_GET[id]'"));
-  if ($data['gambar']!=''){
-     mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
-     unlink("../../../foto_produk/$_GET[namafile]");   
-  }
-  else{
-  mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
-  }
-  header('location:../../media.php?module='.$module);
+    $data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_GET[id]'"));
+    if ($data['gambar']!=''){
+        mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
+        unlink("../../../foto_produk/$_GET[namafile]");   
+    }
+    else{
+        mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
+    }
+    header('location:../../media.php?module='.$module);
 }
 
 // Input produk
@@ -33,22 +33,22 @@ elseif ($module=='produk' AND $act=='input'){
 
   // Apabila ada gambar yang diupload
   if (!empty($lokasi_file)){
-    UploadImage($nama_file_unik);
+    // UploadImage($nama_file_unik);
 
-    mysql_query("INSERT INTO produk(nama_produk,
-                                    id_merk,
-									berat,
-                                    harga,
-                                    stok,
-                                    deskripsi,
-                                    gambar) 
-                            VALUES('$_POST[nama_produk]',
-                                   '$_POST[merk]',
-								   '$_POST[berat]',
-                                   '$_POST[harga]',
-                                   '$_POST[stok]',
-                                   '$_POST[deskripsi]',
-                                   '$nama_file_unik')");
+    // mysql_query("INSERT INTO produk(nama_produk,
+    //                                 id_merk,
+	// 								berat,
+    //                                 harga,
+    //                                 stok,
+    //                                 deskripsi,
+    //                                 gambar) 
+    //                         VALUES('$_POST[nama_produk]',
+    //                                '$_POST[merk]',
+	// 							   '$_POST[berat]',
+    //                                '$_POST[harga]',
+    //                                '$_POST[stok]',
+    //                                '$_POST[deskripsi]',
+    //                                '$nama_file_unik')");
 								   
   }
   else{
