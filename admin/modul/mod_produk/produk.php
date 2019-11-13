@@ -63,9 +63,13 @@ switch($_GET[act]){
 	break;
   
 	case "tambahproduk":
-		$option_warna = "";
+		$option = [];
 		foreach ( read_file('../json/warna.json') as $key => $value) {
-			print_r($value);
+			$option['warna'] .= "<option value='{$value}'>{$value}</option>";
+		}
+
+		foreach ( read_file('../json/ukuran.json') as $key => $value) {
+			$option['ukuran'] .= "<option value='{$value}'>{$value}</option>";
 		}
 
 		echo "
@@ -114,14 +118,16 @@ switch($_GET[act]){
 								</div>
 								<div class='form-group col-sm-4'>
 									<label for='formWarna'>Warna</label>
-									<select name='warna' required='' class='form-control'>
+									<select name='warna' class='form-control'>
 										<option value='' selected disabled> -- Pilih Warna -- </option>
+										{$option["warna"]}
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
 									<label for='formUkuran'>Ukuran</label>
-									<select name='ukuran' required='' class='form-control'>
+									<select name='ukuran' class='form-control'>
 										<option value='' selected disabled> -- Pilih Ukuran -- </option>
+										{$option["ukuran"]}
 									</select>
 								</div>
 							</div>
