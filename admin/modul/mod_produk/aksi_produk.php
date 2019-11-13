@@ -36,9 +36,9 @@ elseif ($module=='produk' AND $act=='input'){
         // echo '<pre>';
         // print_r($_POST);
         // echo '</pre>';
-        // UploadImage($nama_file_unik);
+        UploadImage($nama_file_unik);
 
-        echo ("INSERT
+        mysql_query("INSERT
                     INTO produk(
                             nama_produk,
                             id_merk,
@@ -60,7 +60,7 @@ elseif ($module=='produk' AND $act=='input'){
                             '{$_POST[deskripsi]}',
                             '".(!empty($_POST["kondisi"]) ? $_POST["kondisi"] : NULL )."',
                             '".(!empty($_POST["warna"]) ? $_POST["warna"] : NULL )."',
-                            '".(!empty($_POST["ukurab"]) ? $_POST["ukuran"] : NULL )."',
+                            '".(!empty($_POST["ukuran"]) ? $_POST["ukuran"] : NULL )."',
                             '{$nama_file_unik}'
                         )
         ");
