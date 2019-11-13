@@ -36,9 +36,9 @@ elseif ($module=='produk' AND $act=='input'){
         // echo '<pre>';
         // print_r($_POST);
         // echo '</pre>';
-        UploadImage($nama_file_unik);
+        // UploadImage($nama_file_unik);
 
-        mysql_query("INSERT
+        echo ("INSERT
                     INTO produk(
                             nama_produk,
                             id_merk,
