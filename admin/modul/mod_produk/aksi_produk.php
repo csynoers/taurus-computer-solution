@@ -12,8 +12,11 @@
 if ($module=='produk' AND $act=='hapus'){
     $data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='$_GET[id]'"));
     if ($data['gambar']!=''){
+        unlink("../../../foto_produk/$data['gambar']");
+        unlink("../../../foto_produk/big_$data['gambar']");
+        unlink("../../../foto_produk/medium_$data['gambar']");
+        unlink("../../../foto_produk/small_$data['gambar']");   
         mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
-        unlink("../../../foto_produk/$_GET[namafile]");   
     }
     else{
         mysql_query("DELETE FROM produk WHERE id_produk='$_GET[id]'");
@@ -115,6 +118,14 @@ elseif ($module=='produk' AND $act=='update'){
     }
 
     else{
+        /* start unlink image  */
+        $data=mysql_fetch_array(mysql_query("SELECT gambar FROM produk WHERE id_produk='{$_POST["id"]}"));
+        unlink("../../../foto_produk/$data['gambar']");
+        unlink("../../../foto_produk/big_$data['gambar']");
+        unlink("../../../foto_produk/medium_$data['gambar']");
+        unlink("../../../foto_produk/small_$data['gambar']");
+        /* end unlink image  */
+
         UploadImage($nama_file_unik);
         mysql_query("UPDATE produk
                         SET
