@@ -184,6 +184,10 @@ switch($_GET[act]){
 			$option['ukuran'] .= "<option value='{$value}'>{$value}</option>";
 		}
 
+		echo '<pre>';
+		print_r($option);
+		echo '</pre>';
+
 		echo "
 			<div class='col-xs-12'>
 				<div class='box'>
