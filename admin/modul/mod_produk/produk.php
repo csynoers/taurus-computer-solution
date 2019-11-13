@@ -228,14 +228,14 @@ switch($_GET[act]){
 								<div class='form-group col-sm-4'>
 									<label for='formWarna'>Warna <small class='text-info'>(Optional)</small> <a href='media.php?module=warna' class='btn-link text-green' role='button'> +Tambah Warna Baru</a> </label>
 									<select name='warna' class='form-control'>
-										<option value='' selected disabled> -- Pilih Warna -- </option>
+										<option value=''> -- Pilih Warna -- </option>
 										{$option["warna"]}
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
 									<label for='formUkuran'>Ukuran <small class='text-info'>(Optional)</small> <a href='media.php?module=ukuran' class='btn-link text-green' role='button'> +Tambah Ukuran Baru</a> </label>
 									<select name='ukuran' class='form-control'>
-										<option value='' selected disabled> -- Pilih Ukuran -- </option>
+										<option value=''> -- Pilih Ukuran -- </option>
 										{$option["ukuran"]}
 									</select>
 								</div>
