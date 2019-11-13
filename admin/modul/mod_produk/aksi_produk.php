@@ -33,6 +33,9 @@ elseif ($module=='produk' AND $act=='input'){
 
   // Apabila ada gambar yang diupload
   if (!empty($lokasi_file)){
+      echo '<pre>';
+      print_r($_POST);
+      echo '</pre>';
     // UploadImage($nama_file_unik);
 
     // mysql_query("INSERT INTO produk(nama_produk,
