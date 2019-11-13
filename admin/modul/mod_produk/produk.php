@@ -117,14 +117,14 @@ switch($_GET[act]){
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
-									<label for='formWarna'>Warna <small class='text-info'>(Optional)</small> <a href='#' class='btn btn-link' role='button'>Tambah Warna Baru</a> </label>
+									<label for='formWarna'>Warna <small class='text-info'>(Optional)</small> <a href='media.php?module=warna' class='btn btn-link text-green' role='button'>Tambah Warna Baru</a> </label>
 									<select name='warna' class='form-control'>
 										<option value='' selected disabled> -- Pilih Warna -- </option>
 										{$option["warna"]}
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
-									<label for='formUkuran'>Ukuran <small class='text-info'>(Optional)</small> <a href='#' class='btn btn-link' role='button'>Tambah Ukuran Baru</a> </label>
+									<label for='formUkuran'>Ukuran <small class='text-info'>(Optional)</small> <a href='media.php?module=ukuran' class='btn btn-link text-green' role='button'>Tambah Ukuran Baru</a> </label>
 									<select name='ukuran' class='form-control'>
 										<option value='' selected disabled> -- Pilih Ukuran -- </option>
 										{$option["ukuran"]}
@@ -137,7 +137,7 @@ switch($_GET[act]){
 							</div>
 							<div class='form-group'>
 								<label for='exampleInputFile'>Gambar</label>
-								<input type='file' name='fupload' id='exampleInputFile'>
+								<input type='file' name='fupload' id='exampleInputFile' required>
 								<p class='help-block'>Pastikan File yang diupload berekstensi *JPG atau *JPEG.</p>
 							</div>
 						</div>
