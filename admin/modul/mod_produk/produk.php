@@ -165,7 +165,8 @@ switch($_GET[act]){
 
 		$tampil=mysql_query("SELECT * FROM merk ORDER BY nama_merk");
 		while($value=mysql_fetch_array($tampil)){
-			$option['merk'] .="<option value='{$value['id_merk']}'>{$value['nama_merk']}</option>";
+			$selected = ($value['id_merk']==$r['id_merk']) ? 'selected' : NULL ;
+			$option['merk'] .="<option value='{$value['id_merk']}' {$selected}>{$value['nama_merk']}</option>";
 		}
 
 		foreach ( read_file('../json/warna.json') as $key => $value) {
@@ -195,7 +196,7 @@ switch($_GET[act]){
 								<div class='form-group col-sm-6'>
 									<label for='exampleInputPassword1'>Merk <a href='media.php?module=merk' class='btn-link text-green' role='button'> +Tambah Merk Baru</a> </label>
 									<select class='form-control' name='merk' required>
-										<option value='' selected>- Pilih merk -</option>
+										<option value='' disabled>- Pilih merk -</option>
 										{$option["merk"]}
 									</select>
 								</div>
