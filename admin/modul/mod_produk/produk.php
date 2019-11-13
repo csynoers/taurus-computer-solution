@@ -102,7 +102,7 @@ switch($_GET[act]){
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Berat (Gram)</label>
-									<input type='number' step='0.1' name='berat' class='form-control' placeholder='Masukkan berat produk tipe angka' required>
+									<input type='number' stepX='0.1' name='berat' class='form-control' placeholder='Masukkan berat produk tipe angka' required>
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Harga</label>
@@ -209,7 +209,7 @@ switch($_GET[act]){
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Berat (Gram)</label>
-									<input value='{$r['berat']}' type='number' step='0.1' name='berat' class='form-control' placeholder='Masukkan berat produk tipe angka' required>
+									<input value='{$r['berat']}' type='number' stepX='0.1' name='berat' class='form-control' placeholder='Masukkan berat produk tipe angka' required>
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Harga</label>
