@@ -64,6 +64,12 @@ switch($_GET[act]){
   
 	case "tambahproduk":
 		$option = [];
+
+		$tampil=mysql_query("SELECT * FROM merk ORDER BY nama_merk");
+		while($value=mysql_fetch_array($tampil)){
+			$option['merk'] .="<option value='{$value['id_merk']}'>{$value['nama_merk']}</option>";
+		}
+
 		foreach ( read_file('../json/warna.json') as $key => $value) {
 			$option['warna'] .= "<option value='{$value}'>{$value}</option>";
 		}
@@ -90,12 +96,9 @@ switch($_GET[act]){
 								<div class='form-group col-sm-6'>
 									<label for='exampleInputPassword1'>Merk <a href='media.php?module=merk' class='btn-link text-green' role='button'> +Tambah Merk Baru</a> </label>
 									<select class='form-control' name='merk' required>
-										<option value='' selected>- Pilih merk -</option>";
-											$tampil=mysql_query("SELECT * FROM merk ORDER BY nama_merk");
-											while($r=mysql_fetch_array($tampil)){
-												echo "<option value=$r[id_merk]>$r[nama_merk]</option>";
-											}
-									echo "</select>
+										<option value='' selected>- Pilih merk -</option>
+										{$option["merk"]}
+									</select>
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Berat (Gram)</label>
@@ -154,85 +157,108 @@ switch($_GET[act]){
 		";
 		break;
 	
-  case "editproduk":
-	$edit = mysql_query("SELECT * FROM produk WHERE id_produk='$_GET[id]'");
-	$r    = mysql_fetch_array($edit);
+	case "editproduk":
+		$edit = mysql_query("SELECT * FROM produk WHERE id_produk='$_GET[id]'");
+		$r    = mysql_fetch_array($edit);
 
-	echo "<div class='col-xs-12'>
-		<div class='box'>
-			<div class='box-header'>
-			  <h3 class='box-title'>FORM EDIT PRODUK</h3>
+		$option = [];
+
+		$tampil=mysql_query("SELECT * FROM merk ORDER BY nama_merk");
+		while($value=mysql_fetch_array($tampil)){
+			$option['merk'] .="<option value='{$value['id_merk']}'>{$value['nama_merk']}</option>";
+		}
+
+		foreach ( read_file('../json/warna.json') as $key => $value) {
+			$option['warna'] .= "<option value='{$value}'>{$value}</option>";
+		}
+
+		foreach ( read_file('../json/ukuran.json') as $key => $value) {
+			$option['ukuran'] .= "<option value='{$value}'>{$value}</option>";
+		}
+
+		echo "
+			<div class='col-xs-12'>
+				<div class='box'>
+					<div class='box-header'>
+						<h3 class='box-title'>FORM EDIT PRODUK</h3>
+					</div>
+					<!-- /.box-header -->
+
+					<form method=POST enctype='multipart/form-data' action=$aksi?module=produk&act=update>
+						<div class='box-body'>
+							<input type=hidden name=id value=$r[id_produk]>
+							<div class='form-group'>
+								<label for='exampleInputPassword1'>Nama Produk</label>
+								<input value='{$r['nama_produk']}' type='text' name='nama_produk' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Nama Produk' required>
+							</div>
+							<div class='row'>
+								<div class='form-group col-sm-6'>
+									<label for='exampleInputPassword1'>Merk <a href='media.php?module=merk' class='btn-link text-green' role='button'> +Tambah Merk Baru</a> </label>
+									<select class='form-control' name='merk' required>
+										<option value='' selected>- Pilih merk -</option>
+										{$option["merk"]}
+									</select>
+								</div>
+								<div class='form-group col-sm-6'>
+									<label>Berat (Gram)</label>
+									<input type='number' step='0.1' name='berat' class='form-control' placeholder='Masukkan berat produk tipe angka' required>
+								</div>
+								<div class='form-group col-sm-6'>
+									<label>Harga</label>
+									<input type='number' name='harga' class='form-control' placeholder='Masukkan harga produk tipe angka' required>
+								</div>
+								<div class='form-group col-sm-6'>
+									<label>Stok</label>
+									<input type='number' name='stok' class='form-control' placeholder='Masukkan jumlah stok produk tipe angka' required>
+								</div>
+								<div class='form-group col-sm-4'>
+									<label for='formKondisi'>Kondisi</label>
+									<select name='kondisi' required='' class='form-control'>
+										<option value='Baru' selected>Baru</option>
+										<option value='Pernah Dipakai'>Pernah Dipakai</option>
+									</select>
+								</div>
+								<div class='form-group col-sm-4'>
+									<label for='formWarna'>Warna <small class='text-info'>(Optional)</small> <a href='media.php?module=warna' class='btn-link text-green' role='button'> +Tambah Warna Baru</a> </label>
+									<select name='warna' class='form-control'>
+										<option value='' selected disabled> -- Pilih Warna -- </option>
+										{$option["warna"]}
+									</select>
+								</div>
+								<div class='form-group col-sm-4'>
+									<label for='formUkuran'>Ukuran <small class='text-info'>(Optional)</small> <a href='media.php?module=ukuran' class='btn-link text-green' role='button'> +Tambah Ukuran Baru</a> </label>
+									<select name='ukuran' class='form-control'>
+										<option value='' selected disabled> -- Pilih Ukuran -- </option>
+										{$option["ukuran"]}
+									</select>
+								</div>
+							</div>
+							<div class='form-group'>
+								<label for='exampleInputPassword1'>Deskripsi</label>
+								<textarea class='textarea form-control' name='deskripsi' placeholder='Isikan Deskripsi Produk Disini.' required></textarea>
+							</div>
+							<div class='form-group'>
+								<label for='exampleInputFile'>Gambar</label>
+								<p class='help-block'><img src='../foto_produk/{$r['gambar']}'></p>
+							</div>
+							<div class='form-group'>
+								<label for='exampleInputFile'>Ganti Gambar</label>
+								<input type='file' name='fupload' id='exampleInputFile'>
+								<p class='help-block'>Pastikan File yang diupload berekstensi *JPG atau *JPEG.</p>
+							</div>
+						</div>
+						<!-- /.box-body -->
+
+						<div class='box-footer'>
+							<button type='submit' class='btn btn-primary'>Update</button>
+							<button onclick=self.history.back() class='btn btn-danger'>Batal</button>
+						</div>
+					</form>
+					<!-- /form -->
+				</div>
+				<!-- /.box -->
 			</div>
-			<!-- /.box-header -->
-			<div class='box-body'>
-			
-			<form method=POST enctype='multipart/form-data' action=$aksi?module=produk&act=update>
-			<input type=hidden name=id value=$r[id_produk]>
-			<div class='box-body'>
-				<div class='form-group'>
-				  <label for='exampleInputPassword1'>Nama Produk</label>
-				  <input type='text' name='nama_produk' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Nama Produk' value='$r[nama_produk]' required>
-				</div>
-				<div class='form-group'>
-				  <label for='exampleInputPassword1'>Merk</label>
-				  <select class='form-control' name='merk' required>";
-							$tampil=mysql_query("SELECT * FROM merk ORDER BY nama_merk");
-								if ($r[id_merk]==0){
-								echo "<option value=0 selected>- Pilih merk -</option>";
-								}   
-
-							while($w=mysql_fetch_array($tampil)){
-								if ($r['id_merk']==$w['id_merk']){
-								echo "<option value=$w[id_merk] selected>$w[nama_merk]</option>";
-								}
-								else{
-								echo "<option value=$w[id_merk]>$w[nama_merk]</option>";
-								}
-								}
-							echo "</select>
-				</div>
-				<div class='form-group'>
-				  <label for='exampleInputPassword1'>Berat</label>
-				  <input type='number' name='berat' class='form-control' id='exampleInputPassword1' value=$r[berat] placeholder='Masukkan Berat Produk' required>
-				</div>
-				<div class='form-group'>
-				  <label for='exampleInputPassword1'>Harga</label>
-				  <input type='number' name='harga' class='form-control' id='exampleInputPassword1' value=$r[harga] placeholder='Masukkan Harga Produk' required>
-				</div>
-				<div class='form-group'>
-				  <label for='exampleInputPassword1'>Stok</label>
-				  <input type='number' name='stok' class='form-control' id='exampleInputPassword1' value=$r[stok] placeholder='Masukkan Stok Produk' required>
-				</div>
-				<div class='form-group'>
-				  <label for='exampleInputPassword1'>Deskripsi</label>
-				  <textarea class='textarea' name='deskripsi' rows='20' cols='80'>
-											$r[deskripsi]
-					</textarea>
-				</div>
-				<div class='form-group'>
-				  <label for='exampleInputFile'>Gambar</label>
-				  <p class='help-block'><img src='../foto_produk/$r[gambar]'></p>
-				</div>
-				<div class='form-group'>
-				  <label for='exampleInputFile'>Ganti Gambar</label>
-				  <input type='file' name='fupload' id='exampleInputFile'>
-				  <p class='help-block'>Pastikan File yang diupload berekstensi *JPG atau *JPEG.</p>
-				</div>
-			  </div>
-			  <!-- /.box-body -->
-
-			  <div class='box-footer'>
-				<button type='submit' class='btn btn-primary'>Update</button>
-				<button onclick=self.history.back() class='btn btn-danger'>Batal</button>
-			  </div>
-			</form>
-			
-			
-		  </div>
-			<!-- /.box-body -->
-		  </div>
-		  <!-- /.box -->
-		</div>";
+		";
 	
 	break;  
 }
