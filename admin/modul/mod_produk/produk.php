@@ -88,7 +88,7 @@ switch($_GET[act]){
 							</div>
 							<div class='row'>
 								<div class='form-group col-sm-6'>
-									<label for='exampleInputPassword1'>Merk</label>
+									<label for='exampleInputPassword1'>Merk <a href='media.php?module=merk' class='btn btn-link text-green' role='button'>Tambah Merk Baru</a> </label>
 									<select class='form-control' name='merk' required>
 										<option value='' selected>- Pilih merk -</option>";
 											$tampil=mysql_query("SELECT * FROM merk ORDER BY nama_merk");
