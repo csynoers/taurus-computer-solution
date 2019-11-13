@@ -23,38 +23,51 @@ if ($module=='produk' AND $act=='hapus'){
 
 // Input produk
 elseif ($module=='produk' AND $act=='input'){
-  $lokasi_file    = $_FILES['fupload']['tmp_name'];
-  $tipe_file      = $_FILES['fupload']['type'];
-  $nama_file      = $_FILES['fupload']['name'];
-  $acak           = rand(1,99);
-  $nama_file_unik = $acak.$nama_file; 
+    $lokasi_file    = $_FILES['fupload']['tmp_name'];
+    $tipe_file      = $_FILES['fupload']['type'];
+    $nama_file      = $_FILES['fupload']['name'];
+    $acak           = rand(1,99);
+    $nama_file_unik = $acak.$nama_file; 
 
-//   $produk_seo      = seo_title($_POST[nama_produk]);
+    //   $produk_seo      = seo_title($_POST[nama_produk]);
 
-  // Apabila ada gambar yang diupload
-  if (!empty($lokasi_file)){
-      echo '<pre>';
-      print_r($_POST);
-      echo '</pre>';
-    // UploadImage($nama_file_unik);
+    // Apabila ada gambar yang diupload
+    if (!empty($lokasi_file)){
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+        // UploadImage($nama_file_unik);
 
-    // mysql_query("INSERT INTO produk(nama_produk,
-    //                                 id_merk,
-	// 								berat,
-    //                                 harga,
-    //                                 stok,
-    //                                 deskripsi,
-    //                                 gambar) 
-    //                         VALUES('$_POST[nama_produk]',
-    //                                '$_POST[merk]',
-	// 							   '$_POST[berat]',
-    //                                '$_POST[harga]',
-    //                                '$_POST[stok]',
-    //                                '$_POST[deskripsi]',
-    //                                '$nama_file_unik')");
+        echo ("INSERT
+                    INTO produk(
+                            nama_produk,
+                            id_merk,
+                            berat,
+                            harga,
+                            stok,
+                            deskripsi,
+                            kondisi,
+                            warna,
+                            ukuran,
+                            gambar
+                        ) 
+                    VALUES (
+                            '{$_POST[nama_produk]}',
+                            '{$_POST[merk]}',
+                            '{$_POST[berat]}',
+                            '{$_POST[harga]}',
+                            '{$_POST[stok]}',
+                            '{$_POST[deskripsi]}',
+                            '".(!empty($_POST["kondisi"]) ? $_POST["kondisi"] : NULL )."',
+                            '".(!empty($_POST["warna"]) ? $_POST["warna"] : NULL )."',
+                            '".(!empty($_POST["ukurab"]) ? $_POST["ukuran"] : NULL )."',
+                            '{$nama_file_unik}'
+                        )
+        ");
 								   
-  }
-  else{
+    }
+
+    else{
     mysql_query("INSERT INTO produk(nama_produk,
                                     id_merk,
 									berat,
