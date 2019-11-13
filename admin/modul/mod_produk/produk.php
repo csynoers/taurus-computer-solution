@@ -171,17 +171,17 @@ switch($_GET[act]){
 
 		foreach ( read_file('../json/kondisi.json') as $key => $value) {
 			$selected = ($value==$r['kondisi']) ? 'selected' : NULL ;
-			$option['kondisi'] .= "<option value='{$value}'>{$value}</option>";
+			$option['kondisi'] .= "<option value='{$value}' {$selected}>{$value}</option>";
 		}
 
 		foreach ( read_file('../json/warna.json') as $key => $value) {
 			$selected = ($value==$r['warna']) ? 'selected' : NULL ;
-			$option['warna'] .= "<option value='{$value}'>{$value}</option>";
+			$option['warna'] .= "<option value='{$value}' {$selected}>{$value}</option>";
 		}
 
 		foreach ( read_file('../json/ukuran.json') as $key => $value) {
 			$selected = ($value==$r['ukuran']) ? 'selected' : NULL ;
-			$option['ukuran'] .= "<option value='{$value}'>{$value}</option>";
+			$option['ukuran'] .= "<option value='{$value}' {$selected}>{$value}</option>";
 		}
 
 		echo '<pre>';
