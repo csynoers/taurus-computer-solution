@@ -201,15 +201,15 @@ switch($_GET[act]){
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Berat (Gram)</label>
-									<input type='number' step='0.1' name='berat' class='form-control' placeholder='Masukkan berat produk tipe angka' required>
+									<input value='{$r['berat']}' type='number' step='0.1' name='berat' class='form-control' placeholder='Masukkan berat produk tipe angka' required>
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Harga</label>
-									<input type='number' name='harga' class='form-control' placeholder='Masukkan harga produk tipe angka' required>
+									<input value='{$r['harga']}' type='number' name='harga' class='form-control' placeholder='Masukkan harga produk tipe angka' required>
 								</div>
 								<div class='form-group col-sm-6'>
 									<label>Stok</label>
-									<input type='number' name='stok' class='form-control' placeholder='Masukkan jumlah stok produk tipe angka' required>
+									<input value='{$r['stok']}' type='number' name='stok' class='form-control' placeholder='Masukkan jumlah stok produk tipe angka' required>
 								</div>
 								<div class='form-group col-sm-4'>
 									<label for='formKondisi'>Kondisi</label>
@@ -221,21 +221,21 @@ switch($_GET[act]){
 								<div class='form-group col-sm-4'>
 									<label for='formWarna'>Warna <small class='text-info'>(Optional)</small> <a href='media.php?module=warna' class='btn-link text-green' role='button'> +Tambah Warna Baru</a> </label>
 									<select name='warna' class='form-control'>
-										<option value='' selected disabled> -- Pilih Warna -- </option>
+										<option value='' disabled> -- Pilih Warna -- </option>
 										{$option["warna"]}
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
 									<label for='formUkuran'>Ukuran <small class='text-info'>(Optional)</small> <a href='media.php?module=ukuran' class='btn-link text-green' role='button'> +Tambah Ukuran Baru</a> </label>
 									<select name='ukuran' class='form-control'>
-										<option value='' selected disabled> -- Pilih Ukuran -- </option>
+										<option value='' disabled> -- Pilih Ukuran -- </option>
 										{$option["ukuran"]}
 									</select>
 								</div>
 							</div>
 							<div class='form-group'>
 								<label for='exampleInputPassword1'>Deskripsi</label>
-								<textarea class='textarea form-control' name='deskripsi' placeholder='Isikan Deskripsi Produk Disini.' required></textarea>
+								<textarea class='textarea form-control' name='deskripsi' placeholder='Isikan Deskripsi Produk Disini.' required>{$r["deskripsi"]}</textarea>
 							</div>
 							<div class='form-group'>
 								<label for='exampleInputFile'>Gambar</label>
