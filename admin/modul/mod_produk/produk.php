@@ -169,11 +169,18 @@ switch($_GET[act]){
 			$option['merk'] .="<option value='{$value['id_merk']}' {$selected}>{$value['nama_merk']}</option>";
 		}
 
+		foreach ( read_file('../json/kondisi.json') as $key => $value) {
+			$selected = ($value==$r['kondisi']) ? 'selected' : NULL ;
+			$option['kondisi'] .= "<option value='{$value}'>{$value}</option>";
+		}
+
 		foreach ( read_file('../json/warna.json') as $key => $value) {
+			$selected = ($value==$r['warna']) ? 'selected' : NULL ;
 			$option['warna'] .= "<option value='{$value}'>{$value}</option>";
 		}
 
 		foreach ( read_file('../json/ukuran.json') as $key => $value) {
+			$selected = ($value==$r['ukuran']) ? 'selected' : NULL ;
 			$option['ukuran'] .= "<option value='{$value}'>{$value}</option>";
 		}
 
@@ -215,8 +222,7 @@ switch($_GET[act]){
 								<div class='form-group col-sm-4'>
 									<label for='formKondisi'>Kondisi</label>
 									<select name='kondisi' required='' class='form-control'>
-										<option value='Baru' selected>Baru</option>
-										<option value='Pernah Dipakai'>Pernah Dipakai</option>
+										{$option["kondisi"]}
 									</select>
 								</div>
 								<div class='form-group col-sm-4'>
