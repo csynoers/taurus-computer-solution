@@ -588,7 +588,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 		<div class='control-group'>
 			<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
 			<div class='controls'>
-				<textarea style='width:100%' name='alamat' placeholder='Masukkan Alamat Anda' required>$e[alamat_member]</textarea>
+				<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required>$e[alamat_member]</textarea>
 			</div>
 		</div>
 
