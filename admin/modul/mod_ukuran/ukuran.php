@@ -33,7 +33,7 @@
                                     <form method=POST action='{$aksi}?module=ukuran&act=input'>
                                         <div class='form-group'>
                                             <label>Nama Ukuran : </label>
-                                            <input value='' type='text' class='form-control' name='ukuran' placeholder='Masukkan warna baru ...' required>
+                                            <input value='' type='text' class='form-control' name='ukuran' placeholder='Masukkan ukuran baru ...' required>
                                         </div>
                                         <button type='submit' class='btn btn-primary'>Simpan</button>
                                     </form>
