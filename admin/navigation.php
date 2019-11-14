@@ -48,6 +48,8 @@ echo"<li>
 				<li><a href='media.php?module=logo'><i class='fa fa-circle-o'></i> Logo</a></li>
 				<li><a href='media.php?module=slideshow'><i class='fa fa-circle-o'></i> Slideshow</a></li>
 				<li><a href='media.php?module=informasi'><i class='fa fa-circle-o'></i> informasi</a></li>
+				<li><a href='media.php?module=warna'><i class='fa fa-circle-o'></i> Warna Produk</a></li>
+				<li><a href='media.php?module=ukuran'><i class='fa fa-circle-o'></i> Ukuran Produk</a></li>
 			</ul>
         </li>
         ";

@@ -152,6 +152,16 @@ elseif ($_GET['module']=='informasi'){
 		include "modul/mod_informasi/informasi.php";
 	}
 }
+elseif ($_GET['module']=='warna'){
+	if ($_SESSION['leveluser']=='admin'){
+		include "modul/mod_warna/warna.php";
+	}
+}
+elseif ($_GET['module']=='ukuran'){
+	if ($_SESSION['leveluser']=='admin'){
+		include "modul/mod_ukuran/ukuran.php";
+	}
+}
 /* ==================== END MENU SUPPORT ==================== */
 
 // Apabila modul tidak ditemukan
