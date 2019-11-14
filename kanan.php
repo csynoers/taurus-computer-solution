@@ -543,7 +543,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 
 		echo "
 		<input type='hidden' id='provinsi' value='5' name ='provinsi' >
-		<input type='hidden' id='des' name='kota' value='419'>
+		<input type='hidden' id='des' name='kota' value='501'>
 		<div class='control-group'>
 			<label class='control-label'>Provinsi <sup>*</sup></label>
 			<div class='controls'>

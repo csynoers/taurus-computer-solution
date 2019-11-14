@@ -245,72 +245,72 @@
 
 		function  load_ajax(url, callback){
 		  
-		  var xhr = new XMLHttpRequest();
-		  xhr.onreadystatechange = cekstatus;
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = cekstatus;
 
-		  function cekstatus(){
-		    if(xhr.readyState === 4 && xhr.status === 200 ){
-		      callback(xhr.responseText);
-		    }
-		  }
-		  xhr.open('GET',url,true);
-		  xhr.send();
+			function cekstatus(){
+				if(xhr.readyState === 4 && xhr.status === 200 ){
+				callback(xhr.responseText);
+				}
+			}
+			xhr.open('GET',url,true);
+			xhr.send();
 
 		}
 
 		// Asal
 		document.getElementById('provinsi').onclick = function(){
-		  text = document.getElementById('provinsi').value;
-		  load_ajax('cek_kabupaten.php?q='+ text, function(data){
-		    console.log(data);
-		    document.getElementById('des').innerHTML = data ;
-		  });
+			text = document.getElementById('provinsi').value;
+			load_ajax('cek_kabupaten.php?q='+ text, function(data){
+				console.log(data);
+				document.getElementById('des').innerHTML = data ;
+			});
 		};
 
 
 		// Tujuan
 		document.getElementById('provinsi2').onclick = function(){
-		  text = document.getElementById('provinsi2').value;
-		  load_ajax('cek_kabupaten.php?q='+ text, function(data){
-		    console.log(data);
-		    document.getElementById('des2').innerHTML = data ;
-		  });
+			text = document.getElementById('provinsi2').value;
+			load_ajax('cek_kabupaten.php?q='+ text, function(data){
+				console.log(data);
+				document.getElementById('des2').innerHTML = data ;
+			});
 		};
 
 		// Kurir Pos
 		document.getElementById('pos').onclick = function(){
-		  text = pos.value;
-		  des = document.getElementById('des').value;
-		  des2 = document.getElementById('des2').value;
-		  berat = document.getElementById('berat').value;
-		  load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
-		    console.log(data);
-		    biaya.innerHTML = data ;
-		  });
+			text = pos.value;
+			des = document.getElementById('des').value;
+			des2 = document.getElementById('des2').value;
+			berat = document.getElementById('berat').value;
+			load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
+				console.log(data);
+				biaya.innerHTML = data ;
+			});
 		};
 
 		// Kurir tiki
 		document.getElementById('tiki').onclick = function(){
-		  text = tiki.value;
-		  des = document.getElementById('des').value;
-		  des2 = document.getElementById('des2').value;
-		  berat = document.getElementById('berat').value;
-		  load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
-		    console.log(data);
-		    biaya.innerHTML = data ;
-		  });
+			text = tiki.value;
+			des = document.getElementById('des').value;
+			des2 = document.getElementById('des2').value;
+			berat = document.getElementById('berat').value;
+			load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
+				console.log(data);
+				biaya.innerHTML = data ;
+			});
 		};
 
 		// Kurir jne
 		document.getElementById('jne').onclick = function(){
-		  text = jne.value;
-		  des = document.getElementById('des').value;
-		  des2 = document.getElementById('des2').value;
-		  berat = document.getElementById('berat').value;
-		  load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
-		    console.log(data);
-		    biaya.innerHTML = data ;
-		  });
+			text = jne.value;
+			des = document.getElementById('des').value;
+			des2 = document.getElementById('des2').value;
+			berat = document.getElementById('berat').value;
+			load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
+				console.log(data);
+				biaya.innerHTML = data ;
+			});
 		};
 
 	</script>
