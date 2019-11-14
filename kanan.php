@@ -435,18 +435,18 @@ elseif ($_GET['module']=='keranjangbelanja'){
 			$total_rp    	= format_rupiah($total);
 			$harga       	= format_rupiah($harga1);
 
-			// $produk_attr = [];
-			// if ( $r['kondisi'] ) {
-			// 	$produk_attr[]= "<span class='label label-info'>Kondisi : {$r['kondisi']}</span>";
-			// }
-			// if ( $r['warna'] ) {
-			// 	$produk_attr[]= "<span class='label label-info'>Warna : {$r['warna']}</span>";
-			// }
-			// if ( $r['ukuran'] ) {
-			// 	$produk_attr[]= "<span class='label label-info'>Ukuran : {$r['ukuran']}</span>";
-			// }
+			$produk_attr = [];
+			if ( $r['kondisi'] ) {
+				$produk_attr[]= "<span class='label label-info'>Kondisi : {$r['kondisi']}</span>";
+			}
+			if ( $r['warna'] ) {
+				$produk_attr[]= "<span class='label label-info'>Warna : {$r['warna']}</span>";
+			}
+			if ( $r['ukuran'] ) {
+				$produk_attr[]= "<span class='label label-info'>Ukuran : {$r['ukuran']}</span>";
+			}
 
-			// $produk_attr = implode('&nbsp',$produk_attr);
+			$produk_attr = implode('&nbsp',$produk_attr);
 
 			$htmls['rows_barang'] .= "
 				<tr>
@@ -456,6 +456,7 @@ elseif ($_GET['module']=='keranjangbelanja'){
 					</td>
 					<td>
 						{$r['nama_produk']}
+						{$produk_attr}
 					</td>
 					<td><input type=number name='jml[$no]' value='{$r['jumlah']}' size=1 min='1' onChange='this.form.submit()'></td>
 					<td>Rp. $harga</td>
