@@ -411,6 +411,8 @@ echo"
 	</form>
 							</div>";
 }
+
+/*==================== Start Halaman Keranjang Belanja ====================*/
 elseif ($_GET['module']=='keranjangbelanja'){
 	$sid = session_id();
 	$sql = mysql_query("SELECT * FROM keranjang, produk WHERE id_session='$sid' AND keranjang.id_produk=produk.id_produk");
@@ -500,6 +502,8 @@ elseif ($_GET['module']=='keranjangbelanja'){
 		";
 	}
 }
+/*==================== End Halaman Keranjang Belanja ====================*/
+
 elseif ($_GET['module']=='selesaibelanja'){
 $edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
     $e=mysql_fetch_array($edit);
