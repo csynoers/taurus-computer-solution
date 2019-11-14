@@ -112,7 +112,7 @@ echo"
 						<strong> Rp. $harga</strong> 
 					  </p>
 					 
-					  <h4 style='text-align:center'><a class='btn' href=''>Add to <i class='icon-shopping-cart'></i></a></h4>
+					  <h4 style='text-align:center'><a class='btn' href='aksi.php?module=keranjang&act=tambah&id={$r['id_produk']}'>Add to <i class='icon-shopping-cart'></i></a></h4>
 					</div>
 				  </div>
 				</li>";
