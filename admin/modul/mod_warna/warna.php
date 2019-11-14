@@ -60,69 +60,22 @@
                     <!-- /.box -->
                 </div>
             ";
+            ?>
+            <script>
+                $(document).ready(function(){
+                    $(document).on('click','.btn-edit',function(){
+                        let data= {
+                            "id" : $(this).data('id'),
+                            "value" : $(this).data('value'),
+                            "action" : $(this).data('action'),
+                        };
+
+                        alert(JSON.stringify(data));
+                    });
+                });
+            </script>
+            <?php
 
             break;
-  
-  // Form Tambah merk
-  case "tambahmerk":
-    
-	echo"
-   	<div class='col-md-6'>  
-		 <div class='box box-primary'>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>FORM TAMBAH MERK</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form method=POST action='$aksi?module=merk&act=input'>
-              <div class='box-body'>
-                <div class='form-group'>
-                  <label for='exampleInputEmail1'>Nama Merk</label>
-                  <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' required>
-                </div>
-              </div>
-              <!-- /.box-body -->
-
-              <div class='box-footer'>
-                <button type='submit' class='btn btn-primary'>Simpan</button>
-				<button onclick=self.history.back() class='btn btn-danger'>Batal</button>
-              </div>
-            </form>
-         </div>
-	 </div>";
-     break;
-  
-  // Form Edit merk  
-  case "editmerk":
-    $edit=mysql_query("SELECT * FROM merk WHERE id_merk='$_GET[id]'");
-    $r=mysql_fetch_array($edit);
-
-	echo"
-   	<div class='col-md-6'>  
-		 <div class='box box-primary'>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>FORM EDIT MERK</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form method=POST action=$aksi?module=merk&act=update>
-            <input type=hidden name=id value='$r[id_merk]'>
-              <div class='box-body'>
-                <div class='form-group'>
-                  <label for='exampleInputEmail1'>Nama Merk</label>
-                  <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' value='$r[nama_merk]' required>
-                </div>
-              </div>
-              <!-- /.box-body -->
-
-              <div class='box-footer'>
-                <button type='submit' class='btn btn-primary'>Update</button>
-				<button onclick=self.history.back() class='btn btn-danger'>Batal</button>
-              </div>
-            </form>
-         </div>
-	 </div>";
-    
-    break;  
-}
+    }
 ?>
