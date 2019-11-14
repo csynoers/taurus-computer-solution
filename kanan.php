@@ -507,41 +507,45 @@ elseif ($_GET['module']=='keranjangbelanja'){
 /*==================== End Halaman Keranjang Belanja ====================*/
 
 elseif ($_GET['module']=='selesaibelanja'){
-$edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
-    $e=mysql_fetch_array($edit);
- $sid = session_id();
-  if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
+	$edit	=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
+    $e		=mysql_fetch_array($edit);
+	$sid 	= session_id();
 
-echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
+	if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
+		echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
         window.location=('media.php?module=loginmember')</script>";
-}
-else {
-$sid = session_id();
-  $sql = mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='$sid'");
-  $ketemu=mysql_num_rows($sql);
-  while($r=mysql_fetch_array($sql)){
-   $subtotalberat = $r[berat] * $r[jumlah]; // total berat per item produk 
-   $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
-   }
-	$berat_gram=$totalberat*1000;
-echo"							
-<div class='span9'>
-<h3> Form Checkout</h3>	
-	<form action=simpantransaksi.php method=POST class='form-horizontal'>
-		<table class='table table-bordered'>
-		<tr><th> Silahkan Isi Form Di Bawah Ini  </th></tr>
-		 <tr> 
-		 <td>
+	}
+	else {
+		$sid 		= session_id();
+		$sql 		= mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='$sid'");
+		$ketemu		= mysql_num_rows($sql);
+
+		while($r=mysql_fetch_array($sql)){
+			$subtotalberat 	= $r['berat'] * $r['jumlah']; // total berat per item produk 
+			$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
+		}
+		$berat_gram = $totalberat;
+
+		echo"							
+			<div class='span9'>
+				<h3> Form Checkout</h3>	
+				<form action=simpantransaksi.php method=POST class='form-horizontal'>
+					<table class='table table-bordered'>
+						<tr>
+							<th> Silahkan Isi Form Di Bawah Ini  </th>
+						</tr>
+						<tr> 
+							<td>
 	
 		";
 		require_once 'vendor/autoload.php';
-                   echo'<input type="hidden" id="provinsi" value="5" name ="provinsi" >';
+		echo'<input type="hidden" id="provinsi" value="5" name ="provinsi" >';
                    
-				  echo"
-					<input type='hidden' id='des' name='kota' value='419'>
-		<div class='control-group'>
-		<label class='control-label'>Provinsi <sup>*</sup></label>
-		<div class='controls'>";
+		echo"
+			<input type='hidden' id='des' name='kota' value='419'>
+			<div class='control-group'>
+			<label class='control-label'>Provinsi <sup>*</sup></label>
+			<div class='controls'>";
 		echo'<select id="provinsi2" name ="provinsi" required>';
             $data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
             foreach ($data2 as $key => $value2) {
@@ -574,17 +578,19 @@ echo"
 			  <select id='biaya' name='paket' required></select>
 			</div>
 		 </div>
-		 <div class='control-group'>
+
+		<div class='control-group'>
 			<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
 			<div class='controls'>
-			  <input type='text' name='alamat' value='$e[alamat_member]' placeholder='Masukkan Alamat Anda' required>
+				<textarea name='alamat' placeholder='Masukkan Alamat Anda' required>$e[alamat_member]</textarea>
 			</div>
-		 </div>
-	<div class='control-group'>
-		<div class='controls'>
-		 <input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
 		</div>
-	</div>
+		
+		<div class='control-group'>
+			<div class='controls'>
+				<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
+			</div>
+		</div>
 	</form>
 	</td>
 		  </tr>
