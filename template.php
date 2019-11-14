@@ -303,7 +303,7 @@
 
 		// Kurir jne
 		document.getElementById('jne').onclick = function(){
-		  text = tiki.value;
+		  text = jne.value;
 		  des = document.getElementById('des').value;
 		  des2 = document.getElementById('des2').value;
 		  berat = document.getElementById('berat').value;
