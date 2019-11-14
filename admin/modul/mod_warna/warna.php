@@ -70,6 +70,8 @@
                             "action" : $(this).data('action'),
                         };
 
+                        $('#formInput').find('.panel-heading').text('Edit Warna: '+data.value);
+
                         alert(JSON.stringify(data));
                     });
                 });
