@@ -165,62 +165,56 @@ elseif ($_GET['module']=='carabeli'){
 /* ==================== END MENU INFORMASI ==================== */
 
 elseif ($_GET['module']=='detailproduk'){
-$detail=mysql_query("SELECT * FROM produk,merk    
-                      WHERE produk.id_merk=merk.id_merk AND id_produk='$_GET[id]'");
-	$d   = mysql_fetch_array($detail);
-  $harga     = number_format($d[harga],0,",",".");
-  $merk=$d[id_merk];
-  $harga1=$d[harga];
-echo"
-<div class='row'>	  
+	$detail 	= mysql_query("SELECT * FROM * WHERE produk.id_merk=merk.id_merk AND id_produk='$_GET[id]'");
+	$d   		= mysql_fetch_assoc($detail);
+	$harga     	= number_format($d[harga],0,",",".");
+	$merk		=$d['id_merk'];
+	$harga1		=$d['harga'];
+
+	echo "
+		<div class='row'>	  
 			<div id='gallery' class='span3'>
-            <a href='foto_produk/$d[gambar]' title='$d[nama_produk]'>
-				<img src='foto_produk/medium_$d[gambar]' style='width:100%' alt='$d[nama_produk]'/>
-            </a>
-			
-			  
-			 
+				<a href='foto_produk/{$d['gambar']}' title='{$d['nama_produk']}'>
+					<img src='foto_produk/medium_{$d['gambar']}' style='width:100%' alt='{$d['nama_produk']}'/>
+				</a>
 			</div>
+
 			<div class='span6'>
-				<h3>$d[nama_produk]</h3>
+				<h3>{$d['nama_produk']}</h3>
 				<hr class='soft'/>
 				<form class='form-horizontal qtyFrm'>
-				  <div class='control-group'>
-					<label class='control-label'><span>Rp. $harga</span></label>
-					<div class='controls'>
-					<a href='aksi.php?module=keranjang&act=tambah&id=$d[id_produk]' class='btn btn-large btn-primary pull-left'>Beli<i class=' icon-shopping-cart'></i></a>
-					  
+					<div class='control-group'>
+						<label class='control-label'><span>Rp. {$harga}</span></label>
+						<div class='controls'>
+							<a href='aksi.php?module=keranjang&act=tambah&id={$d['id_produk']}' class='btn btn-large btn-primary pull-left'>Beli<i class=' icon-shopping-cart'></i></a>
+						</div>
 					</div>
-				  </div>
+					<label></label>
 				</form>
-				
 				<hr class='soft'/><br>
-				<h4>$d[stok] Items In Stock</h4>
-				
-				
+
+				<h4>{$d['stok']} Items In Stock</h4>
 				<br class='clr'/>
-			<a href='#' name='detail'></a>
-			<hr class='soft'/>
+
+				<a href='#' name='detail'></a>
+				<hr class='soft'/>
 			</div>
 			
 			<div class='span9'>
-            <ul id='productDetail' class='nav nav-tabs'>
-              <li class='active'><a href='#home' data-toggle='tab'>Detail Produk</a></li>
-            </ul>
-            <div id='myTabContent' class='tab-content'>
-              <div class='tab-pane fade active in' id='home'>
-			  <h4>Keterangan Produk</h4>
-				<p>
-				$d[deskripsi]
-				</p>
+				<ul id='productDetail' class='nav nav-tabs'>
+					<li class='active'><a href='#home' data-toggle='tab'>Detail Produk</a></li>
+				</ul>
+				<div id='myTabContent' class='tab-content'>
+					<div class='tab-pane fade active in' id='home'>
+						<h4>Keterangan Produk</h4>
+						<p>{$d['deskripsi']}</p>
+					</div>
+				</div>
+			</div>
+			<!-- /.span9 -->
 
-				
-              </div>
-		
 		</div>
-          </div>
-
-	</div>";
+	";
 }
 elseif ($_GET['module']=='daftarmember'){
 echo"
