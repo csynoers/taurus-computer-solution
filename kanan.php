@@ -456,7 +456,6 @@ elseif ($_GET['module']=='keranjangbelanja'){
 					</td>
 					<td>
 						{$r['nama_produk']}
-						{$produk_attr}
 					</td>
 					<td><input type=number name='jml[$no]' value=$r['jumlah'] size=1 min='1' onChange='this.form.submit()'></td>
 					<td>Rp. $harga</td>
