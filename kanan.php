@@ -436,14 +436,14 @@ elseif ($_GET['module']=='keranjangbelanja'){
 			$harga       	= format_rupiah($harga1);
 
 			$produk_attr = [];
-			if ( $d['kondisi'] ) {
-				$produk_attr[]= "<span class='label label-info'>Kondisi : {$d['kondisi']}</span>";
+			if ( $r['kondisi'] ) {
+				$produk_attr[]= "<span class='label label-info'>Kondisi : {$r['kondisi']}</span>";
 			}
-			if ( $d['warna'] ) {
-				$produk_attr[]= "<span class='label label-info'>Warna : {$d['warna']}</span>";
+			if ( $r['warna'] ) {
+				$produk_attr[]= "<span class='label label-info'>Warna : {$r['warna']}</span>";
 			}
-			if ( $d['ukuran'] ) {
-				$produk_attr[]= "<span class='label label-info'>Ukuran : {$d['ukuran']}</span>";
+			if ( $r['ukuran'] ) {
+				$produk_attr[]= "<span class='label label-info'>Ukuran : {$r['ukuran']}</span>";
 			}
 
 			$produk_attr = implode('&nbsp',$produk_attr);
