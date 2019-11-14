@@ -1,5 +1,5 @@
 <?php
-    $aksi="modul/mod_merk/aksi_merk.php";
+    $aksi="modul/mod_warna/aksi_warna.php";
     switch($_GET['act']){
         default:
             $htmls = [];
@@ -10,8 +10,8 @@
                         <td>{$no}</td>
                         <td>{$value}</td>
                         <td>
-                            <a href=?module=merk&act=edit&id= class='btn btn-warning btn-xs' title='Edit'><i class='fa fa-edit'></i> Edit</a>
-                            <a href=$aksi?module=merk&act=hapus&id= class='btn btn-danger btn-xs' title='Hapus' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\"><i class='fa fa-trash'></i> Hapus</a>
+                            <a data-id='{$key}' data-value='{$value}' data-action='{$aksi}' href='javascript:void(0)' class='btn btn-warning btn-xs btn-edit' title='Edit'><i class='fa fa-edit'></i> Edit</a>
+                            <!--<a href=$aksi?module=merk&act=hapus&id= class='btn btn-danger btn-xs' title='Hapus' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\"><i class='fa fa-trash'></i> Hapus</a>-->
                         </td>
                     </tr>
                 ";
@@ -27,6 +27,22 @@
                         <!-- /.box-header -->
 
                         <div class='box-body'>
+                            <form method=POST action=''>
+                                <div class='box-body'>
+                                    <div class='form-group'>
+                                        <label for='exampleInputEmail1'>Nama Merk</label>
+                                        <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' required>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+            
+                                <div class='box-footer'>
+                                    <button type='submit' class='btn btn-primary'>Simpan</button>
+                                    <button onclick=self.history.back() class='btn btn-danger'>Batal</button>
+                                </div>
+                            </form>
+                            <!-- /form -->
+
                             <div class='box-body table-responsive no-padding'>
                                 <table id='example1' class='table table-bordered table-striped'>
                                     <thead>
@@ -45,7 +61,7 @@
                     <!-- /.box -->
                 </div>
             ";
-            
+
             break;
   
   // Form Tambah merk
