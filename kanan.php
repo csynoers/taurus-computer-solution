@@ -433,17 +433,33 @@ elseif ($_GET['module']=='keranjangbelanja'){
 			$total_rp    	= format_rupiah($total);
 			$harga       	= format_rupiah($harga1);
 
+			$produk_attr = [];
+			if ( $d['kondisi'] ) {
+				$produk_attr[]= "<span class='label label-info'>Kondisi : {$d['kondisi']}</span>";
+			}
+			if ( $d['warna'] ) {
+				$produk_attr[]= "<span class='label label-info'>Warna : {$d['warna']}</span>";
+			}
+			if ( $d['ukuran'] ) {
+				$produk_attr[]= "<span class='label label-info'>Ukuran : {$d['ukuran']}</span>";
+			}
+
+			$produk_attr = implode('&nbsp',$produk_attr);
+
 			$htmls['rows_barang'] .= "
 				<tr>
 					<td>
-						<input type=hidden name=id[$no] value=$r[id_keranjang]>
-						<img src='foto_produk/small_$r[gambar]' alt='Image 01' />
+						<input type=hidden name=id[$no] value=$r['id_keranjang']>
+						<img src='foto_produk/small_$r['gambar']' alt='Image 01' />
 					</td>
-					<td>$r[nama_produk]</td>
-					<td><input type=number name='jml[$no]' value=$r[jumlah] size=1 min='1' onChange='this.form.submit()'></td>
+					<td>
+						{$r['nama_produk']}
+						{$produk_attr}
+					</td>
+					<td><input type=number name='jml[$no]' value=$r['jumlah'] size=1 min='1' onChange='this.form.submit()'></td>
 					<td>Rp. $harga</td>
 					<td>Rp. $subtotal_rp</td>
-					<td><a href='aksi.php?module=keranjang&act=hapus&id=$r[id_keranjang]'>Hapus</a> </td>
+					<td><a href='aksi.php?module=keranjang&act=hapus&id=$r['id_keranjang']'>Hapus</a> </td>
 				</tr>
 			";
 			$no++; 
