@@ -412,70 +412,77 @@ echo"
 							</div>";
 }
 elseif ($_GET['module']=='keranjangbelanja'){
-$sid = session_id();
-	$sql = mysql_query("SELECT * FROM keranjang, produk 
-			                WHERE id_session='$sid' AND keranjang.id_produk=produk.id_produk");
-  $ketemu=mysql_num_rows($sql);
-  if($ketemu < 1){
-    echo "<script>window.alert('Keranjang Belanjan Anda Masih Kosong');
-        window.location=('index.php')</script>";
-    }
-  else{
-echo"
-<div class='span9'>
-<h4> Keranjang Belanja</h4>
-<form method=post action=aksi.php?module=keranjang&act=update>
-<table class='table table-bordered'>
-	<thead>
-                <tr>
-                  <th>Gambar</th>
-									<th>Nama Produk</th>
-									<th>Jumlah</th>
-									<th>Harga</th>
-									<th>Sub Total</th>
-									<th>Hapus</th>
+	$sid = session_id();
+	$sql = mysql_query("SELECT * FROM keranjang, produk WHERE id_session='$sid' AND keranjang.id_produk=produk.id_produk");
+	$ketemu=mysql_num_rows($sql);
+
+	if($ketemu < 1){ # jika keranjang masih kosong
+		echo "<script>window.alert('Keranjang Belanjan Anda Masih Kosong');window.location=('index.php')</script>";
+	}
+	
+	else{ # jika keranjang tidak kosong
+		$htmls= [];
+		$no=1;
+		while($r=mysql_fetch_array($sql)){
+			$subtotalberat 	= $r['berat'] * $r['jumlah']; // total berat per item produk 
+			$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
+			$harga1 		= $r['harga'];
+			$subtotal    	= $harga1 * $r['jumlah'];
+			$total       	= $total + $subtotal;  
+			$subtotal_rp 	= format_rupiah($subtotal);
+			$total_rp    	= format_rupiah($total);
+			$harga       	= format_rupiah($harga1);
+
+			$htmls['rows_barang'] .= "
+				<tr>
+					<td>
+						<input type=hidden name=id[$no] value=$r[id_keranjang]>
+						<img src='foto_produk/small_$r[gambar]' alt='Image 01' />
+					</td>
+					<td>$r[nama_produk]</td>
+					<td><input type=number name='jml[$no]' value=$r[jumlah] size=1 min='1' onChange='this.form.submit()'></td>
+					<td>Rp. $harga</td>
+					<td>Rp. $subtotal_rp</td>
+					<td><a href='aksi.php?module=keranjang&act=hapus&id=$r[id_keranjang]'>Hapus</a> </td>
 				</tr>
-              </thead>";
-			  $no=1;
-  while($r=mysql_fetch_array($sql)){
-   $subtotalberat = $r[berat] * $r[jumlah]; // total berat per item produk 
-   $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
-  $harga1 = $r[harga];
-    $subtotal    = $harga1 * $r[jumlah];
-    $total       = $total + $subtotal;  
-    $subtotal_rp = format_rupiah($subtotal);
-    $total_rp    = format_rupiah($total);
-    $harga       = format_rupiah($harga1);
-	echo"
-              <tbody>
-                <tr>
-                  <td><input type=hidden name=id[$no] value=$r[id_keranjang]><img src='foto_produk/small_$r[gambar]' alt='Image 01' /></td>
-									<td>$r[nama_produk]</td>
-									<td><input type=number name='jml[$no]' value=$r[jumlah] size=1 min='1' onChange='this.form.submit()'></td>
-									<td>Rp. $harga</td>
-									<td>Rp. $subtotal_rp</td>
-									<td><a href='aksi.php?module=keranjang&act=hapus&id=$r[id_keranjang]'>Hapus</a> </td>
-                </tr>";
-				$no++; 
-						}
-						$berat_gram=$totalberat*1000;
-						echo"
-				
-				 <tr>
-                  <td colspan='4' class='alignR'>Total:	</td>
-                  <td class='label label-primary'> Rp. $total_rp</td>
-                </tr>
-				</tbody>
-            </table>
-			
+			";
+			$no++; 
+		}
+
+		$berat_gram	= $totalberat;
+
+
+		echo"
+			<div class='span9'>
+				<h4> Keranjang Belanja</h4>
+				<form method=post action=aksi.php?module=keranjang&act=update>
+					<table class='table table-bordered'>
+						<thead>
+							<tr>
+								<th>Gambar</th>
+								<th>Nama Produk</th>
+								<th>Jumlah</th>
+								<th>Harga</th>
+								<th>Sub Total</th>
+								<th>Hapus</th>
+							</tr>
+						</thead>
+						<tbody>
+							{$htmls['rows_barang']}
+							<tr>
+								<td colspan='4' class='alignR'>Total:	</td>
+								<td class='label label-primary'> Rp. {$total_rp}</td>
+							</tr>
+						</tbody>
+					</table>
+					<br/>
 		
-			<br/>
-		
-	<a href='semua-produk.html' class='shopBtn btn-large'><span class='icon-arrow-left'></span> Lanjutkan Belanja </a>
-	<a href='selesai-belanja.html' class='shopBtn btn-large pull-right'>Checkout <span class='icon-arrow-right'></span></a>
-	</form>
-							</div>";
-							}
+					<a href='semua-produk.html' class='shopBtn btn-large'><span class='icon-arrow-left'></span> Lanjutkan Belanja </a>
+					<a href='selesai-belanja.html' class='shopBtn btn-large pull-right'>Checkout <span class='icon-arrow-right'></span></a>
+				</form>
+			</div>
+		";
+	}
 }
 elseif ($_GET['module']=='selesaibelanja'){
 $edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
