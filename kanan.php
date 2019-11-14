@@ -471,7 +471,7 @@ elseif ($_GET['module']=='keranjangbelanja'){
 							{$htmls['rows_barang']}
 							<tr>
 								<td colspan='4' class='alignR'>Total:	</td>
-								<td class='label label-primary'> Rp. {$total_rp}</td>
+								<td colspan='2' class='label label-primary'> Rp. {$total_rp}</td>
 							</tr>
 						</tbody>
 					</table>
