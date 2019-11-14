@@ -33,7 +33,7 @@
                                     <form method=POST action=''>
                                         <div class='form-group'>
                                             <label>Nama Warna : </label>
-                                            <input type='text' class='form-control' name='warna' placeholder='Masukkan warna baru ...' required>
+                                            <input value='' type='text' class='form-control' name='warna' placeholder='Masukkan warna baru ...' required>
                                         </div>
                                         <button type='submit' class='btn btn-primary'>Simpan</button>
                                     </form>
