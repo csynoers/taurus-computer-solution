@@ -451,16 +451,16 @@ elseif ($_GET['module']=='keranjangbelanja'){
 			$htmls['rows_barang'] .= "
 				<tr>
 					<td>
-						<input type=hidden name=id[$no] value=$r['id_keranjang']>
-						<img src='foto_produk/small_$r['gambar']' alt='Image 01' />
+						<input type='hidden' name='id[$no]' value='{$r['id_keranjang']}'>
+						<img src='foto_produk/small_{$r['gambar']}' alt='Image 01' />
 					</td>
 					<td>
 						{$r['nama_produk']}
 					</td>
-					<td><input type=number name='jml[$no]' value=$r['jumlah'] size=1 min='1' onChange='this.form.submit()'></td>
+					<td><input type=number name='jml[$no]' value='{$r['jumlah']}' size=1 min='1' onChange='this.form.submit()'></td>
 					<td>Rp. $harga</td>
 					<td>Rp. $subtotal_rp</td>
-					<td><a href='aksi.php?module=keranjang&act=hapus&id=$r['id_keranjang']'>Hapus</a> </td>
+					<td><a href='aksi.php?module=keranjang&act=hapus&id={$r['id_keranjang']}'>Hapus</a> </td>
 				</tr>
 			";
 			$no++; 
