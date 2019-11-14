@@ -30,10 +30,12 @@
                             <div class='panel panel-default' id='formInput'>
                                 <div class='panel-heading'> + Tambah Warna Baru</div>
                                 <div class='panel-body'>
-                                    <form class='form-inline' method=POST action=''>
-                                        <div class='form-group'>
-                                            <label for='exampleInputEmail1'>Nama Merk</label>
-                                            <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' required>
+                                    <form method=POST action=''>
+                                        <div class='form-inline'>
+                                            <div class='form-group'>
+                                                <label>Nama Warna : </label>
+                                                <input type='text' class='form-control' name='warna' placeholder='Masukkan warna baru ...' required>
+                                            </div>
                                         </div>
                                         <button type='submit' class='btn btn-primary'>Simpan</button>
                                     </form>
