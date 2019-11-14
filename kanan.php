@@ -570,7 +570,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 			<label class='control-label' for='inputLname'>Kurir<sup>*</sup></label>
 			<div class='controls'>
 				<input type='radio' name='Kurir' value='jne' id='jne' >
-				POS <br>
+				JNE <br>
 				<input type='radio' name='Kurir' value='pos' id='pos' >
 				POS <br>
 				<input type='radio' name='Kurir' value='tiki' id='tiki' >
