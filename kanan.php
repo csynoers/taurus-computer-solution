@@ -165,7 +165,7 @@ elseif ($_GET['module']=='carabeli'){
 /* ==================== END MENU INFORMASI ==================== */
 
 elseif ($_GET['module']=='detailproduk'){
-	$detail 	= mysql_query("SELECT * FROM * WHERE produk.id_merk=merk.id_merk AND id_produk='$_GET[id]'");
+	$detail 	= mysql_query("SELECT * FROM produk,merk WHERE produk.id_merk=merk.id_merk AND id_produk='$_GET[id]'");
 	$d   		= mysql_fetch_assoc($detail);
 	$harga     	= number_format($d[harga],0,",",".");
 	$merk		=$d['id_merk'];
