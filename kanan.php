@@ -538,7 +538,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 							<td>
 	
 		";
-		
+
 		require_once 'vendor/autoload.php';
 
 		echo "
@@ -569,6 +569,8 @@ elseif ($_GET['module']=='selesaibelanja'){
 		<div class='control-group'>
 			<label class='control-label' for='inputLname'>Kurir<sup>*</sup></label>
 			<div class='controls'>
+				<input type='radio' name='Kurir' value='jne' id='jne' >
+				POS <br>
 				<input type='radio' name='Kurir' value='pos' id='pos' >
 				POS <br>
 				<input type='radio' name='Kurir' value='tiki' id='tiki' >

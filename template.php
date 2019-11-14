@@ -302,7 +302,7 @@
 		};
 
 		// Kurir jne
-		document.getElementById('tiki').onclick = function(){
+		document.getElementById('jne').onclick = function(){
 		  text = tiki.value;
 		  des = document.getElementById('des').value;
 		  des2 = document.getElementById('des2').value;
