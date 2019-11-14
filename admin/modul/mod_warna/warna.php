@@ -71,6 +71,7 @@
                         };
 
                         $('#formInput').find('.panel-heading').text('Edit Warna: '+data.value);
+                        $('form').find('input[name=warna]').value(data.value);
 
                         alert(JSON.stringify(data));
                     });
