@@ -458,7 +458,9 @@ elseif ($_GET['module']=='keranjangbelanja'){
 						{$r['nama_produk']}
 						<div style='display: inline-flex;'>{$produk_attr}</div>
 					</td>
-					<td><input type=number name='jml[$no]' value='{$r['jumlah']}' size=1 min='1' onChange='this.form.submit()'></td>
+					<td>
+						<input style='width:5rem;' type=number name='jml[$no]' value='{$r['jumlah']}' size=1 min='1' onChange='this.form.submit()'>
+					</td>
 					<td>Rp. $harga</td>
 					<td>Rp. $subtotal_rp</td>
 					<td><a href='aksi.php?module=keranjang&act=hapus&id={$r['id_keranjang']}'>Hapus</a> </td>
