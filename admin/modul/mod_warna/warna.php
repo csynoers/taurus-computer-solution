@@ -71,7 +71,7 @@
                         };
 
                         $('#formInput').find('.panel-heading').text('Edit Warna: '+data.value);
-                        $('form').attr({ "action" : `${data.action}?act=update&id=${data.id}` });
+                        $('form').attr({ "action" : `${data.action}?module=warna&act=update&id=${data.id}` });
                         $('form').find('input[name=warna]').val(data.value);
                         $('form').find('button[type=submit]').text('Update');
 
