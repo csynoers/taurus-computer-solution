@@ -456,7 +456,7 @@ elseif ($_GET['module']=='keranjangbelanja'){
 					</td>
 					<td>
 						{$r['nama_produk']}
-						<div style='display: inline-flex;'>{$produk_attr}</div>
+						<div style='display: inline-flex;width:100%;'>{$produk_attr}</div>
 					</td>
 					<td>
 						<input style='width:5rem;' type=number name='jml[$no]' value='{$r['jumlah']}' size=1 min='1' onChange='this.form.submit()'>
