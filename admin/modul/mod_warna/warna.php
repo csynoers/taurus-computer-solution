@@ -30,7 +30,7 @@
                             <div class='panel panel-default' id='formInput'>
                                 <div class='panel-heading'> + Tambah Warna Baru</div>
                                 <div class='panel-body'>
-                                    <form method=POST action=''>
+                                    <form method=POST action='{$aksi}?module=warna&act=input'>
                                         <div class='form-group'>
                                             <label>Nama Warna : </label>
                                             <input value='' type='text' class='form-control' name='warna' placeholder='Masukkan warna baru ...' required>
