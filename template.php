@@ -302,16 +302,16 @@
 		};
 
 		// Kurir jne
-		// document.getElementById('tiki').onclick = function(){
-		//   text = tiki.value;
-		//   des = document.getElementById('des').value;
-		//   des2 = document.getElementById('des2').value;
-		//   berat = document.getElementById('berat').value;
-		//   load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
-		//     console.log(data);
-		//     biaya.innerHTML = data ;
-		//   });
-		// };
+		document.getElementById('tiki').onclick = function(){
+		  text = tiki.value;
+		  des = document.getElementById('des').value;
+		  des2 = document.getElementById('des2').value;
+		  berat = document.getElementById('berat').value;
+		  load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
+		    console.log(data);
+		    biaya.innerHTML = data ;
+		  });
+		};
 
 	</script>
 </body>

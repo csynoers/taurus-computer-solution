@@ -538,54 +538,58 @@ elseif ($_GET['module']=='selesaibelanja'){
 							<td>
 	
 		";
-		require_once 'vendor/autoload.php';
-		echo'<input type="hidden" id="provinsi" value="5" name ="provinsi" >';
-                   
-		echo"
-			<input type='hidden' id='des' name='kota' value='419'>
-			<div class='control-group'>
-			<label class='control-label'>Provinsi <sup>*</sup></label>
-			<div class='controls'>";
-		echo'<select id="provinsi2" name ="provinsi" required>';
-            $data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
-            foreach ($data2 as $key => $value2) {
-              echo '<option value="'.$value2['province_id'].'">'.$value2['province'].'</option>';
-            }
-             echo'</select>';
-			 echo"
 		
+		require_once 'vendor/autoload.php';
+
+		echo "
+		<input type='hidden' id='provinsi' value='5' name ='provinsi' >
+		<input type='hidden' id='des' name='kota' value='419'>
+		<div class='control-group'>
+			<label class='control-label'>Provinsi <sup>*</sup></label>
+			<div class='controls'>
+				<select id='provinsi2' name ='provinsi' required>";
+
+				$data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
+				foreach ($data2 as $key => $value2) {
+					echo '<option value="'.$value2['province_id'].'">'.$value2['province'].'</option>';
+				}
+
+				echo "</select>
+			</div>
 		</div>
+
+		<div class='control-group'>
+			<label class='control-label'>Kota Tujuan <sup>*</sup></label>
+			<div class='controls'>
+				<select id='des2' name='kota2' required></select>
+			</div>
 		</div>
-		 <div class='control-group'>
-		<label class='control-label'>Kota Tujuan <sup>*</sup></label>
-		<div class='controls'>
-		<select id='des2' name='kota2' required></select>
-		</div>
-		</div>
+
 		<input type=hidden value='$berat_gram' id='berat' class='form-control' name='berat'>
-		 <div class='control-group'>
+		<div class='control-group'>
 			<label class='control-label' for='inputLname'>Kurir<sup>*</sup></label>
 			<div class='controls'>
-			  <input type='radio' name='Kurir' value='pos' id='pos' >
-                    POS <br>
-					<input type='radio' name='Kurir' value='tiki' id='tiki' >
-                    TIKI
+				<input type='radio' name='Kurir' value='pos' id='pos' >
+				POS <br>
+				<input type='radio' name='Kurir' value='tiki' id='tiki' >
+				TIKI
 			</div>
-		 </div>
-		 <div class='control-group'>
+		</div>
+
+		<div class='control-group'>
 			<label class='control-label' for='inputLname'>Ongkos Kirim<sup>*</sup></label>
 			<div class='controls'>
-			  <select id='biaya' name='paket' required></select>
+				<select id='biaya' name='paket' required></select>
 			</div>
-		 </div>
+		</div>
 
 		<div class='control-group'>
 			<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
 			<div class='controls'>
-				<textarea name='alamat' placeholder='Masukkan Alamat Anda' required>$e[alamat_member]</textarea>
+				<textarea style='width:100%' name='alamat' placeholder='Masukkan Alamat Anda' required>$e[alamat_member]</textarea>
 			</div>
 		</div>
-		
+
 		<div class='control-group'>
 			<div class='controls'>
 				<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
