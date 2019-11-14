@@ -31,11 +31,9 @@
                                 <div class='panel-heading'> + Tambah Warna Baru</div>
                                 <div class='panel-body'>
                                     <form method=POST action=''>
-                                        <div class='form-inline'>
-                                            <div class='form-group'>
-                                                <label>Nama Warna : </label>
-                                                <input type='text' class='form-control' name='warna' placeholder='Masukkan warna baru ...' required>
-                                            </div>
+                                        <div class='form-group'>
+                                            <label>Nama Warna : </label>
+                                            <input type='text' class='form-control' name='warna' placeholder='Masukkan warna baru ...' required>
                                         </div>
                                         <button type='submit' class='btn btn-primary'>Simpan</button>
                                     </form>
