@@ -1,101 +1,86 @@
 <?php
-$aksi="modul/mod_merk/aksi_merk.php";
-switch($_GET[act]){
-  // Tampil merk
-  default:
-    echo "<div class='col-xs-12'>
-        <div class='box'>
-            <div class='box-header'>
-              <h3 class='box-title'>MERK</h3>
-            </div>
-			<button type=button class='btn btn-primary' onclick=\"window.location.href='?module=merk&act=tambahmerk';\"><i class='fa fa-plus'> Tambah</i></button>
-							<p>
-            <!-- /.box-header -->
-            <div class='box-body'>
-			<div class='box-body table-responsive no-padding'>
-              <table id='example1' class='table table-bordered table-striped'>  
-  <div class='panel-heading'>
-	<thead>
-          <tr><th>No</th><th>Nama Merk</th><th>Aksi</th></tr>
-		  <tbody>"; 
-    $tampil=mysql_query("SELECT * FROM merk ORDER BY id_merk DESC");
-    $no=1;
-    while ($r=mysql_fetch_array($tampil)){
-       echo "<tr><td>$no</td>
-             <td>$r[nama_merk]</td>
-             <td><a href=?module=merk&act=editmerk&id=$r[id_merk] class='btn btn-warning btn-xs' title='Edit'><i class='fa fa-edit'></i> Edit</a>
-	               <a href=$aksi?module=merk&act=hapus&id=$r[id_merk] class='btn btn-danger btn-xs' title='Hapus' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\"><i class='fa fa-trash'></i> Hapus</a>
-             </td></tr>";
-      $no++;
+    $aksi="modul/mod_ukuran/aksi_ukuran.php";
+    switch($_GET['act']){
+        default:
+            $htmls = [];
+            $no = 1;
+            foreach ( read_file('../json/ukuran.json') as $key => $value) {
+                $htmls['tablerows'] .= "
+                    <tr>
+                        <td>{$no}</td>
+                        <td>{$value}</td>
+                        <td>
+                            <a data-id='{$key}' data-value='{$value}' data-action='{$aksi}' href='javascript:void(0)' class='btn btn-warning btn-xs btn-edit' title='Edit'><i class='fa fa-edit'></i> Edit</a>
+                            <!--<a href=$aksi?module=merk&act=hapus&id= class='btn btn-danger btn-xs' title='Hapus' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\"><i class='fa fa-trash'></i> Hapus</a>-->
+                        </td>
+                    </tr>
+                ";
+                $no++;
+            }
+
+            echo "
+                <div class='col-xs-12'>
+                    <div class='box'>
+                        <div class='box-header'>
+                            <h3 class='box-title'>Ukuran Produk</h3>
+                        </div>
+                        <!-- /.box-header -->
+
+                        <div class='box-body'>
+                            <div class='panel panel-default' id='formInput'>
+                                <div class='panel-heading'> + Tambah Ukuran Baru</div>
+                                <div class='panel-body'>
+                                    <form method=POST action='{$aksi}?module=ukuran&act=input'>
+                                        <div class='form-group'>
+                                            <label>Nama Ukuran : </label>
+                                            <input value='' type='text' class='form-control' name='ukuran' placeholder='Masukkan warna baru ...' required>
+                                        </div>
+                                        <button type='submit' class='btn btn-primary'>Simpan</button>
+                                    </form>
+                                    <!-- /form -->
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class='box-body table-responsive no-padding'>
+                                <table id='example1' class='table table-bordered table-striped'>
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Ukuran</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>{$htmls["tablerows"]}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            ";
+            ?>
+            <script>
+                $(document).ready(function(){
+                    $(document).on('click','.btn-edit',function(){
+                        let data= {
+                            "id" : $(this).data('id'),
+                            "value" : $(this).data('value'),
+                            "action" : $(this).data('action'),
+                        };
+
+                        $('#formInput').find('.panel-heading').text('Edit Ukuran: '+data.value);
+                        $('form').attr({ "action" : `${data.action}?module=ukuran&act=update&id=${data.id}` });
+                        $('form').find('input[name=ukuran]').val(data.value);
+                        $('form').find('button[type=submit]').text('Update');
+
+                        // alert(JSON.stringify(data)); #for debuging
+                    });
+                });
+            </script>
+            <?php
+
+            break;
     }
-    echo "</tbody></table></div>
-	       </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>";
-    break;
-  
-  // Form Tambah merk
-  case "tambahmerk":
-    
-	echo"
-   	<div class='col-md-6'>  
-		 <div class='box box-primary'>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>FORM TAMBAH MERK</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form method=POST action='$aksi?module=merk&act=input'>
-              <div class='box-body'>
-                <div class='form-group'>
-                  <label for='exampleInputEmail1'>Nama Merk</label>
-                  <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' required>
-                </div>
-              </div>
-              <!-- /.box-body -->
-
-              <div class='box-footer'>
-                <button type='submit' class='btn btn-primary'>Simpan</button>
-				<button onclick=self.history.back() class='btn btn-danger'>Batal</button>
-              </div>
-            </form>
-         </div>
-	 </div>";
-     break;
-  
-  // Form Edit merk  
-  case "editmerk":
-    $edit=mysql_query("SELECT * FROM merk WHERE id_merk='$_GET[id]'");
-    $r=mysql_fetch_array($edit);
-
-	echo"
-   	<div class='col-md-6'>  
-		 <div class='box box-primary'>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>FORM EDIT MERK</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form method=POST action=$aksi?module=merk&act=update>
-            <input type=hidden name=id value='$r[id_merk]'>
-              <div class='box-body'>
-                <div class='form-group'>
-                  <label for='exampleInputEmail1'>Nama Merk</label>
-                  <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' value='$r[nama_merk]' required>
-                </div>
-              </div>
-              <!-- /.box-body -->
-
-              <div class='box-footer'>
-                <button type='submit' class='btn btn-primary'>Update</button>
-				<button onclick=self.history.back() class='btn btn-danger'>Batal</button>
-              </div>
-            </form>
-         </div>
-	 </div>";
-    
-    break;  
-}
 ?>
