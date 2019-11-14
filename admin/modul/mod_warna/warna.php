@@ -38,11 +38,11 @@
             
                                 <div class='box-footer'>
                                     <button type='submit' class='btn btn-primary'>Simpan</button>
-                                    <button onclick=self.history.back() class='btn btn-danger'>Batal</button>
                                 </div>
                             </form>
                             <!-- /form -->
 
+                            <hr>
                             <div class='box-body table-responsive no-padding'>
                                 <table id='example1' class='table table-bordered table-striped'>
                                     <thead>
