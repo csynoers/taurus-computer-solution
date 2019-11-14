@@ -75,7 +75,7 @@
                         $('form').find('input[name=warna]').val(data.value);
                         $('form').find('button[type=submit]').text('Update');
 
-                        alert(JSON.stringify(data));
+                        // alert(JSON.stringify(data)); #for debuging
                     });
                 });
             </script>
