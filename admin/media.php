@@ -39,6 +39,9 @@ else{
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+  <!-- jQuery 2.2.0 -->
+  <script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
   
 
 </head>
@@ -155,8 +158,6 @@ else{
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 2.2.0 -->
-<script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
