@@ -171,6 +171,19 @@ elseif ($_GET['module']=='detailproduk'){
 	$merk		=$d['id_merk'];
 	$harga1		=$d['harga'];
 
+	$produk_attr = [];
+	if ( $d['kondisi'] ) {
+		$produk_attr[]= "<span class='label label-info'>Kondisi : {$d['kondisi']}</span>";
+	}
+	if ( $d['warna'] ) {
+		$produk_attr[]= "<span class='label label-info'>Warna : {$d['warna']}</span>";
+	}
+	if ( $d['ukuran'] ) {
+		$produk_attr[]= "<span class='label label-info'>Ukuran : {$d['ukuran']}</span>";
+	}
+
+	$produk_attr = implode('&nbsp',$produk_attr);
+
 	echo "
 		<div class='row'>	  
 			<div id='gallery' class='span3'>
@@ -189,7 +202,7 @@ elseif ($_GET['module']=='detailproduk'){
 							<a href='aksi.php?module=keranjang&act=tambah&id={$d['id_produk']}' class='btn btn-large btn-primary pull-left'>Beli<i class=' icon-shopping-cart'></i></a>
 						</div>
 					</div>
-					<label></label>
+					{$produk_attr}
 				</form>
 				<hr class='soft'/><br>
 
