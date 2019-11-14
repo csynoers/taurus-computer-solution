@@ -14,9 +14,15 @@ else{
     $act=$_GET['act'];
 
     // Input warna
-    elseif ($module=='warna' AND $act=='input'){
-        
-        header('location:../../media.php?module='.$module);
+    if ($module=='warna' AND $act=='input'){
+        $json = '../../../json/warna.json';
+        $rows= read_file($json);
+        $rows[] = $_POST['warna'];
+
+        overwrite_file($json,$rows);
+
+        echo "<script>window.alert('warna baru berhasil disimpan');
+        window.location=('../../media.php?module={$module}')</script>";
     }
 
     // Update warna
