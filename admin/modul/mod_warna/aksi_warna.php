@@ -26,7 +26,7 @@ else{
     }
 
     // Update warna
-    elseif ($module=='merk' AND $act=='update'){
+    elseif ($module=='warna' AND $act=='update'){
         $json = '../../../json/warna.json';
         $rows= read_file($json);
         $id= $_GET['id'];
