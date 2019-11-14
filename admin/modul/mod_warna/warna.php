@@ -27,20 +27,22 @@
                         <!-- /.box-header -->
 
                         <div class='box-body'>
-                            <form method=POST action=''>
-                                <div class='box-body'>
-                                    <div class='form-group'>
-                                        <label for='exampleInputEmail1'>Nama Merk</label>
-                                        <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' required>
-                                    </div>
+                            <div class='panel panel-default' id='formInput'>
+                                <div class='panel-heading'> + Tambah Warna Baru</div>
+                                <div class='panel-body'>
+                                    <form method=POST action=''>
+                                        <div class='form-group'>
+                                            <label for='exampleInputEmail1'>Nama Merk</label>
+                                            <input type='text' class='form-control' name='nama_merk' id='exampleInputEmail1' placeholder='Masukkan Nama merk' required>
+                                        </div>
+                    
+                                        <div class='box-footer'>
+                                            <button type='submit' class='btn btn-primary'>Simpan</button>
+                                        </div>
+                                    </form>
+                                    <!-- /form -->
                                 </div>
-                                <!-- /.box-body -->
-            
-                                <div class='box-footer'>
-                                    <button type='submit' class='btn btn-primary'>Simpan</button>
-                                </div>
-                            </form>
-                            <!-- /form -->
+                            </div>
 
                             <hr>
                             <div class='box-body table-responsive no-padding'>
