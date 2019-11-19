@@ -266,9 +266,9 @@ echo"
 					</div>
 				</div>
 				<div class='control-group'>
-					<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
+					<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
 					<div class='controls'>
-					<input type='text' min='0' name='alamat' placeholder='Masukkan Alamat Anda' required>
+						<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
 					</div>
 				</div>
 			<div class='control-group'>
@@ -281,7 +281,7 @@ echo"
 			</table>
 		</form>
 	</div>";
-	
+
 }
 elseif ($_GET['module']=='daftaraksi'){
 
