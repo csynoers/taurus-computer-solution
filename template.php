@@ -313,6 +313,12 @@
 			});
 		};
 
+		$(document).ready(function(){
+			$('document').on('keyup','#boxSearch',function(){
+				console.log($(this).val().toLowerCase());
+			});
+		});
+
 	</script>
 </body>
 </html>

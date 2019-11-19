@@ -237,7 +237,7 @@ echo"
 		<form id='form1' action=daftar-aksi.html method=POST class='form-horizontal'>
 			<table class='table table-bordered'>
 				<tr>
-					<th> Detail Data Pribadi Anda  </th>
+					<th> Detail Data Pribadi Anda</th>
 				</tr>
 				<tr> 
 					<td>
@@ -266,6 +266,14 @@ echo"
 							<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
 							<div class='controls'>
 								<input type='text' min='0' name='no_telp'  placeholder='08123456789' required>
+							</div>
+						</div>
+
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Kota atau Kecamatan <sup>*</sup></label>
+							<div class='controls'>
+								<input type='text' id='boxSearch' name='no_telp'  placeholder='Cari kota/kecamatan' required>
+								<div id='livesearch'></div>
 							</div>
 						</div>
 
@@ -305,7 +313,7 @@ $ketemu=mysql_num_rows($sql);
 							</div>";
 	}
 	else {
-$pass=md5($_POST[password]);
+$pass=md5($_POST['password']);
   mysql_query("INSERT INTO member(nama,
                                    email,
                                    password,
