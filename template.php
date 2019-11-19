@@ -242,6 +242,11 @@
 	
 	
 <script>
+	$(document).ready(function(){
+		$('document').on('keyup','#boxSearch',function(){
+			console.log($(this).val().toLowerCase());
+		});
+	});
 
 		function  load_ajax(url, callback){
 		  
@@ -312,12 +317,6 @@
 				biaya.innerHTML = data ;
 			});
 		};
-
-		$(document).ready(function(){
-			$('document').on('keyup','#boxSearch',function(){
-				console.log($(this).val().toLowerCase());
-			});
-		});
 
 	</script>
 </body>
