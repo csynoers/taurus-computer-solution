@@ -834,20 +834,16 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 						$no++; 
 					}
 
-					$result = [
+					$kode_unik 		= $r['kode'];
+					$grand_total    	= $total + $total_ongkos_kirim + $kode_unik;
+					$result 		= [
 						'total' => format_rupiah($total),
 						'total_berat' => $total_berat,
 						'total_ongkos_kirim' => format_rupiah($total_ongkos_kirim),
-						// 'grand_total' => format_rupiah($grand_total),
+						'kode_unik' => $kode_unik,
+						'grand_total' => format_rupiah($grand_total),
 					];
-	$ongkoskirim = $r['ongkir'];
-	$kode=$r['kode'];
-	$grandtotal    = $total + $ongkoskirim; 
-	$grandtotal1    = $grandtotal + $kode;
-	$ongkoskirim_rp = format_rupiah($ongkoskirim);
-	$ongkoskirim1_rp = format_rupiah($ongkoskirim1); 
-	$grandtotal_rp  = format_rupiah($grandtotal); 
-	$grandtotal1_rp  = format_rupiah($grandtotal1); 
+
 echo"				
 				<tr>
 					<td colspan='5' class='alignR'>Total:	</td>
@@ -864,11 +860,11 @@ echo"
 				</tr>
 				<tr>
 					<td colspan='5' class='alignR'>Kode Unik:	</td>
-					<td > $kode</td>
+					<td >{$result['kode_unik']}</td>
 				</tr>
 				<tr>
 					<td colspan='5' class='alignR'>Grand Total:	</td>
-					<td class='label label-primary'> Rp. $grandtotal1_rp</td>
+					<td class='label label-primary'>Rp.&nbsp;{$result['grand_total']}</td>
                 </tr>
 				</tbody>
 			</table><br/>
@@ -879,7 +875,7 @@ echo"
 				<input type='hidden' name='fp_acc_from' value='' />
 				<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
 				<input type='hidden' name='fp_item' value='Pembelian Produk Taurus Computer Solution'>
-				<input type='hidden' name='fp_amnt' value='$grandtotal1'>
+				<input type='hidden' name='fp_amnt' value='{$result['grand_total']}'>
 				<input type='hidden' name='fp_currency' value='IDR'>
 				<input type='hidden' name='fp_comments' value='Pembayaran menggunakan store variable'>
 				<input type='hidden' name='fp_merchant_ref' value='BL000001' />
