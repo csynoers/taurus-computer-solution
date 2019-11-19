@@ -767,7 +767,7 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 							<th>No</th>
 							<th>Nama Produk</th>
 							<th>Jumlah</th>
-							<th>Berat (Gram)</th>
+							<th>Berat&nbsp(Gram)</th>
 							<th>Harga</th>
 							<th>Sub Total</th>
 						</tr>
@@ -817,15 +817,15 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 								</td>
 								<td>{$d['jumlah']}</td>
 								<td>{$d['berat']}</td>
-								<td>Rp. {$harga}</td>
-								<td>Rp. $subtotal_rp</td>
+								<td>Rp.&nbsp;{$harga}</td>
+								<td>Rp.&nbsp$subtotal_rp</td>
 							</tr>
 						";
 									
 						$pesan .="$d[jumlah] $d[nama_produk] -> Rp. $harga -> Subtotal: Rp. $subtotal_rp <br />";
 						$no++; 
 					}
-					
+
 	$ongkoskirim = $r['ongkir'];
 	$kode=$r['kode'];
 	$grandtotal    = $total + $ongkoskirim; 
