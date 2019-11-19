@@ -236,51 +236,56 @@ echo"
 		<h4> Form Daftar Member</h4>
 		<form id='form1' action=daftar-aksi.html method=POST class='form-horizontal'>
 			<table class='table table-bordered'>
-				<tr><th> Detail Data Pribadi Anda  </th></tr>
+				<tr>
+					<th> Detail Data Pribadi Anda  </th>
+				</tr>
 				<tr> 
-				<td>
+					<td>
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
+							<div class='controls'>
+								<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required>
+							</div>
+						</div>
 				
-				<div class='control-group'>
-					<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
-					<div class='controls'>
-					<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap Anda' required>
-					</div>
-				</div>
-				
-				<div class='control-group'>
-				<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
-				<div class='controls'>
-				<input type='email' name='email' placeholder='Masukkan Email Anda' required>
-				</div>
-			</div>	  
-				<div class='control-group'>
-				<label class='control-label'>Password <sup>*</sup></label>
-				<div class='controls'>
-				<input type='password' name='password' placeholder='Password' required>
-				</div>
-			</div>
-				<div class='control-group'>
-					<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
-					<div class='controls'>
-					<input type='number' min='0' name='no_telp'  placeholder='Masukkan Nomor Telepon Anda' required>
-					</div>
-				</div>
-				<div class='control-group'>
-					<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
-					<div class='controls'>
-						<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
-					</div>
-				</div>
-			<div class='control-group'>
-				<div class='controls'>
-				<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn'>
-				</div>
-			</div>
-			</td>
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
+							<div class='controls'>
+								<input type='email' name='email' placeholder='email@gmail.com' required>
+							</div>
+						</div>	  
+
+						<div class='control-group'>
+							<label class='control-label'>Password <sup>*</sup></label>
+							<div class='controls'>
+								<input type='password' name='password' placeholder='**********' required>
+							</div>
+						</div>
+
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
+							<div class='controls'>
+								<input type='telp' min='0' name='no_telp'  placeholder='08123456789' required>
+							</div>
+						</div>
+
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
+							<div class='controls'>
+								<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
+							</div>
+						</div>
+						<div class='control-group'>
+							<div class='controls'>
+								<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn'>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</table>
 		</form>
-	</div>";
+	</div>
+";
 
 }
 elseif ($_GET['module']=='daftaraksi'){
