@@ -265,7 +265,7 @@ echo"
 						<div class='control-group'>
 							<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
 							<div class='controls'>
-								<input type='telp' min='0' name='no_telp'  placeholder='08123456789' required>
+								<input type='text' min='0' name='no_telp'  placeholder='08123456789' required>
 							</div>
 						</div>
 
