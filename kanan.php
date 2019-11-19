@@ -713,124 +713,163 @@ echo"
 
 }
 elseif ($_GET['module']=='konfirmasipembayaran'){
-$edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
-    $r    = mysql_fetch_array($edit);
-	$member=$r[id_member];
-    $tanggal=tgl_indo($r[tanggal]);
-	$customer=mysql_query("select * from member where id_member='$r[id_member]'");
-  $c=mysql_fetch_array($customer);
+	$htmls = [];
+	$edit 		= mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET[id]}'");
+    $r    		= mysql_fetch_assoc($edit);
+	$member 	= $r['id_member'];
+    $tanggal	= tgl_indo($r['tanggal']);
+	$customer	= mysql_query("select * from member where id_member='{$r['id_member']}'");
+	$c			= mysql_fetch_assoc($customer);
 
-echo"							
-<div class='span9'>
-<div class='well well-small'>
-		<h1>Data Order Anda <small class='pull-right'>  </small></h1>
-	<hr class='soften'/>
-	<table>
-     <tr><td>Nama Lengkap   </td><td> : <b>$c[nama] $member</b> </td></tr>
-      <tr><td>Alamat Pengiriman </td><td> : $r[alamat_pengiriman] </td></tr>
-      <tr><td>Telpon         </td><td> : $c[no_telp] </td></tr>
-      <tr><td>E-mail         </td><td> : $c[email] </td></tr>
-	  <tr><td>Bank Pembayaran         </td><td> : $v[nama_bank] </td></tr></table><hr /><br />
-      
-      Nomor Order: <b>$_GET[id]</b><br /><br />";
-	  $daftarproduk=mysql_query("SELECT * FROM orders_detail,produk 
-                                 WHERE orders_detail.id_produk=produk.id_produk 
-                                 AND id_orders='$_GET[id]'");	
-	  
-	echo"  
-	
-	<table class='table table-bordered table-condensed'>
-              <thead>
-                <tr>
-									<th>No</th>
-									<th>Nama Produk</th>
-									<th>Jumlah</th>
-									<th>Berat</th>
-									<th>Harga</th>
-									<th>Sub Total</th>
+	echo "							
+	<div class='span9'>
+		<div class='well well-small'>
+			<h1>Data Order Anda <small class='pull-right'>  </small></h1>
+			<hr class='soften'/>
+
+			<table>
+				<tr>
+					<td>Nama Lengkap</td>
+					<td> : <b>{$c['nama']} $member</b></td>
 				</tr>
-              </thead>";
-	$pesan="Terimakasih telah melakukan pemesanan online di gskonveksi.besaba.com <br /><br />  
-        Nama: $r[nama] <br />
-        Alamat: $r[alamat] <br/>
-        Telpon: $r[no_telp] <br /><hr />
-        
-        Nomor Order: $id_orders <br />
-        Data order Anda adalah sebagai berikut: <br /><br />";
+				<tr>
+					<td>Alamat Pengiriman</td>
+					<td> : {$r['alamat_pengiriman']}</td>
+				</tr>
+				<tr>
+					<td>Telpon</td>
+					<td> : {$c['no_telp']}</td>
+				</tr>
+				<tr>
+					<td>E-mail</td>
+					<td> : {$c['email']}</td>
+				</tr>
+				<tr>
+					<td>Bank Pembayaran</td>
+					<td> : {$v['nama_bank']}</td>
+				</tr>
+			</table>
+			<!-- /table data pemesan -->
+			
+			<hr /><br />
+			Nomor Order: <b>$_GET[id]</b><br /><br />";
+
+			$daftarproduk=mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
+	  
+			echo"  
+	
+			<table class='table table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Nama Produk</th>
+						<th>Jumlah</th>
+						<th>Berat (Gram)</th>
+						<th>Harga</th>
+						<th>Sub Total</th>
+					</tr>
+				</thead>";
+
+				$pesan="Terimakasih telah melakukan pemesanan online di gskonveksi.besaba.com <br /><br />  
+
+				Nama: $r[nama] <br />
+				Alamat: $r[alamat] <br/>
+				Telpon: $r[no_telp] <br /><hr />
+				
+				Nomor Order: $id_orders <br />
+				Data order Anda adalah sebagai berikut: <br /><br />";
 			  $no=1;
 while ($d=mysql_fetch_array($daftarproduk)){
-   $subtotalberat = $d[berat] * $d[jumlah]; // total berat per item produk 
-   $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
+	$subtotalberat 	= $d['berat'] * $d['jumlah']; // total berat per item produk 
+	$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
-   $harga1 = $d[harga];
-   $subtotal    = $harga1 * $d[jumlah];
-   $total       = $total + $subtotal;
-   $subtotal_rp = format_rupiah($subtotal);    
-   $total_rp    = format_rupiah($total);    
-   $harga       = format_rupiah($harga1);
-	echo"
-              <tbody>
-                <tr>
-                  <td>$no</td>
-									<td>$d[nama_produk]</td>
-									<td>$d[jumlah]</td>
-									<td>$d[berat] Kg</td>
-									<td>Rp. $harga</td>
-									<td>Rp. $subtotal_rp</td>
-                </tr>";
+	$harga1 		= $d['harga'];
+	$subtotal    	= $harga1 * $d['jumlah'];
+	$total       	= $total + $subtotal;
+	$subtotal_rp 	= format_rupiah($subtotal);    
+	$total_rp    	= format_rupiah($total);    
+	$harga       	= format_rupiah($harga1);
+
+	$produk_attr = [];
+	if ( $r['kondisi'] ) {
+		$produk_attr[]= "<span class='label label-info'>Kondisi : {$r['kondisi']}</span>";
+	}
+	if ( $r['warna'] ) {
+		$produk_attr[]= "<span class='label label-info'>Warna : {$r['warna']}</span>";
+	}
+	if ( $r['ukuran'] ) {
+		$produk_attr[]= "<span class='label label-info'>Ukuran : {$r['ukuran']}</span>";
+	}
+
+	$produk_attr = implode('&nbsp',$produk_attr);
+
+	echo "
+		<tr>
+			<td>{$no}</td>
+			<td>
+				{$d['nama_produk']}
+				<div style='display: inline-flex;width:100%;'>{$produk_attr}</div>
+			</td>
+			<td>{$d['jumlah']}</td>
+			<td>{$d['berat']}</td>
+			<td>Rp. {$harga}</td>
+			<td>Rp. $subtotal_rp</td>
+		</tr>
+	";
 				
-				$pesan.="$d[jumlah] $d[nama_produk] -> Rp. $harga -> Subtotal: Rp. $subtotal_rp <br />";
-				$no++; 
-						}
-$ongkoskirim = $r[ongkir];
-$kode=$r[kode];
-$grandtotal    = $total + $ongkoskirim; 
-$grandtotal1    = $grandtotal + $kode;
-$ongkoskirim_rp = format_rupiah($ongkoskirim);
-$ongkoskirim1_rp = format_rupiah($ongkoskirim1); 
-$grandtotal_rp  = format_rupiah($grandtotal); 
-$grandtotal1_rp  = format_rupiah($grandtotal1); 
+	$pesan .="$d[jumlah] $d[nama_produk] -> Rp. $harga -> Subtotal: Rp. $subtotal_rp <br />";
+	$no++; 
+}
+	$ongkoskirim = $r['ongkir'];
+	$kode=$r['kode'];
+	$grandtotal    = $total + $ongkoskirim; 
+	$grandtotal1    = $grandtotal + $kode;
+	$ongkoskirim_rp = format_rupiah($ongkoskirim);
+	$ongkoskirim1_rp = format_rupiah($ongkoskirim1); 
+	$grandtotal_rp  = format_rupiah($grandtotal); 
+	$grandtotal1_rp  = format_rupiah($grandtotal1); 
 echo"				
-				 <tr>
-                  <td colspan='5' class='alignR'>Total:	</td>
-                  <td> Rp. $total_rp</td>
-                </tr>
+				<tr>
+					<td colspan='5' class='alignR'>Total:	</td>
+					<td> Rp. $total_rp</td>
+				</tr>
 				
 				<tr>
-                  <td colspan='5' class='alignR'>Total Berat:	</td>
-                  <td > $totalberat Kg</td>
-                </tr>
+					<td colspan='5' class='alignR'>Total Berat:	</td>
+					<td > $totalberat Kg</td>
+				</tr>
 				<tr>
-                  <td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
-                  <td > Rp. $ongkoskirim_rp</td>
-                </tr>
+					<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
+					<td > Rp. $ongkoskirim_rp</td>
+				</tr>
 				<tr>
-                  <td colspan='5' class='alignR'>Kode Unik:	</td>
-                  <td > $kode</td>
-                </tr>
+					<td colspan='5' class='alignR'>Kode Unik:	</td>
+					<td > $kode</td>
+				</tr>
 				<tr>
-                  <td colspan='5' class='alignR'>Grand Total:	</td>
-                  <td class='label label-primary'> Rp. $grandtotal1_rp</td>
+					<td colspan='5' class='alignR'>Grand Total:	</td>
+					<td class='label label-primary'> Rp. $grandtotal1_rp</td>
                 </tr>
 				</tbody>
-            </table><br/>
-	<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
-			 <form id='form1' name='form1' target='_blank' method='post' action='https://sci.fasapay.com/'>
-	<input type='hidden' name='fp_acc' value='FP498022'>
-    <input type='hidden' name='fp_acc_from' value='' />
-    <input type='hidden' name='fp_store' value='Taurus Computer Solution'>
-    <input type='hidden' name='fp_item' value='Pembelian Produk Taurus Computer Solution'>
-    <input type='hidden' name='fp_amnt' value='$grandtotal1'>
-    <input type='hidden' name='fp_currency' value='IDR'>
-    <input type='hidden' name='fp_comments' value='Pembayaran menggunakan store variable'>
-    <input type='hidden' name='fp_merchant_ref' value='BL000001' />
-    <!-- baggage fields -->
-    <input type='hidden' name='track_id' value='558421222'>
-    <input type='hidden' name='order_id' value='BJ2993800'>
-  <input name='' type='submit' value='Bayar Dengan Fasapay' />
-</form>
-	</div>
-							</div>";
+			</table><br/>
+			
+			<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
+			<form id='form1' name='form1' target='_blank' method='post' action='https://sci.fasapay.com/'>
+				<input type='hidden' name='fp_acc' value='FP498022'>
+				<input type='hidden' name='fp_acc_from' value='' />
+				<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
+				<input type='hidden' name='fp_item' value='Pembelian Produk Taurus Computer Solution'>
+				<input type='hidden' name='fp_amnt' value='$grandtotal1'>
+				<input type='hidden' name='fp_currency' value='IDR'>
+				<input type='hidden' name='fp_comments' value='Pembayaran menggunakan store variable'>
+				<input type='hidden' name='fp_merchant_ref' value='BL000001' />
+				<!-- baggage fields -->
+				<input type='hidden' name='track_id' value='558421222'>
+				<input type='hidden' name='order_id' value='BJ2993800'>
+				<input name='' type='submit' value='Bayar Dengan Fasapay' />
+			</form>
+		</div>
+	</div>";
 	
 
 }
