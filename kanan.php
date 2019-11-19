@@ -789,8 +789,8 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 					$total_ongkos_kirim = $r['ongkir'];
 
 					while ($d=mysql_fetch_assoc($daftarproduk)){
-						$subtotalberat 	= $d['berat'] * $d['jumlah']; // total berat per item produk 
-						$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
+						// $subtotalberat 	= $d['berat'] * $d['jumlah']; // total berat per item produk 
+						// $totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
 						$berat 			= $d['berat'];
 						$harga 			= $d['harga'];
@@ -835,7 +835,7 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 					}
 
 					$kode_unik 		= $r['kode'];
-					$grand_total    	= $total + $total_ongkos_kirim + $kode_unik;
+					$grand_total    = $total + $total_ongkos_kirim + $kode_unik;
 					$result 		= [
 						'total' => format_rupiah($total),
 						'total_berat' => $total_berat,
@@ -875,7 +875,7 @@ echo"
 				<input type='hidden' name='fp_acc_from' value='' />
 				<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
 				<input type='hidden' name='fp_item' value='Pembelian Produk Taurus Computer Solution'>
-				<input type='hidden' name='fp_amnt' value='{$result['grand_total']}'>
+				<input type='hidden' name='fp_amnt' value='{$grand_total}'>
 				<input type='hidden' name='fp_currency' value='IDR'>
 				<input type='hidden' name='fp_comments' value='Pembayaran menggunakan store variable'>
 				<input type='hidden' name='fp_merchant_ref' value='BL000001' />
