@@ -771,58 +771,61 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 							<th>Harga</th>
 							<th>Sub Total</th>
 						</tr>
-					</thead>";
+					</thead>
+					<tbody>";
 
-				$pesan="Terimakasih telah melakukan pemesanan online di gskonveksi.besaba.com <br /><br />  
+					$pesan ="Terimakasih telah melakukan pemesanan online di gskonveksi.besaba.com <br /><br />  
 
-				Nama: $r[nama] <br />
-				Alamat: $r[alamat] <br/>
-				Telpon: $r[no_telp] <br /><hr />
-				
-				Nomor Order: $id_orders <br />
-				Data order Anda adalah sebagai berikut: <br /><br />";
-			  $no=1;
-while ($d=mysql_fetch_array($daftarproduk)){
-	$subtotalberat 	= $d['berat'] * $d['jumlah']; // total berat per item produk 
-	$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
+					Nama: $r[nama] <br />
+					Alamat: $r[alamat] <br/>
+					Telpon: $r[no_telp] <br /><hr />
+					
+					Nomor Order: $id_orders <br />
+					Data order Anda adalah sebagai berikut: <br /><br />";
 
-	$harga1 		= $d['harga'];
-	$subtotal    	= $harga1 * $d['jumlah'];
-	$total       	= $total + $subtotal;
-	$subtotal_rp 	= format_rupiah($subtotal);    
-	$total_rp    	= format_rupiah($total);    
-	$harga       	= format_rupiah($harga1);
+					$no=1;
+					while ($d=mysql_fetch_array($daftarproduk)){
+						$subtotalberat 	= $d['berat'] * $d['jumlah']; // total berat per item produk 
+						$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
-	$produk_attr = [];
-	if ( $r['kondisi'] ) {
-		$produk_attr[]= "<span class='label label-info'>Kondisi : {$r['kondisi']}</span>";
-	}
-	if ( $r['warna'] ) {
-		$produk_attr[]= "<span class='label label-info'>Warna : {$r['warna']}</span>";
-	}
-	if ( $r['ukuran'] ) {
-		$produk_attr[]= "<span class='label label-info'>Ukuran : {$r['ukuran']}</span>";
-	}
+						$harga1 		= $d['harga'];
+						$subtotal    	= $harga1 * $d['jumlah'];
+						$total       	= $total + $subtotal;
+						$subtotal_rp 	= format_rupiah($subtotal);    
+						$total_rp    	= format_rupiah($total);    
+						$harga       	= format_rupiah($harga1);
 
-	$produk_attr = implode('&nbsp',$produk_attr);
+						$produk_attr = [];
+						if ( $d['kondisi'] ) {
+							$produk_attr[]= "<span class='label label-info'>Kondisi : {$d['kondisi']}</span>";
+						}
+						if ( $d['warna'] ) {
+							$produk_attr[]= "<span class='label label-info'>Warna : {$d['warna']}</span>";
+						}
+						if ( $d['ukuran'] ) {
+							$produk_attr[]= "<span class='label label-info'>Ukuran : {$d['ukuran']}</span>";
+						}
 
-	echo "
-		<tr>
-			<td>{$no}</td>
-			<td>
-				{$d['nama_produk']}
-				<div style='display: inline-flex;width:100%;'>{$produk_attr}</div>
-			</td>
-			<td>{$d['jumlah']}</td>
-			<td>{$d['berat']}</td>
-			<td>Rp. {$harga}</td>
-			<td>Rp. $subtotal_rp</td>
-		</tr>
-	";
-				
-	$pesan .="$d[jumlah] $d[nama_produk] -> Rp. $harga -> Subtotal: Rp. $subtotal_rp <br />";
-	$no++; 
-}
+						$produk_attr = implode('&nbsp',$produk_attr);
+
+						echo "
+							<tr>
+								<td>{$no}</td>
+								<td>
+									{$d['nama_produk']}
+									<div style='display: inline-flex;width:100%;'>{$produk_attr}</div>
+								</td>
+								<td>{$d['jumlah']}</td>
+								<td>{$d['berat']}</td>
+								<td>Rp. {$harga}</td>
+								<td>Rp. $subtotal_rp</td>
+							</tr>
+						";
+									
+						$pesan .="$d[jumlah] $d[nama_produk] -> Rp. $harga -> Subtotal: Rp. $subtotal_rp <br />";
+						$no++; 
+					}
+					
 	$ongkoskirim = $r['ongkir'];
 	$kode=$r['kode'];
 	$grandtotal    = $total + $ongkoskirim; 
