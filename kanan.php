@@ -230,56 +230,58 @@ elseif ($_GET['module']=='detailproduk'){
 	";
 }
 elseif ($_GET['module']=='daftarmember'){
+
 echo"
-<div class='span9'>
-<h4> Form Daftar Member</h4>
-	<form id='form1' action=daftar-aksi.html method=POST class='form-horizontal'>
-	<table class='table table-bordered'>
-		<tr><th> Detail Data Pribadi Anda  </th></tr>
-		 <tr> 
-		 <td>
-		
-		<div class='control-group'>
-			<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap Anda' required>
+	<div class='span9'>
+		<h4> Form Daftar Member</h4>
+		<form id='form1' action=daftar-aksi.html method=POST class='form-horizontal'>
+			<table class='table table-bordered'>
+				<tr><th> Detail Data Pribadi Anda  </th></tr>
+				<tr> 
+				<td>
+				
+				<div class='control-group'>
+					<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
+					<div class='controls'>
+					<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap Anda' required>
+					</div>
+				</div>
+				
+				<div class='control-group'>
+				<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
+				<div class='controls'>
+				<input type='email' name='email' placeholder='Masukkan Email Anda' required>
+				</div>
+			</div>	  
+				<div class='control-group'>
+				<label class='control-label'>Password <sup>*</sup></label>
+				<div class='controls'>
+				<input type='password' name='password' placeholder='Password' required>
+				</div>
 			</div>
-		 </div>
-		 
-		<div class='control-group'>
-		<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='email' name='email' placeholder='Masukkan Email Anda' required>
-		</div>
-	  </div>	  
-		<div class='control-group'>
-		<label class='control-label'>Password <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='password' name='password' placeholder='Password' required>
-		</div>
-	  </div>
-		<div class='control-group'>
-			<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='number' min='0' name='no_telp'  placeholder='Masukkan Nomor Telepon Anda' required>
+				<div class='control-group'>
+					<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
+					<div class='controls'>
+					<input type='number' min='0' name='no_telp'  placeholder='Masukkan Nomor Telepon Anda' required>
+					</div>
+				</div>
+				<div class='control-group'>
+					<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
+					<div class='controls'>
+					<input type='text' min='0' name='alamat' placeholder='Masukkan Alamat Anda' required>
+					</div>
+				</div>
+			<div class='control-group'>
+				<div class='controls'>
+				<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn'>
+				</div>
 			</div>
-		 </div>
-		 <div class='control-group'>
-			<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='text' min='0' name='alamat' placeholder='Masukkan Alamat Anda' required>
-			</div>
-		 </div>
-	<div class='control-group'>
-		<div class='controls'>
-		 <input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn'>
-		</div>
-	</div>
-	</td>
-		  </tr>
-	</table>
-	</form>
-							</div>";
+			</td>
+				</tr>
+			</table>
+		</form>
+	</div>";
+	
 }
 elseif ($_GET['module']=='daftaraksi'){
 
@@ -844,48 +846,48 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 						'grand_total' => format_rupiah($grand_total),
 					];
 
-echo"				
-				<tr>
-					<td colspan='5' class='alignR'>Total:	</td>
-					<td>Rp.&nbsp;{$result['total']}</td>
-				</tr>
+				echo"				
+					<tr>
+						<td colspan='5' class='alignR'>Total:	</td>
+						<td>Rp.&nbsp;{$result['total']}</td>
+					</tr>
+					
+					<tr>
+						<td colspan='5' class='alignR'>Total Berat:	</td>
+						<td >{$result['total_berat']} (Gram)</td>
+					</tr>
+					<tr>
+						<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
+						<td >Rp.&nbsp;{$result['total_ongkos_kirim']}</td>
+					</tr>
+					<tr>
+						<td colspan='5' class='alignR'>Kode Unik:	</td>
+						<td >{$result['kode_unik']}</td>
+					</tr>
+					<tr>
+						<td colspan='5' class='alignR'>Grand Total:	</td>
+						<td class='label label-primary'>Rp.&nbsp;{$result['grand_total']}</td>
+					</tr>
+					</tbody>
+				</table><br/>
 				
-				<tr>
-					<td colspan='5' class='alignR'>Total Berat:	</td>
-					<td >{$result['total_berat']} (Gram)</td>
-				</tr>
-				<tr>
-					<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
-					<td >Rp.&nbsp;{$result['total_ongkos_kirim']}</td>
-				</tr>
-				<tr>
-					<td colspan='5' class='alignR'>Kode Unik:	</td>
-					<td >{$result['kode_unik']}</td>
-				</tr>
-				<tr>
-					<td colspan='5' class='alignR'>Grand Total:	</td>
-					<td class='label label-primary'>Rp.&nbsp;{$result['grand_total']}</td>
-                </tr>
-				</tbody>
-			</table><br/>
-			
-			<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
-			<form id='form1' name='form1' target='_blank' method='post' action='https://sci.fasapay.com/'>
-				<input type='hidden' name='fp_acc' value='FP498022'>
-				<input type='hidden' name='fp_acc_from' value='' />
-				<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
-				<input type='hidden' name='fp_item' value='Pembelian Produk Taurus Computer Solution'>
-				<input type='hidden' name='fp_amnt' value='{$grand_total}'>
-				<input type='hidden' name='fp_currency' value='IDR'>
-				<input type='hidden' name='fp_comments' value='Pembayaran menggunakan store variable'>
-				<input type='hidden' name='fp_merchant_ref' value='BL000001' />
-				<!-- baggage fields -->
-				<input type='hidden' name='track_id' value='558421222'>
-				<input type='hidden' name='order_id' value='BJ2993800'>
-				<input name='' type='submit' value='Bayar Dengan Fasapay' />
-			</form>
-		</div>
-	</div>";
+				<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
+				<form id='form1' name='form1' target='_blank' method='post' action='https://sci.fasapay.com/'>
+					<input type='hidden' name='fp_acc' value='FP498022'>
+					<input type='hidden' name='fp_acc_from' value='' />
+					<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
+					<input type='hidden' name='fp_item' value='Pembelian Produk Taurus Computer Solution'>
+					<input type='hidden' name='fp_amnt' value='{$grand_total}'>
+					<input type='hidden' name='fp_currency' value='IDR'>
+					<input type='hidden' name='fp_comments' value='Pembayaran menggunakan store variable'>
+					<input type='hidden' name='fp_merchant_ref' value='BL000001' />
+					<!-- baggage fields -->
+					<input type='hidden' name='track_id' value='558421222'>
+					<input type='hidden' name='order_id' value='BJ2993800'>
+					<input name='' type='submit' value='Bayar Dengan Fasapay' />
+				</form>
+			</div>
+		</div>";
 	
 
 }
