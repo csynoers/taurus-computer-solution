@@ -722,53 +722,56 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 	$c			= mysql_fetch_assoc($customer);
 
 	echo "							
-	<div class='span9'>
-		<div class='well well-small'>
-			<h1>Data Order Anda <small class='pull-right'>  </small></h1>
-			<hr class='soften'/>
+		<div class='span9'>
+			<div class='well well-small'>
+				<h1>Data Order Anda <small class='pull-right'>  </small></h1>
+				<hr class='soften'/>
 
-			<table>
-				<tr>
-					<td>Nama Lengkap</td>
-					<td> : <b>{$c['nama']} $member</b></td>
-				</tr>
-				<tr>
-					<td>Alamat Pengiriman</td>
-					<td> : {$r['alamat_pengiriman']}</td>
-				</tr>
-				<tr>
-					<td>Telpon</td>
-					<td> : {$c['no_telp']}</td>
-				</tr>
-				<tr>
-					<td>E-mail</td>
-					<td> : {$c['email']}</td>
-				</tr>
-				<tr>
-					<td>Bank Pembayaran</td>
-					<td> : {$v['nama_bank']}</td>
-				</tr>
-			</table>
-			<!-- /table data pemesan -->
-			
-			<hr /><br />
-			Nomor Order: <b>$_GET[id]</b><br /><br />";
-
-			$daftarproduk=mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
-	  
-			echo"  
-	
-			<table class='table table-bordered table-condensed'>
-				<thead>
+				<table>
 					<tr>
-						<th>No</th>
-						<th>Nama Produk</th>
-						<th>Jumlah</th>
-						<th>Berat (Gram)</th>
-						<th>Harga</th>
-						<th>Sub Total</th>
+						<td>Nama Lengkap</td>
+						<td> : <b>{$c['nama']} $member</b></td>
 					</tr>
-				</thead>";
+					<tr>
+						<td>Alamat Pengiriman</td>
+						<td> : {$r['alamat_pengiriman']}</td>
+					</tr>
+					<tr>
+						<td>Telpon</td>
+						<td> : {$c['no_telp']}</td>
+					</tr>
+					<tr>
+						<td>E-mail</td>
+						<td> : {$c['email']}</td>
+					</tr>
+					<tr>
+						<td>Bank Pembayaran</td>
+						<td> : {$v['nama_bank']}</td>
+					</tr>
+				</table>
+				<!-- /table data pemesan -->
+
+				<hr/>
+				<div>
+					<span> Nomor Order : <b>{$_GET['id']}</b></span>
+				</div>
+				<hr>";
+
+				$daftarproduk=mysql_query("SELECT * FROM orders_detail,produk WHERE orders_detail.id_produk=produk.id_produk AND id_orders='$_GET[id]'");
+	  
+				echo "  
+	
+				<table class='table table-bordered table-condensed'>
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Nama Produk</th>
+							<th>Jumlah</th>
+							<th>Berat (Gram)</th>
+							<th>Harga</th>
+							<th>Sub Total</th>
+						</tr>
+					</thead>";
 
 				$pesan="Terimakasih telah melakukan pemesanan online di gskonveksi.besaba.com <br /><br />  
 
