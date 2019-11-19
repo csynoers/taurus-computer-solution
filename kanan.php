@@ -276,6 +276,13 @@ echo"
 								<div id='livesearch'></div>
 							</div>
 						</div>
+						<div class='control-group'>
+							<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
+							<div class='controls'>
+								<input type='text' id='boxSearchX' name='no_telp'  placeholder='Kode Pos' required>
+								<div id='livesearchX'></div>
+							</div>
+						</div>
 
 						<div class='control-group'>
 							<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
