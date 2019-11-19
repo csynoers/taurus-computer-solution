@@ -774,24 +774,30 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 					</thead>
 					<tbody>";
 
-					$pesan ="Terimakasih telah melakukan pemesanan online di gskonveksi.besaba.com <br /><br />  
+					// $pesan ="Terimakasih telah melakukan pemesanan online di gskonveksi.besaba.com <br /><br />  
 
-					Nama: $r[nama] <br />
-					Alamat: $r[alamat] <br/>
-					Telpon: $r[no_telp] <br /><hr />
+					// Nama: $r[nama] <br />
+					// Alamat: $r[alamat] <br/>
+					// Telpon: $r[no_telp] <br /><hr />
 					
-					Nomor Order: $id_orders <br />
-					Data order Anda adalah sebagai berikut: <br /><br />";
+					// Nomor Order: $id_orders <br />
+					// Data order Anda adalah sebagai berikut: <br /><br />";
 
 					$no=1;
-					while ($d=mysql_fetch_array($daftarproduk)){
+					$total 				= 0;
+					$total_berat 		= 0;
+					$total_ongkos_kirim = $r['ongkir'];
+
+					while ($d=mysql_fetch_assoc($daftarproduk)){
 						$subtotalberat 	= $d['berat'] * $d['jumlah']; // total berat per item produk 
 						$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
+						$berat 			= $d['berat'];
 						$harga 			= $d['harga'];
 						$subtotal    	= $harga * $d['jumlah'];
-						
-						$total       	= $total + $subtotal;
+
+						$total       	+= $subtotal;
+						$total_berat 	+= $berat;
 						
 						$rp = [
 							'harga' 	=> format_rupiah($harga),
@@ -818,13 +824,13 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 									<div style='display: inline-flex;width:100%;'>{$produk_attr}</div>
 								</td>
 								<td>{$d['jumlah']}</td>
-								<td>{$d['berat']}</td>
+								<td>{$berat}</td>
 								<td>Rp.&nbsp;{$rp['harga']}</td>
-								<td>Rp.&nbsp{$rp['sub_total']}</td>
+								<td>Rp.&nbsp;{$rp['sub_total']}</td>
 							</tr>
 						";
 									
-						$pesan .="$d[jumlah] $d[nama_produk] -> Rp. $harga -> Subtotal: Rp. $subtotal_rp <br />";
+						// $pesan .="$d[jumlah] $d[nama_produk] -> Rp. $harga -> Subtotal: Rp. $subtotal_rp <br />";
 						$no++; 
 					}
 
@@ -839,7 +845,7 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 echo"				
 				<tr>
 					<td colspan='5' class='alignR'>Total:	</td>
-					<td> Rp. $total_rp</td>
+					<td>Rp.&nbsp;".format_rupiah($total)."</td>
 				</tr>
 				
 				<tr>
