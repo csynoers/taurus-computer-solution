@@ -834,6 +834,12 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 						$no++; 
 					}
 
+					$result = [
+						'total' => format_rupiah($total),
+						'total_berat' => $total_berat
+						'total_ongkos_kirim' => format_rupiah($total_ongkos_kirim),
+						// 'grand_total' => format_rupiah($grand_total),
+					];
 	$ongkoskirim = $r['ongkir'];
 	$kode=$r['kode'];
 	$grandtotal    = $total + $ongkoskirim; 
@@ -845,16 +851,16 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 echo"				
 				<tr>
 					<td colspan='5' class='alignR'>Total:	</td>
-					<td>Rp.&nbsp;".format_rupiah($total)."</td>
+					<td>Rp.&nbsp;{$result['total']}</td>
 				</tr>
 				
 				<tr>
 					<td colspan='5' class='alignR'>Total Berat:	</td>
-					<td > $totalberat Kg</td>
+					<td >{$result['total_berat']} (Gram)</td>
 				</tr>
 				<tr>
 					<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
-					<td > Rp. $ongkoskirim_rp</td>
+					<td >Rp.&nbsp;{$result['total_ongkos_kirim']}</td>
 				</tr>
 				<tr>
 					<td colspan='5' class='alignR'>Kode Unik:	</td>
