@@ -246,7 +246,7 @@
 		$(document).on('keyup','#boxSearch',function(){
 			$.get('https://kero.tokopedia.com/v2/district-recommendation?token=Tokopedia%2BKero%3ACti9%2F1MWipseMp0GnNLrsvnrGDM%3D&ut=1574193022&query='+$(this).val().toLowerCase(),function(d){
 				console.log(d);
-			},'json');
+			});
 		});
 	});
 
