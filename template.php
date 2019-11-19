@@ -17,8 +17,8 @@
 		<!-- Google-code-prettify -->	
 		<link href="themes/js/google-code-prettify/prettify.css" rel="stylesheet"/>
 		<!-- fav and touch icons -->
-		<!-- bootsrap 3 -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 		<link rel="shortcut icon" href="themes/images/ico/favicon.ico">
 		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="themes/images/ico/apple-touch-icon-144-precomposed.png">
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="themes/images/ico/apple-touch-icon-114-precomposed.png">
