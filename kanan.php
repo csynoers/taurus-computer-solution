@@ -788,12 +788,15 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 						$subtotalberat 	= $d['berat'] * $d['jumlah']; // total berat per item produk 
 						$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
 
-						$harga1 		= $d['harga'];
-						$subtotal    	= $harga1 * $d['jumlah'];
+						$harga 			= $d['harga'];
+						$subtotal    	= $harga * $d['jumlah'];
+						
 						$total       	= $total + $subtotal;
-						$subtotal_rp 	= format_rupiah($subtotal);    
-						$total_rp    	= format_rupiah($total);    
-						$harga       	= format_rupiah($harga1);
+						
+						$rp = [
+							'harga' 	=> format_rupiah($harga),
+							'sub_total' => format_rupiah($subtotal)
+						];    
 
 						$produk_attr = [];
 						if ( $d['kondisi'] ) {
@@ -805,7 +808,6 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 						if ( $d['ukuran'] ) {
 							$produk_attr[]= "<span class='label label-info'>Ukuran : {$d['ukuran']}</span>";
 						}
-
 						$produk_attr = implode('&nbsp',$produk_attr);
 
 						echo "
@@ -817,8 +819,8 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 								</td>
 								<td>{$d['jumlah']}</td>
 								<td>{$d['berat']}</td>
-								<td>Rp.&nbsp;{$harga}</td>
-								<td>Rp.&nbsp$subtotal_rp</td>
+								<td>Rp.&nbsp;{$rp['harga']}</td>
+								<td>Rp.&nbsp{$rp['sub_total']}</td>
 							</tr>
 						";
 									
