@@ -836,7 +836,7 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 
 					$result = [
 						'total' => format_rupiah($total),
-						'total_berat' => $total_berat
+						'total_berat' => $total_berat,
 						'total_ongkos_kirim' => format_rupiah($total_ongkos_kirim),
 						// 'grand_total' => format_rupiah($grand_total),
 					];
