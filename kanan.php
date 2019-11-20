@@ -243,6 +243,7 @@ elseif ($_GET['module']=='daftarmember'){
 		$htmls['option_provinsi'][] = "<option value='{$value['province_id']}'>{$value['province']}</option>";
 	}
 	$htmls['option_provinsi'] 	= implode('',$htmls['option_provinsi']);
+	$htmls['option_kota'] 	= "<option value='' selected disabled> -- Pilih Provinsi Terlebih Dahulu -- </option>";
 
 	echo"
 		<div class='span9'>
@@ -257,35 +258,35 @@ elseif ($_GET['module']=='daftarmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required style='padding:0.9rem'>
+									<input type='text' class='input-block-level mod-width-fit-content' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required>
 								</div>
 							</div>
 					
 							<div class='control-group'>
 								<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
 								<div class='controls'>
-									<input type='email' name='email' placeholder='email@gmail.com' required style='padding:0.9rem'>
+									<input type='email' class='input-block-level mod-width-fit-content' name='email' placeholder='email@gmail.com' required>
 								</div>
 							</div>	  
 
 							<div class='control-group'>
 								<label class='control-label'>Password <sup>*</sup></label>
 								<div class='controls'>
-									<input type='password' name='password' placeholder='**********' required style='padding:0.9rem'>
+									<input type='password' class='input-block-level mod-width-fit-content' name='password' placeholder='**********' required>
 								</div>
 							</div>
 
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' min='0' name='no_telp'  placeholder='08123456789' required style='padding:0.9rem'>
+									<input type='text' class='input-block-level mod-width-fit-content' min='0' name='no_telp'  placeholder='08123456789' required>
 								</div>
 							</div>
 
 							<div class='control-group'>
 								<label class='control-label'>Provinsi <sup>*</sup></label>
 								<div class='controls'>
-									<select name='provinsi' required>
+									<select class='input-block-level mod-width-fit-content' name='provinsi' required>
 										{$htmls['option_provinsi']}
 									</select>
 								</div>
@@ -294,7 +295,7 @@ elseif ($_GET['module']=='daftarmember'){
 							<div class='control-group'>
 								<label class='control-label'>Kota <sup>*</sup></label>
 								<div class='controls'>
-									<select name='kota' required>
+									<select class='input-block-level mod-width-fit-content' name='kota' required>
 									
 									</select>
 								</div>
@@ -303,14 +304,14 @@ elseif ($_GET['module']=='daftarmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text'  name='kode_pos'  placeholder='Kode Pos' required style='padding:0.9rem'>
+									<input type='text' class='input-block-level mod-width-fit-content'  name='kode_pos'  placeholder='Kode Pos' required>
 								</div>
 							</div>
 
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
 								<div class='controls'>
-									<textarea style='width:100%;padding:0.9rem' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
+									<textarea class='input-block-level' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
 								</div>
 							</div>
 							<div class='control-group'>
