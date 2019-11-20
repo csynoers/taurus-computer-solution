@@ -230,6 +230,9 @@ elseif ($_GET['module']=='detailproduk'){
 	";
 }
 elseif ($_GET['module']=='daftarmember'){
+	/* load api raja ongkir */
+	require_once 'vendor/autoload.php';
+	
 	$htmls= [];
 	$htmls['option_provinsi'] = "";
 	$data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
