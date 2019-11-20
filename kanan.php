@@ -230,7 +230,15 @@ elseif ($_GET['module']=='detailproduk'){
 	";
 }
 elseif ($_GET['module']=='daftarmember'){
-
+	$htmls= [];
+	$htmls['option_provinsi'] = "";
+	$data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
+	echo '<pre>';
+	print_r($data2);
+	echo '</pre>';
+	// foreach ($data2 as $key => $value2) {
+	// 	echo '<option value="'.$value2['province_id'].'">'.$value2['province'].'</option>';
+	// }
 echo"
 	<div class='span9'>
 		<h4> Form Daftar Member</h4>
@@ -270,10 +278,11 @@ echo"
 						</div>
 
 						<div class='control-group'>
-							<label class='control-label' for='inputFname'>Kota atau Kecamatan <sup>*</sup></label>
+							<label class='control-label' for='inputFname'>Provinsi <sup>*</sup></label>
 							<div class='controls'>
-								<input type='text' id='boxSearch' name='no_telp'  placeholder='Cari kota/kecamatan' required>
-								<div id='livesearch'></div>
+								<select>
+									{$htmls['option_provinsi']}
+								</select>
 							</div>
 						</div>
 						<div class='control-group'>
