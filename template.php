@@ -246,7 +246,6 @@
 		$(document).on("change","select[name=provinsi]",function(){
 			let id = $(this).val();
 			$.get(`cek_kabupaten.php?q=${id}`,function( d ){
-				console.log(`id_provinsi=${id} <br>kota=${d}`);
 				$("select[name=kota]").html( d );
 			});
 		});
