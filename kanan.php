@@ -229,6 +229,8 @@ elseif ($_GET['module']=='detailproduk'){
 		</div>
 	";
 }
+
+/* ==================== START MENU DAFTAR MEMBER ==================== */
 elseif ($_GET['module']=='daftarmember'){
 	/* load api raja ongkir */
 	require_once 'vendor/autoload.php';
@@ -240,82 +242,93 @@ elseif ($_GET['module']=='daftarmember'){
 	foreach ($rows_provinsi as $key => $value) {
 		$htmls['option_provinsi'][] = "<option value='{$value['province_id']}'>{$value['province']}</option>";
 	}
-	$htmls['option_provinsi'] = implode('',$htmls['option_provinsi']);
+	$htmls['option_provinsi'] 	= implode('',$htmls['option_provinsi']);
 
-echo"
-	<div class='span9'>
-		<h4> Form Daftar Member</h4>
-		<form id='form1' action=daftar-aksi.html method=POST class='form-horizontal'>
-			<table class='table table-bordered'>
-				<tr>
-					<th> Detail Data Pribadi Anda</th>
-				</tr>
-				<tr> 
-					<td>
-						<div class='control-group'>
-							<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
-							<div class='controls'>
-								<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required>
+	echo"
+		<div class='span9'>
+			<h4> Form Daftar Member</h4>
+			<form id='form1' action=daftar-aksi.html method=POST class='form-horizontal'>
+				<table class='table table-bordered'>
+					<tr>
+						<th> Detail Data Pribadi Anda</th>
+					</tr>
+					<tr> 
+						<td>
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
+								<div class='controls'>
+									<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required>
+								</div>
 							</div>
-						</div>
-				
-						<div class='control-group'>
-							<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
-							<div class='controls'>
-								<input type='email' name='email' placeholder='email@gmail.com' required>
-							</div>
-						</div>	  
+					
+							<div class='control-group'>
+								<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
+								<div class='controls'>
+									<input type='email' name='email' placeholder='email@gmail.com' required>
+								</div>
+							</div>	  
 
-						<div class='control-group'>
-							<label class='control-label'>Password <sup>*</sup></label>
-							<div class='controls'>
-								<input type='password' name='password' placeholder='**********' required>
+							<div class='control-group'>
+								<label class='control-label'>Password <sup>*</sup></label>
+								<div class='controls'>
+									<input type='password' name='password' placeholder='**********' required>
+								</div>
 							</div>
-						</div>
 
-						<div class='control-group'>
-							<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
-							<div class='controls'>
-								<input type='text' min='0' name='no_telp'  placeholder='08123456789' required>
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
+								<div class='controls'>
+									<input type='text' min='0' name='no_telp'  placeholder='08123456789' required>
+								</div>
 							</div>
-						</div>
 
-						<div class='control-group'>
-							<label class='control-label' for='inputFname'>Provinsi <sup>*</sup></label>
-							<div class='controls'>
-								<select name='provinsi' required>
-									{$htmls['option_provinsi']}
-								</select>
+							<div class='control-group'>
+								<label class='control-label'>Provinsi <sup>*</sup></label>
+								<div class='controls'>
+									<select name='provinsi' required>
+										{$htmls['option_provinsi']}
+									</select>
+								</div>
 							</div>
-						</div>
-						
-						<div class='control-group'>
-							<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
-							<div class='controls'>
-								<input type='text' id='boxSearchX' name='no_telp'  placeholder='Kode Pos' required>
-								<div id='livesearchX'></div>
-							</div>
-						</div>
 
-						<div class='control-group'>
-							<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
-							<div class='controls'>
-								<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
+							<div class='control-group'>
+								<label class='control-label'>Kota <sup>*</sup></label>
+								<div class='controls'>
+									<select name='kota' required>
+									
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class='control-group'>
-							<div class='controls'>
-								<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn'>
+							
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
+								<div class='controls'>
+									<input type='text' id='boxSearchX' name='no_telp'  placeholder='Kode Pos' required>
+									<div id='livesearchX'></div>
+								</div>
 							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</form>
-	</div>
-";
+
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
+								<div class='controls'>
+									<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
+								</div>
+							</div>
+							<div class='control-group'>
+								<div class='controls'>
+									<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn'>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	";
 
 }
+/* ==================== END MENU DAFTAR MEMBER ==================== */
+
 elseif ($_GET['module']=='daftaraksi'){
 
 	
