@@ -257,28 +257,28 @@ elseif ($_GET['module']=='daftarmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required>
+									<input type='text' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required style='padding:0.9rem'>
 								</div>
 							</div>
 					
 							<div class='control-group'>
 								<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
 								<div class='controls'>
-									<input type='email' name='email' placeholder='email@gmail.com' required>
+									<input type='email' name='email' placeholder='email@gmail.com' required style='padding:0.9rem'>
 								</div>
 							</div>	  
 
 							<div class='control-group'>
 								<label class='control-label'>Password <sup>*</sup></label>
 								<div class='controls'>
-									<input type='password' name='password' placeholder='**********' required>
+									<input type='password' name='password' placeholder='**********' required style='padding:0.9rem'>
 								</div>
 							</div>
 
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' min='0' name='no_telp'  placeholder='08123456789' required>
+									<input type='text' min='0' name='no_telp'  placeholder='08123456789' required style='padding:0.9rem'>
 								</div>
 							</div>
 
@@ -303,20 +303,19 @@ elseif ($_GET['module']=='daftarmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' id='boxSearchX' name='no_telp'  placeholder='Kode Pos' required>
-									<div id='livesearchX'></div>
+									<input type='text'  name='kode_pos'  placeholder='Kode Pos' required style='padding:0.9rem'>
 								</div>
 							</div>
 
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
 								<div class='controls'>
-									<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
+									<textarea style='width:100%;padding:0.9rem' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
 								</div>
 							</div>
 							<div class='control-group'>
 								<div class='controls'>
-									<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn'>
+									<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn btn btn-primary'>
 								</div>
 							</div>
 						</td>
