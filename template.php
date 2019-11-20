@@ -77,10 +77,10 @@
 								<div class="modal-body">
 									<form action="cek_login.php" method="POST" class="form-horizontal loginFrm">
 									<div class="control-group">								
-										<input type="email" name="email" id="inputEmail" placeholder="Email" required>
+										<input class="input-block-level" type="email" name="email" id="inputEmail" placeholder="Masukan email disini" required>
 									</div>
 									<div class="control-group">
-										<input type="password" name="password" id="inputPassword" placeholder="Password" required>
+										<input class="input-block-level" type="password" name="password" id="inputPassword" placeholder="Masukan password disini" required>
 									</div>
 									<div class="control-group">
 										<label class="checkbox">
