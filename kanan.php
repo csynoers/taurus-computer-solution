@@ -352,7 +352,8 @@ elseif ($_GET['module']=='daftaraksi'){
 							password,
 							no_telp,
 							alamat_member,
-							tgl_daftar
+							tgl_daftar,
+							session
 					) 
 					VALUES(
 						'$_POST[nama]',
@@ -360,7 +361,8 @@ elseif ($_GET['module']=='daftaraksi'){
 						'$pass',
 						'$_POST[no_telp]',
 						'$_POST[alamat]',
-						'$tgl_sekarang'
+						'$tgl_sekarang',
+						'".md5(date(Ymdhis))."'
 					)
 		");
 		// echo"							
