@@ -230,7 +230,7 @@ elseif ($_GET['module']=='detailproduk'){
 	";
 }
 
-/* ==================== START MENU DAFTAR MEMBER ==================== */
+/* ==================== START MENU MEMBER ==================== */
 elseif ($_GET['module']=='daftarmember'){
 	/* load api raja ongkir */
 	require_once 'vendor/autoload.php';
@@ -327,48 +327,56 @@ elseif ($_GET['module']=='daftarmember'){
 	";
 
 }
-/* ==================== END MENU DAFTAR MEMBER ==================== */
 
 elseif ($_GET['module']=='daftaraksi'){
+	$sql = mysql_query("SELECT * FROM member WHERE email='{$_POST['email']}' OR no_telp ='{$_POST['no_telp']}'");
 
-	
-$sql = mysql_query("SELECT * FROM member WHERE email='$_POST[email]'
-								OR no_telp ='$_POST[no_telp]'");
+	if ( mysql_num_rows($sql) > 0 ){ # jika user sudah ada
+		echo "							
+		<div class='span9'>
+			<h3> Form Daftar Member</h3>	
+			<hr class='soft'/>
+			<p align=center>Maaf! Email atau nomor telepon yang Anda masukkan sudah terdaftar, Silahkan ganti yang lain<br />
+			<a href=javascript:history.go(-1)><b>Ulangi Lagi</b></a>
+		</div>";
 
-$ketemu=mysql_num_rows($sql);
-	if ($ketemu > 0){
-	echo"							
-<div class='span9'>
-<h3> Form Daftar Member</h3>	
-	<hr class='soft'/>
-<p align=center>Maaf! Email atau nomor telepon yang Anda masukkan sudah terdaftar, Silahkan ganti yang lain<br />
-  	    <a href=javascript:history.go(-1)><b>Ulangi Lagi</b></a>
-							</div>";
+	}else { # jika user belum ada
+		$pass = md5($_POST['password']);
+		echo '<pre>';
+		print_r($_POST);
+		echo '</pre>';
+		echo ("INSERT
+					INTO member(
+							nama,
+							email,
+							password,
+							no_telp,
+							alamat_member,
+							tgl_daftar
+					) 
+					VALUES(
+						'$_POST[nama]',
+						'$_POST[email]',
+						'$pass',
+						'$_POST[no_telp]',
+						'$_POST[alamat]',
+						'$tgl_sekarang'
+					)
+		");
+		// echo"							
+		// <div class='span9'>
+		// <h3> Form Daftar Member</h3>	
+		// 	<hr class='soft'/>
+		// <p align=center><b>Terimakasih telah mendaftar Sebagai Member. <br /> Silahkan Login Terlebih Dahulu. Klik <a href='media.php?module=loginmember'> Disini </a>
+		// 							</div>";
 	}
-	else {
-$pass=md5($_POST['password']);
-  mysql_query("INSERT INTO member(nama,
-                                   email,
-                                   password,
-                                   no_telp,
-                                   alamat_member,
-								   tgl_daftar) 
-                        VALUES('$_POST[nama]',
-                               '$_POST[email]',
-							   '$pass',
-                               '$_POST[no_telp]',
-                               '$_POST[alamat]',
-							   '$tgl_sekarang')");
-echo"							
-<div class='span9'>
-<h3> Form Daftar Member</h3>	
-	<hr class='soft'/>
-<p align=center><b>Terimakasih telah mendaftar Sebagai Member. <br /> Silahkan Login Terlebih Dahulu. Klik <a href='media.php?module=loginmember'> Disini </a>
-							</div>";
-		}
-		
-
+			
+	
 }
+/* ==================== END MENU MEMBER ==================== */
+
+
+
 elseif ($_GET['module']=='loginmember'){
 echo"							
 <div class='span9'>
