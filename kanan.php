@@ -234,14 +234,17 @@ elseif ($_GET['module']=='daftarmember'){
 	require_once 'vendor/autoload.php';
 	
 	$htmls= [];
-	$htmls['option_provinsi'] = "";
-	$data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
+	$rows_provinsi = RajaOngkir\RajaOngkir::Provinsi()->all();
+
+	$htmls['option_provinsi'][] = "<option value='' selected disabled> -- Pilih Provinsi -- </option>"
+	foreach ($rows_provinsi as $key => $value) {
+		$htmls['option_provinsi'][] = "<option value="{$value['province_id']}">{$value['province']}</option>";
+	}
+
 	echo '<pre>';
-	print_r($data2);
+	print_r($htmls['option_provinsi']);
 	echo '</pre>';
-	// foreach ($data2 as $key => $value2) {
-	// 	echo '<option value="'.$value2['province_id'].'">'.$value2['province'].'</option>';
-	// }
+
 echo"
 	<div class='span9'>
 		<h4> Form Daftar Member</h4>
@@ -284,7 +287,7 @@ echo"
 							<label class='control-label' for='inputFname'>Provinsi <sup>*</sup></label>
 							<div class='controls'>
 								<select>
-									{$htmls['option_provinsi']}
+									
 								</select>
 							</div>
 						</div>
