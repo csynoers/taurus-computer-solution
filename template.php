@@ -243,9 +243,11 @@
 	
 <script>
 	$(document).ready(function(){
-		$(document).on('keyup','#boxSearch',function(){
-			$.get('https://kero.tokopedia.com/v2/district-recommendation?token=Tokopedia%2BKero%3ACti9%2F1MWipseMp0GnNLrsvnrGDM%3D&ut=1574193022&query='+$(this).val().toLowerCase(),function(d){
-				console.log(d);
+		$(document).on("change","select[name=provinsi]",function(){
+			let id = $(this).val();
+			$.get(`cek_kabupaten.php?q=${id}`,function( d ){
+				console.log(`id_provinsi=${id} <br>kota=${d}`);
+				$("select[name=kota]").html( d );
 			});
 		});
 	});

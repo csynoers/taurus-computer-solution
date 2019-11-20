@@ -296,7 +296,7 @@ elseif ($_GET['module']=='daftarmember'){
 								<label class='control-label'>Kota <sup>*</sup></label>
 								<div class='controls'>
 									<select class='input-block-level mod-width-fit-content' name='kota' required>
-									
+										{$htmls['option_kota']}
 									</select>
 								</div>
 							</div>
