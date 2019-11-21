@@ -411,6 +411,135 @@ elseif ($_GET['module']=='daftaraksi'){
 			
 	
 }
+
+elseif ($_GET['module']=='editmember'){
+	$edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
+	$r=mysql_fetch_assoc($edit);
+
+	/* load api raja ongkir */
+	require_once 'vendor/autoload.php';
+	
+	$htmls= [];
+	
+	$rows_provinsi = RajaOngkir\RajaOngkir::Provinsi()->all();
+	$htmls['option_provinsi'][] = "<option value='' selected disabled> -- Pilih Provinsi -- </option>";
+	foreach ($rows_provinsi as $key => $value) {
+		$htmls['option_provinsi'][] = "<option value='{$value['province_id']}'>{$value['province']}</option>";
+	}
+	$htmls['option_provinsi'] 	= implode('',$htmls['option_provinsi']);
+	$htmls['option_kota'] 	= "<option value='' selected disabled> -- Pilih Provinsi Terlebih Dahulu -- </option>";
+	
+	echo "
+		<div class='span9'>
+			<h4> Form Edit Member</h4>
+			<form id='form2' action=edit_profil.php method=POST class='form-horizontal'>
+				<input type=hidden name=id value='$r[id_member]'>
+				<table class='table table-bordered'>
+					<tr>
+						<th> Detail Data Pribadi Anda : </th>
+					</tr>
+
+					<tr>
+						<td>
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
+								<div class='controls'>
+									<input value='{$r['nama']}' type='text' class='input-block-level mod-width-fit-content' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required>
+								</div>
+							</div>
+					
+							<div class='control-group'>
+								<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
+								<div class='controls'>
+									<input type='email' class='input-block-level mod-width-fit-content' name='email' placeholder='email@gmail.com' required>
+								</div>
+							</div>	  
+
+							<div class='control-group'>
+								<label class='control-label'>Password <sup>*</sup></label>
+								<div class='controls'>
+									<input type='password' class='input-block-level mod-width-fit-content' name='password' placeholder='**********' required>
+								</div>
+							</div>
+
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
+								<div class='controls'>
+									<input type='text' class='input-block-level mod-width-fit-content input-number-only' min='0' name='no_telp'  placeholder='08123456789' required>
+								</div>
+							</div>
+
+							<div class='control-group'>
+								<label class='control-label'>Provinsi <sup>*</sup></label>
+								<div class='controls'>
+									<select class='input-block-level mod-width-fit-content' name='provinsi' required>
+										{$htmls['option_provinsi']}
+									</select>
+								</div>
+							</div>
+
+							<div class='control-group'>
+								<label class='control-label'>Kota/Kabupaten <sup>*</sup></label>
+								<div class='controls'>
+									<select class='input-block-level mod-width-fit-content' name='kota' required>
+										{$htmls['option_kota']}
+									</select>
+								</div>
+							</div>
+							
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
+								<div class='controls'>
+									<input type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos'  placeholder='Kode Pos' required>
+								</div>
+							</div>
+
+							<div class='control-group'>
+								<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
+								<div class='controls'>
+									<textarea class='input-block-level' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
+								</div>
+							</div>
+							<div class='control-group'>
+								<div class='controls'>
+									<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn btn btn-primary'>
+								</div>
+							</div>
+		<div class='control-group'>
+		<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
+		<div class='controls'>
+		  <input type='email' name='email' value='$r[email]' placeholder='Masukkan Email Anda' required>
+		</div>
+	  </div>	  
+		<div class='control-group'>
+		<label class='control-label'>Password <sup>*</sup></label>
+		<div class='controls'>
+		  <input type='password' name='password' placeholder='Password'>
+		</div>
+	  </div>
+		<div class='control-group'>
+			<label class='control-label' for='inputFname'>Nomot Telepon <sup>*</sup></label>
+			<div class='controls'>
+			  <input type='text' name='no_telp' value='$r[no_telp]' placeholder='Masukkan Nomor Telepon Anda' required>
+			</div>
+		 </div>
+		 <div class='control-group'>
+			<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
+			<div class='controls'>
+			  <input type='text' value='$r[alamat_member]' name='alamat' placeholder='Masukkan Alamat Anda' required>
+			</div>
+		 </div>
+	<div class='control-group'>
+		<div class='controls'>
+		 <input type='submit' name='submitAccount' value='Update' class='exclusive shopBtn'>
+		</div>
+	</div>
+	</td>
+		  </tr>
+	</table>
+	</form>
+							</div>";
+}
 /* ==================== END MENU MEMBER ==================== */
 
 
@@ -451,60 +580,7 @@ echo"
 							</div>";
 
 }
-elseif ($_GET['module']=='editmember'){
-$edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
-    $r=mysql_fetch_array($edit);
-echo"
-<div class='span9'>
-<h4> Form Edit Member</h4>
-	<form id='form2' action=edit_profil.php method=POST class='form-horizontal'>
-	<table class='table table-bordered'>
-	<input type=hidden name=id value='$r[id_member]'>
-		<tr><th> Detail Data Pribadi Anda  </th></tr>
-		 <tr> 
-		 <td>
-		
-		<div class='control-group'>
-			<label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='text' name='nama' value='$r[nama]' id='inputFname' placeholder='Masukkan Nama Lengkap Anda' required>
-			</div>
-		 </div>
-		<div class='control-group'>
-		<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='email' name='email' value='$r[email]' placeholder='Masukkan Email Anda' required>
-		</div>
-	  </div>	  
-		<div class='control-group'>
-		<label class='control-label'>Password <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='password' name='password' placeholder='Password'>
-		</div>
-	  </div>
-		<div class='control-group'>
-			<label class='control-label' for='inputFname'>Nomot Telepon <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='text' name='no_telp' value='$r[no_telp]' placeholder='Masukkan Nomor Telepon Anda' required>
-			</div>
-		 </div>
-		 <div class='control-group'>
-			<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='text' value='$r[alamat_member]' name='alamat' placeholder='Masukkan Alamat Anda' required>
-			</div>
-		 </div>
-	<div class='control-group'>
-		<div class='controls'>
-		 <input type='submit' name='submitAccount' value='Update' class='exclusive shopBtn'>
-		</div>
-	</div>
-	</td>
-		  </tr>
-	</table>
-	</form>
-							</div>";
-}
+
 
 /*==================== Start Halaman Keranjang Belanja ====================*/
 elseif ($_GET['module']=='keranjangbelanja'){
