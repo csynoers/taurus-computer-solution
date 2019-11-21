@@ -354,6 +354,7 @@ elseif ($_GET['module']=='daftaraksi'){
 							alamat_member,
 							tgl_daftar,
 							session,
+							status,
 							provinsi,
 							kota,
 							kode_pos
@@ -366,6 +367,7 @@ elseif ($_GET['module']=='daftaraksi'){
 						'{$_POST['alamat']}',
 						'{$tgl_sekarang}',
 						'".md5(date(Ymdhis))."',
+						'tertunda',
 						'{$_POST['provinsi']}',
 						'{$_POST['kota']}',
 						'{$_POST['kode_pos']}'
