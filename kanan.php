@@ -353,16 +353,22 @@ elseif ($_GET['module']=='daftaraksi'){
 							no_telp,
 							alamat_member,
 							tgl_daftar,
-							session
+							session,
+							provinsi,
+							kota,
+							kode_pos
 					) 
 					VALUES(
-						'$_POST[nama]',
-						'$_POST[email]',
-						'$pass',
-						'$_POST[no_telp]',
-						'$_POST[alamat]',
-						'$tgl_sekarang',
-						'".md5(date(Ymdhis))."'
+						'{$_POST['nama']}',
+						'{$_POST['email']}',
+						'{$pass}',
+						'{$_POST['no_telp']}',
+						'{$_POST['alamat']}',
+						'{$tgl_sekarang}',
+						'".md5(date(Ymdhis))."',
+						'{$_POST['provinsi']}',
+						'{$_POST['kota']}',
+						'{$_POST['kode_pos']}'
 					)
 		");
 		// echo"							
