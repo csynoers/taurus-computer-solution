@@ -250,13 +250,20 @@
 			});
 		});
 
+		$(document).on("change","select[name=kota]",function(){
+			let id = $(this).val();
+			$.get(`get_json.php?q=get-kota-by-city-id&id=${id}`,function( d ){
+				$("input[name=kode_pos]").val( d.postal_code );
+			},'json');
+		});
+
 		$(".input-number-only").keypress(function(evt){
 			var charCode = (evt.which) ? evt.which : event.keyCode
 			if (charCode > 31 && (charCode < 48 || charCode > 57))
 				return false;
 			return true;
 		});
-		
+
 	});
 
 		function  load_ajax(url, callback){

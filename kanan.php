@@ -422,12 +422,19 @@ elseif ($_GET['module']=='editmember'){
 	$htmls= [];
 	
 	$rows_provinsi = RajaOngkir\RajaOngkir::Provinsi()->all();
-	$htmls['option_provinsi'][] = "<option value='' selected disabled> -- Pilih Provinsi -- </option>";
+	$htmls['option_provinsi'][] = "<option value='' > -- Pilih Provinsi -- </option>";
 	foreach ($rows_provinsi as $key => $value) {
-		$htmls['option_provinsi'][] = "<option value='{$value['province_id']}'>{$value['province']}</option>";
+	    $selected = ($value['province_id']==$r['provinsi'])? 'selected' : NULL ;
+		$htmls['option_provinsi'][] = "<option value='{$value['province_id']}' {$selected}>{$value['province']}</option>";
 	}
 	$htmls['option_provinsi'] 	= implode('',$htmls['option_provinsi']);
-	$htmls['option_kota'] 	= "<option value='' selected disabled> -- Pilih Provinsi Terlebih Dahulu -- </option>";
+	
+	$rows_kota = RajaOngkir\RajaOngkir::Kota()->byProvinsi($r['provinsi'])->get();
+	foreach ($rows_kota as $key => $value) {
+	    $selected = ($value['city_id']==$r['kota'])? 'selected' : NULL ;
+		$htmls['option_kota'][] = "<option value='{$value['city_id']}' {$selected}>{$value['city_name']}</option>";
+	}
+	$htmls['option_kota'] 	= implode('',$htmls['option_kota']);
 	
 	echo "
 		<div class='span9'>
@@ -451,21 +458,21 @@ elseif ($_GET['module']=='editmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
 								<div class='controls'>
-									<input type='email' class='input-block-level mod-width-fit-content' name='email' placeholder='email@gmail.com' required>
+									<input value='{$r['email']}' type='email' class='input-block-level mod-width-fit-content' name='email' placeholder='email@gmail.com' required>
 								</div>
 							</div>	  
 
 							<div class='control-group'>
-								<label class='control-label'>Password <sup>*</sup></label>
+								<label class='control-label'>Password </label>
 								<div class='controls'>
-									<input type='password' class='input-block-level mod-width-fit-content' name='password' placeholder='**********' required>
+									<input type='password' class='input-block-level mod-width-fit-content' name='password' placeholder='**********' > <small class='text-info'>(Jika tidak diganti kosongkan saja)</small>
 								</div>
 							</div>
 
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' class='input-block-level mod-width-fit-content input-number-only' min='0' name='no_telp'  placeholder='08123456789' required>
+									<input value='{$r['no_telp']}' type='text' class='input-block-level mod-width-fit-content input-number-only' min='0' name='no_telp'  placeholder='08123456789' required>
 								</div>
 							</div>
 
@@ -490,55 +497,26 @@ elseif ($_GET['module']=='editmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos'  placeholder='Kode Pos' required>
+									<input value='{$r['kode_pos']}' type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos'  placeholder='Kode Pos' required>
 								</div>
 							</div>
 
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label>
 								<div class='controls'>
-									<textarea class='input-block-level' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea>
+									<textarea class='input-block-level' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required>{$r['alamat_member']}</textarea>
 								</div>
 							</div>
 							<div class='control-group'>
 								<div class='controls'>
-									<input type='submit' name='submitAccount' value='Register' class='exclusive shopBtn btn btn-primary'>
+									<input type='submit' name='submitAccount' value='Update' class='exclusive shopBtn btn btn-primary'>
 								</div>
 							</div>
-		<div class='control-group'>
-		<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='email' name='email' value='$r[email]' placeholder='Masukkan Email Anda' required>
-		</div>
-	  </div>	  
-		<div class='control-group'>
-		<label class='control-label'>Password <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='password' name='password' placeholder='Password'>
-		</div>
-	  </div>
-		<div class='control-group'>
-			<label class='control-label' for='inputFname'>Nomot Telepon <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='text' name='no_telp' value='$r[no_telp]' placeholder='Masukkan Nomor Telepon Anda' required>
-			</div>
-		 </div>
-		 <div class='control-group'>
-			<label class='control-label' for='inputFname'>Alamat <sup>*</sup></label>
-			<div class='controls'>
-			  <input type='text' value='$r[alamat_member]' name='alamat' placeholder='Masukkan Alamat Anda' required>
-			</div>
-		 </div>
-	<div class='control-group'>
-		<div class='controls'>
-		 <input type='submit' name='submitAccount' value='Update' class='exclusive shopBtn'>
-		</div>
-	</div>
-	</td>
-		  </tr>
-	</table>
-	</form>
-							</div>";
+                    	</td>
+            		</tr>
+            	</table>
+        	</form>
+		</div>";
 }
 /* ==================== END MENU MEMBER ==================== */
 
