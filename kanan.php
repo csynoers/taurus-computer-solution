@@ -375,7 +375,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		");
 
 		/* ========== START SEND EMAIL ========== */
-		$to = "3s0c9m7@gmail.com";
+		$to = "{$_POST['email']}";
 		$subject = "HTML email";
 
 		$message = "
@@ -404,7 +404,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 		// More headers
-		$headers .= 'From: <webmaster@example.com>' . "\r\n";
+		// $headers .= 'From: <webmaster@example.com>' . "\r\n";
 		// $headers .= 'Cc: myboss@example.com' . "\r\n";
 
 		mail($to,$subject,$message,$headers);
