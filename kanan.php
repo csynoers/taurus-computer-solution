@@ -626,7 +626,14 @@ elseif ($_GET['module']=='selesaibelanja'){
 				<form action=simpantransaksi.php method=POST class='form-horizontal'>
 					<table class='table table-bordered'>
 						<tr>
-							<th> Silahkan Isi Form Di Bawah Ini  </th>
+							<th> Alamat Penerima :  </th>
+						</tr>
+						<tr>
+							<td>
+								<b>{$_SESSION['namalengkap']}</b><br>
+								{$_SESSION['no_telp']}<br>
+								{$_SESSION['alamat_member']}<br>
+							</td>
 						</tr>
 						<tr> 
 							<td>
