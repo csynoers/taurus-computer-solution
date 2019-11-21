@@ -381,7 +381,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		$mail->IsSMTP();
 		$mail->SMTPSecure = 'ssl'; 
 		$mail->Host = "smtp.gmail.com";
-		$mail->SMTPDebug = 2;
+		$mail->SMTPDebug = 0;
 		$mail->Port = 465;
 		$mail->SMTPAuth = true;
 		$mail->Username = "3s0c9m7@gmail.com";
@@ -390,8 +390,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		$mail->Subject = "Verifikasi Email";
 		$mail->AddAddress("scmrumahweb@gmail.com","nama email tujuan");
 		$mail->MsgHTML("
-		    Silakan verifikasi email kamu dengan mengklik<br>
-    		tautan berikut kedalam browser :
+		    Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
 		    <a href='{$_SERVER['HTTP_HOST']}/cek_login.php?q={$q}'>Klik Disini untuk verifikasi email</a>
 		");
 		
