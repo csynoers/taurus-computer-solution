@@ -304,7 +304,7 @@ elseif ($_GET['module']=='daftarmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' class='input-block-level mod-width-fit-content'  name='kode_pos'  placeholder='Kode Pos' required>
+									<input type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos'  placeholder='Kode Pos' required>
 								</div>
 							</div>
 
