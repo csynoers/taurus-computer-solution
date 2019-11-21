@@ -279,7 +279,7 @@ elseif ($_GET['module']=='daftarmember'){
 							<div class='control-group'>
 								<label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label>
 								<div class='controls'>
-									<input type='text' class='input-block-level mod-width-fit-content' min='0' name='no_telp'  placeholder='08123456789' required>
+									<input type='text' onkeypress='return hanyaAngka(event)' class='input-block-level mod-width-fit-content' min='0' name='no_telp'  placeholder='08123456789' required>
 								</div>
 							</div>
 
