@@ -343,10 +343,10 @@ elseif ($_GET['module']=='daftaraksi'){
 	}else { # jika user belum ada
 		$pass = md5($_POST['password']);
 		$q = md5(date(Ymdhis));
-		echo '<pre>';
-		print_r($_POST);
-		echo '</pre>';
-		echo ("INSERT
+		// echo '<pre>';
+		// print_r($_POST);
+		// echo '</pre>';
+		mysql_query("INSERT
 					INTO member(
 							nama,
 							email,
@@ -388,7 +388,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		$mail->Password = $mail->simple_crypt( 'Q28vcmJtWmxESE1UQjBCazFQL2w3QT09', 'd' );
 		$mail->SetFrom("info@tauruscomputer.com","TAURUS COMPUTER");
 		$mail->Subject = "Verifikasi Email";
-		$mail->AddAddress("scmrumahweb@gmail.com","nama email tujuan");
+		$mail->AddAddress("{$_POST['email']}","nama email tujuan");
 		$mail->MsgHTML("
 		    Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
 		    <a href='{$_SERVER['HTTP_HOST']}/cek_login.php?q={$q}'>Klik Disini untuk verifikasi email</a>
@@ -398,12 +398,15 @@ elseif ($_GET['module']=='daftaraksi'){
 
 		/* ========== END SEND EMAIL ========== */
 
-		// echo"							
-		// <div class='span9'>
-		// <h3> Form Daftar Member</h3>	
-		// 	<hr class='soft'/>
-		// <p align=center><b>Terimakasih telah mendaftar Sebagai Member. <br /> Silahkan Login Terlebih Dahulu. Klik <a href='media.php?module=loginmember'> Disini </a>
-		// 							</div>";
+		echo "							
+		<div class='span9'>
+			<h3> Form Daftar Member</h3>	
+			<hr class='soft'/>
+			<p align=center>
+				<b>Terimakasih telah mendaftar Sebagai Member. <br />
+				Silahkan buka email untuk aktivasi akun Anda</b>
+			</p> 
+		</div>";
 	}
 			
 	
