@@ -375,12 +375,8 @@ elseif ($_GET['module']=='daftaraksi'){
 		");
 
 		/* ========== START SEND EMAIL ========== */
-		$to = "{$_POST['email']}";
-		$subject = "My subject";
-		$txt = "Hello world!";
-		$headers = "From: webmaster@example.com" . "\r\n" ;
-
-		mail($to,$subject,$txt,$headers);
+		require_once 'library/phpmailer/autoload.php';
+		print_r($mail);
 		/* ========== END SEND EMAIL ========== */
 
 		// echo"							
