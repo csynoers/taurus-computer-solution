@@ -392,7 +392,7 @@ elseif ($_GET['module']=='daftaraksi'){
 
 		print_r($mail);
 		
-		$mail->Send()
+		$mail->Send();
 		// Silakan verifikasi email kamu dengan mengklik / copy
 		// tautan berikut kedalam browser :
 
