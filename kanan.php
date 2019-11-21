@@ -375,7 +375,7 @@ elseif ($_GET['module']=='daftaraksi'){
 		");
 
 		/* ========== START SEND EMAIL ========== */
-		require_once("library/classes/class.phpmailer.php");
+		include("library/classes/class.phpmailer.php");
 		$mail = new PHPMailer; 
 		$mail->IsSMTP();
 		$mail->SMTPSecure = 'ssl'; 
