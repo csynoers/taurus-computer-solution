@@ -342,6 +342,7 @@ elseif ($_GET['module']=='daftaraksi'){
 
 	}else { # jika user belum ada
 		$pass = md5($_POST['password']);
+		$q = md5(date(Ymdhis));
 		echo '<pre>';
 		print_r($_POST);
 		echo '</pre>';
@@ -366,7 +367,7 @@ elseif ($_GET['module']=='daftaraksi'){
 						'{$_POST['no_telp']}',
 						'{$_POST['alamat']}',
 						'{$tgl_sekarang}',
-						'".md5(date(Ymdhis))."',
+						'{$q}',
 						'tertunda',
 						'{$_POST['provinsi']}',
 						'{$_POST['kota']}',
@@ -388,13 +389,13 @@ elseif ($_GET['module']=='daftaraksi'){
 		$mail->SetFrom("info@tauruscomputer.com","TAURUS COMPUTER");
 		$mail->Subject = "Verifikasi Email";
 		$mail->AddAddress("scmrumahweb@gmail.com","nama email tujuan");
-		$mail->MsgHTML("Testing...");
-
-		print_r($mail);
+		$mail->MsgHTML("
+		    Silakan verifikasi email kamu dengan mengklik<br>
+    		tautan berikut kedalam browser :
+		    <a href='{$_SERVER['HTTP_HOST']}/cek_login.php?q={$q}'>Klik Disini untuk verifikasi email</a>
+		");
 		
 		$mail->Send();
-		// Silakan verifikasi email kamu dengan mengklik / copy
-		// tautan berikut kedalam browser :
 
 		/* ========== END SEND EMAIL ========== */
 
