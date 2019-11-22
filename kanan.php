@@ -665,7 +665,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 		/* load rajaongkir rest api */
 		require_once 'vendor/autoload.php';
 		$kota = RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']);
-		
+
 		$sid 		= session_id();
 		$sql 		= mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='$sid'");
 		$ketemu		= mysql_num_rows($sql);
@@ -682,7 +682,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 				<form action=simpantransaksi.php method=POST class='form-horizontal'>
 					<table class='table table-bordered'>
 						<tr>
-							<th> Alamat Penerima :  </th>
+							<th> Alamat Penerima : <a class='btn btn-info btn-mini pull-right'>Kirim ke alamat lain</a></th>
 						</tr>
 						<tr>
 							<td>
@@ -691,72 +691,82 @@ elseif ($_GET['module']=='selesaibelanja'){
 								{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
 							</td>
 						</tr>
-						<tr> 
+						<tr>
 							<td>
+								<div class='control-group'>
+									<div class='controls'>
+										<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn btn btn-primary'>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
 	
 		";
 
-		echo "
-		<input type='hidden' id='provinsi' value='5' name ='provinsi' >
-		<input type='hidden' id='des' name='kota' value='501'>
-		<div class='control-group'>
-			<label class='control-label'>Provinsi <sup>*</sup></label>
-			<div class='controls'>
-				<select id='provinsi2' name ='provinsi' required>";
+	// 	echo "
+	// 	<input type='hidden' id='provinsi' value='5' name ='provinsi' >
+	// 	<input type='hidden' id='des' name='kota' value='501'>
+	// 	<div class='control-group'>
+	// 		<label class='control-label'>Provinsi <sup>*</sup></label>
+	// 		<div class='controls'>
+	// 			<select id='provinsi2' name ='provinsi' required>";
 
-				$data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
-				foreach ($data2 as $key => $value2) {
-					echo '<option value="'.$value2['province_id'].'">'.$value2['province'].'</option>';
-				}
+	// 			$data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
+	// 			foreach ($data2 as $key => $value2) {
+	// 				echo '<option value="'.$value2['province_id'].'">'.$value2['province'].'</option>';
+	// 			}
 
-				echo "</select>
-			</div>
-		</div>
+	// 			echo "</select>
+	// 		</div>
+	// 	</div>
 
-		<div class='control-group'>
-			<label class='control-label'>Kota Tujuan <sup>*</sup></label>
-			<div class='controls'>
-				<select id='des2' name='kota2' required></select>
-			</div>
-		</div>
+	// 	<div class='control-group'>
+	// 		<label class='control-label'>Kota Tujuan <sup>*</sup></label>
+	// 		<div class='controls'>
+	// 			<select id='des2' name='kota2' required></select>
+	// 		</div>
+	// 	</div>
 
-		<input type=hidden value='$berat_gram' id='berat' class='form-control' name='berat'>
-		<div class='control-group'>
-			<label class='control-label' for='inputLname'>Kurir<sup>*</sup></label>
-			<div class='controls'>
-				<input type='radio' name='Kurir' value='jne' id='jne' >
-				JNE <br>
-				<input type='radio' name='Kurir' value='pos' id='pos' >
-				POS <br>
-				<input type='radio' name='Kurir' value='tiki' id='tiki' >
-				TIKI
-			</div>
-		</div>
+	// 	<input type=hidden value='$berat_gram' id='berat' class='form-control' name='berat'>
+	// 	<div class='control-group'>
+	// 		<label class='control-label' for='inputLname'>Kurir<sup>*</sup></label>
+	// 		<div class='controls'>
+	// 			<input type='radio' name='Kurir' value='jne' id='jne' >
+	// 			JNE <br>
+	// 			<input type='radio' name='Kurir' value='pos' id='pos' >
+	// 			POS <br>
+	// 			<input type='radio' name='Kurir' value='tiki' id='tiki' >
+	// 			TIKI
+	// 		</div>
+	// 	</div>
 
-		<div class='control-group'>
-			<label class='control-label' for='inputLname'>Ongkos Kirim<sup>*</sup></label>
-			<div class='controls'>
-				<select id='biaya' name='paket' required></select>
-			</div>
-		</div>
+	// 	<div class='control-group'>
+	// 		<label class='control-label' for='inputLname'>Ongkos Kirim<sup>*</sup></label>
+	// 		<div class='controls'>
+	// 			<select id='biaya' name='paket' required></select>
+	// 		</div>
+	// 	</div>
 
-		<div class='control-group'>
-			<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
-			<div class='controls'>
-				<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required>$e[alamat_member]</textarea>
-			</div>
-		</div>
+	// 	<div class='control-group'>
+	// 		<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
+	// 		<div class='controls'>
+	// 			<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required>$e[alamat_member]</textarea>
+	// 		</div>
+	// 	</div>
 
-		<div class='control-group'>
-			<div class='controls'>
-				<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
-			</div>
-		</div>
-	</form>
-	</td>
-		  </tr>
-	</table>
-							</div>";
+	// 	<div class='control-group'>
+	// 		<div class='controls'>
+	// 			<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
+	// 		</div>
+	// 	</div>
+	// </form>
+	// </td>
+	// 	  </tr>
+	// </table>
+	// 						</div>";
 	}
 }
 elseif ($_GET['module']=='datatransaksi'){
