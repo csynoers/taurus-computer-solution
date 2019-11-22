@@ -662,6 +662,9 @@ elseif ($_GET['module']=='selesaibelanja'){
         window.location=('media.php?module=loginmember')</script>";
 	}
 	else {
+		/* load rajaongkir rest api */
+		require_once 'vendor/autoload.php';
+		print_r(RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']));
 		$sid 		= session_id();
 		$sql 		= mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='$sid'");
 		$ketemu		= mysql_num_rows($sql);
@@ -691,8 +694,6 @@ elseif ($_GET['module']=='selesaibelanja'){
 							<td>
 	
 		";
-
-		require_once 'vendor/autoload.php';
 
 		echo "
 		<input type='hidden' id='provinsi' value='5' name ='provinsi' >
