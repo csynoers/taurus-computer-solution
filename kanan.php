@@ -677,6 +677,8 @@ elseif ($_GET['module']=='selesaibelanja'){
 		$berat_gram = $totalberat;
 
 		$htmls 			= [];
+
+		/* start ongkos kirim */
 		$data 			= [];
 		$data['jne'] 	= RajaOngkir\RajaOngkir::Cost([
 			'origin' 		=> 501, // id kota asal
@@ -697,9 +699,24 @@ elseif ($_GET['module']=='selesaibelanja'){
 			'courier' 		=> 'pos', // kode kurir pengantar ( jne / tiki / pos )
 		])->get();
 		$data = array_merge($data['jne'], $data['tiki'], $data['pos']);
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
+		/* end ongkos kirim */
+		
+		$htmls['option_kurir'] = [];
+		foreach ($data as $key => $value) {
+			$kurir= strtoupper($value['code']);
+			foreach ($value['costs'] as $key_ => $value_) {
+				$service= $value_['service'];
+				$cost_value= format_rupiah($value_['cost'][0]['value']);
+				$cost_etd= "($value_['cost'][0]['etd']";
+				$cost_etd.= ($kurir=='pos') ? ')' : ' HARI)' ;
+
+				$htmls['option_kurir'][] = "<option value='{$value_['cost'][0]['etd']}'>{$kurir} {$service} Rp. {$cost_value} {$cost_etd}</option>";
+			}
+		}
+		$htmls['option_kurir'] = implode('',$htmls['option_kurir']);
+		// echo '<pre>';
+		// print_r($h);
+		// echo '</pre>';
 
 		echo"							
 			<div class='span9'>
@@ -721,7 +738,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 								<div class='control-group'>
 									<label class='control-label' for='inputLname'>Ongkos Kirim<sup>*</sup></label>
 									<div class='controls'>
-										<select id='biaya' name='paket' required></select>
+										<select id='biaya' name='paket' required>{$htmls['option_kurir']}</select>
 									</div>
 								</div>
 							</td>
