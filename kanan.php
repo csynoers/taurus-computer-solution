@@ -694,9 +694,9 @@ elseif ($_GET['module']=='selesaibelanja'){
 			'origin' 		=> 501, // id kota asal
 			'destination' 	=> $_SESSION['kota'], // id kota tujuan
 			'weight' 		=> $berat_gram, // berat satuan gram
-			'courier' 		=> 'tiki', // kode kurir pengantar ( jne / tiki / pos )
+			'courier' 		=> 'pos', // kode kurir pengantar ( jne / tiki / pos )
 		])->get();
-
+		$data = array_merge($data['jne'], $data['tiki'], $data['pos']);
 		echo '<pre>';
 		print_r($data);
 		echo '</pre>';
