@@ -412,6 +412,44 @@ elseif ($_GET['module']=='daftaraksi'){
 	
 }
 
+elseif ($_GET['module']=='loginmember'){
+	echo "							
+	<div class='span9'>
+		<h3> Form Login Member</h3>	
+		<form action='cek_login.php' method='POST' class='form-horizontal'>
+			<table class='table table-bordered'>
+				<tr>
+					<th>Silahkan Isi Form Di Bawah Ini</th>
+				</tr>
+				<tr> 
+					<td>
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
+							<div class='controls'>
+								<input class='input-block-level mod-width-fit-content' type='email' name='email' placeholder='Masukan email anda' required>
+							</div>
+						</div>	  
+						<div class='control-group'>
+							<label class='control-label'>Password <sup>*</sup></label>
+							<div class='controls'>
+								<input class='input-block-level mod-width-fit-content' type='password' name='password' placeholder='Password' required>
+							</div>
+						</div>
+			
+						<div class='control-group'>
+							<div class='controls'>
+								<input type='submit' name='submitAccount' value='Login' class='exclusive shopBtn btn btn-primary'>
+								<p>*Jika Anda belum punya akun member silahkan daftar <a href='daftar-member.html'> Disini </a> </p>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>";
+	
+}
+
 elseif ($_GET['module']=='editmember'){
 	$edit=mysql_query("SELECT * FROM member WHERE id_member='$_SESSION[member_id]'");
 	$r=mysql_fetch_assoc($edit);
@@ -519,46 +557,6 @@ elseif ($_GET['module']=='editmember'){
 		</div>";
 }
 /* ==================== END MENU MEMBER ==================== */
-
-
-
-elseif ($_GET['module']=='loginmember'){
-echo"							
-<div class='span9'>
-<h3> Form Login Member</h3>	
-	<form action='cek_login.php' method=POST class='form-horizontal'>
-		<table class='table table-bordered'>
-		<tr><th> Silahkan Isi Form Di Bawah Ini</th></tr>
-		 <tr> 
-		 <td>
-	
-		<div class='control-group'>
-		<label class='control-label' for='inputEmail'>Email <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='email' name='email' placeholder='Masukkan Email Anda' required>
-		</div>
-	  </div>	  
-		<div class='control-group'>
-		<label class='control-label'>Password <sup>*</sup></label>
-		<div class='controls'>
-		  <input type='password' name='password' placeholder='Password' required>
-		</div>
-	  </div>
-		
-	<div class='control-group'>
-		<div class='controls'>
-		 <input type='submit' name='submitAccount' value='Login' class='exclusive shopBtn'>
-		 <p>*Jika Anda belum punya akun member silahkan daftar <a href='daftar-member.html'> Disini </a> </p>
-		</div>
-	</div>
-	</form>
-	</td>
-		  </tr>
-	</table>
-							</div>";
-
-}
-
 
 /*==================== Start Halaman Keranjang Belanja ====================*/
 elseif ($_GET['module']=='keranjangbelanja'){
