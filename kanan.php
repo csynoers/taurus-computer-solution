@@ -439,7 +439,7 @@ elseif ($_GET['module']=='loginmember'){
 						<div class='control-group'>
 							<div class='controls'>
 								<input type='submit' name='submitAccount' value='Login' class='exclusive shopBtn btn btn-primary'>
-								<p>*Jika Anda belum punya akun member silahkan daftar <a href='daftar-member.html'> Disini </a> </p>
+								<p>*Jika Anda belum punya akun member silahkan daftar <a class='text-info' href='daftar-member.html'> Disini </a> </p>
 							</div>
 						</div>
 					</td>
