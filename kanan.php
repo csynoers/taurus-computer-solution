@@ -676,6 +676,31 @@ elseif ($_GET['module']=='selesaibelanja'){
 		}
 		$berat_gram = $totalberat;
 
+		$htmls 			= [];
+		$data 			= [];
+		$data['jne'] 	= RajaOngkir\RajaOngkir::Cost([
+			'origin' 		=> 501, // id kota asal
+			'destination' 	=> $_SESSION['kota'], // id kota tujuan
+			'weight' 		=> $berat_gram, // berat satuan gram
+			'courier' 		=> 'jne', // kode kurir pengantar ( jne / tiki / pos )
+		])->get();
+		$data['tiki'] 	= RajaOngkir\RajaOngkir::Cost([
+			'origin' 		=> 501, // id kota asal
+			'destination' 	=> $_SESSION['kota'], // id kota tujuan
+			'weight' 		=> $berat_gram, // berat satuan gram
+			'courier' 		=> 'tiki', // kode kurir pengantar ( jne / tiki / pos )
+		])->get();
+		$data['pos'] 	= RajaOngkir\RajaOngkir::Cost([
+			'origin' 		=> 501, // id kota asal
+			'destination' 	=> $_SESSION['kota'], // id kota tujuan
+			'weight' 		=> $berat_gram, // berat satuan gram
+			'courier' 		=> 'tiki', // kode kurir pengantar ( jne / tiki / pos )
+		])->get();
+
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
+
 		echo"							
 			<div class='span9'>
 				<h3> Form Checkout</h3>	
@@ -689,6 +714,16 @@ elseif ($_GET['module']=='selesaibelanja'){
 								<b>{$_SESSION['namalengkap']}</b><br>
 								{$_SESSION['no_telp']}<br>
 								{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class='control-group'>
+									<label class='control-label' for='inputLname'>Ongkos Kirim<sup>*</sup></label>
+									<div class='controls'>
+										<select id='biaya' name='paket' required></select>
+									</div>
+								</div>
 							</td>
 						</tr>
 						<tr>
