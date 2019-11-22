@@ -710,7 +710,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 				$cost_etd= "({$value_['cost'][0]['etd']}";
 				$cost_etd.= ($kurir=='POS') ? ')' : ' HARI)' ;
 
-				$htmls['option_kurir'][] = "<option value='{$value_['cost'][0]['etd']}'>{$kurir} {$service} Rp. {$cost_value} {$cost_etd}</option>";
+				$htmls['option_kurir'][] = "<option value='{$value_['cost'][0]['value']}'>{$kurir} {$service} Rp. {$cost_value} {$cost_etd}</option>";
 			}
 		}
 		$htmls['option_kurir'] = implode('',$htmls['option_kurir']);
@@ -745,6 +745,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 						</tr>
 						<tr>
 							<td>
+								<input type='hidden' name='kurir' value=''>
 								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn btn btn-primary'>
 							</td>
 						</tr>

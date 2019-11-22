@@ -264,6 +264,13 @@
 			return true;
 		});
 
+		if ( $("select[name=paket]").length > 0 ) {
+			$("input[name=kurir]").val( $("select[name=paket]").find(":selected").text() );
+			$("select[name=paket]").on('change',function(){
+				$("input[name=kurir]").val( $(this).find(":selected").text() );
+			});
+		}
+
 	});
 
 		function  load_ajax(url, callback){
