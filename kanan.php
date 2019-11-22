@@ -707,16 +707,16 @@ elseif ($_GET['module']=='selesaibelanja'){
 			foreach ($value['costs'] as $key_ => $value_) {
 				$service= $value_['service'];
 				$cost_value= format_rupiah($value_['cost'][0]['value']);
-				$cost_etd= "($value_['cost'][0]['etd']";
-				$cost_etd.= ($kurir=='pos') ? ')' : ' HARI)' ;
+				$cost_etd= "({$value_['cost'][0]['etd']}";
+				$cost_etd.= ($kurir=='POS') ? ')' : ' HARI)' ;
 
 				$htmls['option_kurir'][] = "<option value='{$value_['cost'][0]['etd']}'>{$kurir} {$service} Rp. {$cost_value} {$cost_etd}</option>";
 			}
 		}
 		$htmls['option_kurir'] = implode('',$htmls['option_kurir']);
-		// echo '<pre>';
-		// print_r($h);
-		// echo '</pre>';
+// 		echo '<pre>';
+// 		print_r($data);
+// 		echo '</pre>';
 
 		echo"							
 			<div class='span9'>
@@ -736,20 +736,16 @@ elseif ($_GET['module']=='selesaibelanja'){
 						<tr>
 							<td>
 								<div class='control-group'>
-									<label class='control-label' for='inputLname'>Ongkos Kirim<sup>*</sup></label>
+									<label class='control-label' for='inputLname'>Pilih Pengiriman<sup>*</sup> : </label>
 									<div class='controls'>
-										<select id='biaya' name='paket' required>{$htmls['option_kurir']}</select>
+										<select class='input-block-level mod-width-fit-content' id='biaya' name='paket' required>{$htmls['option_kurir']}</select>
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<div class='control-group'>
-									<div class='controls'>
-										<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn btn btn-primary'>
-									</div>
-								</div>
+								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn btn btn-primary'>
 							</td>
 						</tr>
 					</table>
