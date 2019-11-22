@@ -664,7 +664,8 @@ elseif ($_GET['module']=='selesaibelanja'){
 	else {
 		/* load rajaongkir rest api */
 		require_once 'vendor/autoload.php';
-		print_r(RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']));
+		$kota = RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']);
+		
 		$sid 		= session_id();
 		$sql 		= mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='$sid'");
 		$ketemu		= mysql_num_rows($sql);
@@ -687,7 +688,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 							<td>
 								<b>{$_SESSION['namalengkap']}</b><br>
 								{$_SESSION['no_telp']}<br>
-								{$_SESSION['alamat_member']}<br>
+								{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
 							</td>
 						</tr>
 						<tr> 
