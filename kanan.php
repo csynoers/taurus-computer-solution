@@ -724,6 +724,11 @@ elseif ($_GET['module']=='selesaibelanja'){
 				<form action=simpantransaksi.php method=POST class='form-horizontal'>
 					<table class='table table-bordered'>
 						<tr>
+							<th> Data Order Anda : </th>
+						</tr>
+					</table>
+					<table class='table table-bordered'>
+						<tr>
 							<th> Alamat Penerima : <a class='btn btn-info btn-mini pull-right'>Kirim ke alamat lain</a></th>
 						</tr>
 						<tr>

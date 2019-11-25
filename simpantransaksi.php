@@ -1,9 +1,9 @@
 <?php
     session_start();
-    // error_reporting(0);
-    include "config/koneksi.php";
-    include "config/library.php";
-
+    error_reporting(1);
+    include_once "config/koneksi.php";
+    include_once "config/library.php";
+    
     function acak($panjang)
     {
         $karakter= '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -14,9 +14,7 @@
         }
         return $string;
     }
-
-    $hasil= acak(6);
-
+    
     function ngacak($panj)
     {
         $karakter= '123456789';
@@ -27,15 +25,11 @@
         }
         return $string;
     }
-
-    //cara memanggilnya
-    $paket= $_POST['paket'];
-    $pecah = explode(" ", $paket);
+    
+    $data = [];
 
     //mencari element array 0
-    $ha = $pecah[0];
-    $ha1 = $pecah[1];
-    $kode= ngacak(3);
+    $data['kode']= ngacak(3);
 
     if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
         echo "<script>
@@ -45,45 +39,41 @@
     }
 
     else {
-        //$sql = "SELECT * FROM	kustomer WHERE email='$email' AND password='$password'";
-        $sql = "SELECT * FROM member WHERE id_member='$_SESSION[member_id]'";
-        $cek = mysql_query($sql);
-        $r = mysql_fetch_array($cek);
-
-        $tgl_skrg = date("Y-m-d");
-        $jam_skrg = date("H:i:s");
-
-        die();
-
-
+        /*get data post*/
+        $data['post'] = $_POST;
         
-        // mendapatkan nomor orders
-        $id_orders=$hasil;
+        $cek    = mysql_query("SELECT * FROM member WHERE id_member='{$_SESSION['member_id']}'");
+        $r      = mysql_fetch_assoc($cek);
 
-        $sid = session_id();
-        $data = mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='$sid'");
-            while($p=mysql_fetch_array($data)){
-        // simpan data detail pemesanan  
-            $id=$p[id_produk];
-            $jumlah=$p[jumlah];
-            $price=$p[price];
-            $subtotalberat = $p[berat] * $p[jumlah]; // total berat per item produk
-            $subtotal=$jumlah*$price;
-            $totalberat  = $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
-            $total   = $total + $subtotal;
-            $grandtotal=$total+$kode;
-        mysql_query("INSERT INTO orders_detail(id_orders, id_produk, jumlah) 
-                    VALUES('$hasil',$id, $jumlah)");
+        $data['tgl_skrg'] = date("Y-m-d");
+        $data['jam_skrg'] = date("H:i:s");
+        
+        # mendapatkan nomor orders
+        $data['id_orders'] = acak(6);
+        
+        # mendapatkan session_id();
+        $data['sid'] = session_id();
+        $data['total_berat'] = 0;
+        $data['total_harga'] = 0;
+        $query = mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='{$data['sid']}'");
+        while($p=mysql_fetch_assoc($query)){
+            $data['rows_keranjang'][] = strip_tags(json_encode($p));
+            $data['total_berat'] += $p['berat'];
+            $data['total_harga'] += $p['harga'];
+            
+            $data['insert_orders_detail'][] = ("INSERT INTO orders_detail(id_orders, id_produk, jumlah) VALUES('{$data['id_orders']}','{$p['id_produk']}', '{$p['jumlah']}')");
 
-            mysql_query("UPDATE produk 
-                        SET stok = stok - $jumlah
-                        WHERE id_produk='$id'");		   
-            }
-        $ongkoskirim1=$ha;
-        $ongkoskirim = $ongkoskirim1;
-
-        $grandtotal1    = $grandtotal + $ongkoskirim; 
-        $jumlah_order = mysql_fetch_array(mysql_query("select count(*) as total from orders WHERE tgl_order='" . date("Y-m-d") . "'"));
+            $data['update_produk'][] = ("UPDATE produk SET stok = stok - {$p['jumlah']} WHERE id_produk='{$p['id_produk']}'");		   
+        }
+        
+        $data['ongkoskirim'] = $_POST['paket'];
+        $data['total_grand'] = $data['total_harga']+$data['ongkoskirim']+$data['kode'];
+        $data['total_grand_json'] = json_encode([$data['total_harga'],$data['ongkoskirim'],$data['kode']]);
+        // $data['jumlah_order'] = mysql_fetch_array(mysql_query("select count(*) as total from orders WHERE tgl_order='" . date("Y-m-d") . "'"));
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        die();
         $allitem = mysql_fetch_array(mysql_query("SELECT * FROM orders_temp,produk "
                     . "WHERE orders_temp.id_produk=produk.id_produk "
                     . "AND id_session='$sesid'"));
