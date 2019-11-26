@@ -666,45 +666,103 @@ elseif ($_GET['module']=='selesaibelanja'){
 		require_once 'vendor/autoload.php';
 		$kota = RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']);
 
-		$sid 		= session_id();
-		$sql 		= mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='$sid'");
-		$ketemu		= mysql_num_rows($sql);
+		$data 			= [];
+		$htmls 			= [];		
 
-		while($r=mysql_fetch_array($sql)){
-			$subtotalberat 	= $r['berat'] * $r['jumlah']; // total berat per item produk 
-			$totalberat  	= $totalberat + $subtotalberat; // grand total berat all produk yang dibeli
+		/* start collect data order */
+		function acak($panjang)
+		{
+			$karakter= '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			$string = '';
+			for ($i = 0; $i < $panjang; $i++) {
+				$pos = rand(0, strlen($karakter)-1);
+				$string .= $karakter{$pos};
+			}
+			return $string;
 		}
-		$berat_gram = $totalberat;
+		
+		function ngacak($panj)
+		{
+			$karakter= '123456789';
+			$string = '';
+			for ($i = 0; $i < $panj; $i++) {
+				$pos = rand(0, strlen($karakter)-1);
+				$string .= $karakter{$pos};
+			}
+			return $string;
+		}
 
-		$htmls 			= [];
+		$data['sid'] 		= session_id(); /* get session_id() */
+		$data['id_orders'] 	= acak(6); /* create id orders */
+		$data['kode_unik'] 	= ngacak(3); /* create kode unik */
+
+		$data['tbody_data_order'] = []; 		
+		$data['total_berat'] = 0;
+		$data['total_harga'] = 0;
+		$no=1;
+        $query = mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='{$data['sid']}'");
+        while($p=mysql_fetch_assoc($query)){
+            $data['total_berat'] += ($p['berat']*$p['jumlah']);
+            $data['total_harga'] += ($p['harga']*$p['jumlah']);
+
+			$produk_attr = [];
+			if ( $p['kondisi'] ) {
+				$produk_attr[]= "<span class='label label-info'>Kondisi : {$p['kondisi']}</span>";
+			}
+			if ( $p['warna'] ) {
+				$produk_attr[]= "<span class='label label-info'>Warna : {$p['warna']}</span>";
+			}
+			if ( $p['ukuran'] ) {
+				$produk_attr[]= "<span class='label label-info'>Ukuran : {$p['ukuran']}</span>";
+			}
+			$produk_attr = implode('&nbsp',$produk_attr);
+
+			$data['tbody_data_order'][] = "
+				<tr>
+					<td>{$no}</td>
+					<td>{$p['nama_produk']}<div style='display: inline-flex;width:100%;'>{$produk_attr}</div></td>
+					<td>{$p['jumlah']}</td>
+					<td>".($p['berat']*$p['jumlah'])."</td>
+					<td>Rp.&nbsp;".format_rupiah($p['harga'])."</td>
+					<td>Rp.&nbsp;".format_rupiah($p['harga']*$p['jumlah'])."</td>
+				</tr>
+			";
+			$no++; 
+		}
+		$data['tbody_data_order'] 	= implode('',$data['tbody_data_order']);
+		$data['total_harga_rupiah'] = format_rupiah($data['total_harga']);
+		$data['grand_total'] 		= $data['total_harga']+$data['kode_unik'];
+		/* end collect data order */
 
 		/* start ongkos kirim */
-		$data 			= [];
 		$data['jne'] 	= RajaOngkir\RajaOngkir::Cost([
 			'origin' 		=> 501, // id kota asal
 			'destination' 	=> $_SESSION['kota'], // id kota tujuan
-			'weight' 		=> $berat_gram, // berat satuan gram
+			'weight' 		=> $data['total_berat'], // berat satuan gram
 			'courier' 		=> 'jne', // kode kurir pengantar ( jne / tiki / pos )
 		])->get();
 		$data['tiki'] 	= RajaOngkir\RajaOngkir::Cost([
 			'origin' 		=> 501, // id kota asal
 			'destination' 	=> $_SESSION['kota'], // id kota tujuan
-			'weight' 		=> $berat_gram, // berat satuan gram
+			'weight' 		=> $data['total_berat'], // berat satuan gram
 			'courier' 		=> 'tiki', // kode kurir pengantar ( jne / tiki / pos )
 		])->get();
 		$data['pos'] 	= RajaOngkir\RajaOngkir::Cost([
 			'origin' 		=> 501, // id kota asal
 			'destination' 	=> $_SESSION['kota'], // id kota tujuan
-			'weight' 		=> $berat_gram, // berat satuan gram
+			'weight' 		=> $data['total_berat'], // berat satuan gram
 			'courier' 		=> 'pos', // kode kurir pengantar ( jne / tiki / pos )
 		])->get();
-		$data = array_merge($data['jne'], $data['tiki'], $data['pos']);
-		/* end ongkos kirim */
+		$data['kurir'] = array_merge($data['jne'], $data['tiki'], $data['pos']);
 		
 		$htmls['option_kurir'] = [];
-		foreach ($data as $key => $value) {
+		foreach ($data['kurir'] as $key => $value) {
 			$kurir= strtoupper($value['code']);
 			foreach ($value['costs'] as $key_ => $value_) {
+				if ( ($key==0) && ($key_==0) ) {
+					$data['ongkos_kirim'] = $value_['cost'][0]['value'];
+					$data['ongkos_kirim_rupiah'] = format_rupiah($value_['cost'][0]['value']);
+				}
 				$service= $value_['service'];
 				$cost_value= format_rupiah($value_['cost'][0]['value']);
 				$cost_etd= "({$value_['cost'][0]['etd']}";
@@ -714,17 +772,57 @@ elseif ($_GET['module']=='selesaibelanja'){
 			}
 		}
 		$htmls['option_kurir'] = implode('',$htmls['option_kurir']);
-// 		echo '<pre>';
-// 		print_r($data);
-// 		echo '</pre>';
+		/* end ongkos kirim */
+		$data['grand_total'] += $data['ongkos_kirim'];
+		$data['grand_total_rupiah'] = format_rupiah($data['grand_total']);
+
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
 
 		echo"							
 			<div class='span9'>
 				<h3> Form Checkout</h3>	
 				<form action=simpantransaksi.php method=POST class='form-horizontal'>
-					<table class='table table-bordered'>
+					<table class='table table-bordered table-condensed'>
 						<tr>
 							<th> Data Order Anda : </th>
+						</tr>
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<th>No</th>
+										<th>Nama Produk</th>
+										<th>Jumlah</th>
+										<th>Berat (Gram)</th>
+										<th>Harga</th>
+										<th>Sub Total</th>
+									</tr>
+									{$data['tbody_data_order']}
+									<tr>
+										<td colspan='5' class='alignR'>Total:	</td>
+										<td>Rp.&nbsp;{$data['total_harga_rupiah']}</td>
+									</tr>
+									
+									<tr>
+										<td colspan='5' class='alignR'>Total Berat:	</td>
+										<td>{$data['total_berat']} (Gram)</td>
+									</tr>
+									<tr>
+										<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
+										<td>Rp.&nbsp;{$data['ongkos_kirim_rupiah']}</td>
+									</tr>
+									<tr>
+										<td colspan='5' class='alignR'>Kode Unik:	</td>
+										<td>{$data['kode_unik']}</td>
+									</tr>
+									<tr>
+										<td colspan='5' class='alignR'>Grand Total:	</td>
+										<td>Rp.&nbsp;{$data['grand_total_rupiah']}</td>
+									</tr>
+								</table>
+							</td>
 						</tr>
 					</table>
 					<table class='table table-bordered'>
@@ -734,7 +832,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 						<tr>
 							<td>
 								<b>{$_SESSION['namalengkap']}</b><br>
-								{$_SESSION['no_telp']}<br>
+								{$_SESSION['no_telp']} ({$_SESSION['email']})<br>
 								{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
 							</td>
 						</tr>
