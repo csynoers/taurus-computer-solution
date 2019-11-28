@@ -662,9 +662,6 @@ elseif ($_GET['module']=='selesaibelanja'){
         window.location=('media.php?module=loginmember')</script>";
 	}
 	else {
-		/* load rajaongkir rest api */
-		require_once 'vendor/autoload.php';
-		$kota = RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']);
 
 		$data 			= [];
 		$htmls 			= [];		
@@ -693,253 +690,201 @@ elseif ($_GET['module']=='selesaibelanja'){
 		}
 
 		$data['sid'] 		= session_id(); /* get session_id() */
-		$data['id_orders'] 	= acak(6); /* create id orders */
-		$data['kode_unik'] 	= ngacak(3); /* create kode unik */
+		$query = mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='{$data['sid']}'");
+		if ( mysql_num_rows($query) > 0) {
+			/* load rajaongkir rest api */
+			require_once 'vendor/autoload.php';
+			$kota = RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']);
 
-		$data['tbody_data_order'] = []; 		
-		$data['fp_item'] = []; 		
-		$data['total_berat'] = 0;
-		$data['total_harga'] = 0;
-		$no=1;
-        $query = mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='{$data['sid']}'");
-        while($p=mysql_fetch_assoc($query)){
-			$data['fp_item'][] = "{$p['jumlah']} Item {$p['nama_produk']}"; 
-            $data['total_berat'] += ($p['berat']*$p['jumlah']);
-            $data['total_harga'] += ($p['harga']*$p['jumlah']);
-
-			$produk_attr = [];
-			if ( $p['kondisi'] ) {
-				$produk_attr[]= "<span class='label label-info'>Kondisi : {$p['kondisi']}</span>";
-			}
-			if ( $p['warna'] ) {
-				$produk_attr[]= "<span class='label label-info'>Warna : {$p['warna']}</span>";
-			}
-			if ( $p['ukuran'] ) {
-				$produk_attr[]= "<span class='label label-info'>Ukuran : {$p['ukuran']}</span>";
-			}
-			$produk_attr = implode('&nbsp',$produk_attr);
-
-			$data['tbody_data_order'][] = "
-				<tr>
-					<td>{$no}</td>
-					<td>{$p['nama_produk']}<div style='display: inline-flex;width:100%;'>{$produk_attr}</div></td>
-					<td>{$p['jumlah']}</td>
-					<td>".($p['berat']*$p['jumlah'])."</td>
-					<td>Rp.&nbsp;".format_rupiah($p['harga'])."</td>
-					<td>Rp.&nbsp;".format_rupiah($p['harga']*$p['jumlah'])."</td>
-				</tr>
-			";
-			$no++; 
-		}
-		$data['fp_item'] = implode(', ',$data['fp_item']);
-		$data['tbody_data_order'] 	= implode('',$data['tbody_data_order']);
-		$data['total_harga_rupiah'] = format_rupiah($data['total_harga']);
-		$data['grand_total'] 		= $data['total_harga']+$data['kode_unik'];
-		/* end collect data order */
-
-		/* start ongkos kirim */
-		$data['jne'] 	= RajaOngkir\RajaOngkir::Cost([
-			'origin' 		=> 501, // id kota asal
-			'destination' 	=> $_SESSION['kota'], // id kota tujuan
-			'weight' 		=> $data['total_berat'], // berat satuan gram
-			'courier' 		=> 'jne', // kode kurir pengantar ( jne / tiki / pos )
-		])->get();
-		$data['tiki'] 	= RajaOngkir\RajaOngkir::Cost([
-			'origin' 		=> 501, // id kota asal
-			'destination' 	=> $_SESSION['kota'], // id kota tujuan
-			'weight' 		=> $data['total_berat'], // berat satuan gram
-			'courier' 		=> 'tiki', // kode kurir pengantar ( jne / tiki / pos )
-		])->get();
-		$data['pos'] 	= RajaOngkir\RajaOngkir::Cost([
-			'origin' 		=> 501, // id kota asal
-			'destination' 	=> $_SESSION['kota'], // id kota tujuan
-			'weight' 		=> $data['total_berat'], // berat satuan gram
-			'courier' 		=> 'pos', // kode kurir pengantar ( jne / tiki / pos )
-		])->get();
-		$data['kurir'] = array_merge($data['jne'], $data['tiki'], $data['pos']);
-		
-		$htmls['option_kurir'] = [];
-		foreach ($data['kurir'] as $key => $value) {
-			$kurir= strtoupper($value['code']);
-			foreach ($value['costs'] as $key_ => $value_) {
-				if ( ($key==0) && ($key_==0) ) {
-					$data['ongkos_kirim'] = $value_['cost'][0]['value'];
-					$data['ongkos_kirim_rupiah'] = format_rupiah($value_['cost'][0]['value']);
-				}
-				$service= $value_['service'];
-				$cost_value= format_rupiah($value_['cost'][0]['value']);
-				$cost_etd= "({$value_['cost'][0]['etd']}";
-				$cost_etd.= ($kurir=='POS') ? ')' : ' HARI)' ;
-
-				$htmls['option_kurir'][] = "<option value='{$value_['cost'][0]['value']}'>{$kurir} {$service} Rp. {$cost_value} {$cost_etd}</option>";
-			}
-		}
-		$htmls['option_kurir'] = implode('',$htmls['option_kurir']);
-		/* end ongkos kirim */
-		$data['grand_total'] += $data['ongkos_kirim'];
-		$data['grand_total_rupiah'] = format_rupiah($data['grand_total']);
-
-		// echo '<pre>';
-		// print_r($data);
-		// echo '</pre>';
-
-		echo"							
-			<div class='span9'>
-				<h3> Form Checkout</h3>	
-				<table class='table table-bordered table-condensed'>
-					<tr>
-						<th> Data Order Anda : </th>
-					</tr>
-					<tr>
-						<td>
-							<table>
-								<tr>
-									<th>No</th>
-									<th>Nama Produk</th>
-									<th>Jumlah</th>
-									<th>Berat (Gram)</th>
-									<th>Harga</th>
-									<th>Sub Total</th>
-								</tr>
-								{$data['tbody_data_order']}
-								<tr>
-									<td colspan='5' class='alignR'>Total:	</td>
-									<td id='totalHarga' data-value='{$data['total_harga']}'>Rp.&nbsp;{$data['total_harga_rupiah']}</td>
-								</tr>
-								
-								<tr>
-									<td colspan='5' class='alignR'>Total Berat:	</td>
-									<td id='totalBerat' data-value='{$data['total_berat']}'>{$data['total_berat']} (Gram)</td>
-								</tr>
-								<tr>
-									<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
-									<td id='ongkosKirim' data-value='{$data['ongkos_kirim']}'>Rp.&nbsp;{$data['ongkos_kirim_rupiah']}</td>
-								</tr>
-								<tr>
-									<td colspan='5' class='alignR'>Kode Unik:	</td>
-									<td id='kodeUnik' data-value='{$data['kode_unik']}'>{$data['kode_unik']}</td>
-								</tr>
-								<tr>
-									<td colspan='5' class='alignR'>Grand Total:	</td>
-									<td id='grandTotal' data-value='{$data['grand_total']}'>Rp.&nbsp;{$data['grand_total_rupiah']}</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-				<table class='table table-bordered'>
-					<tr>
-						<th> Alamat Penerima : <a class='btn btn-info btn-mini pull-right send-to-other-address'>Kirim ke alamat lain</a></th>
-					</tr>
-					<tr>
-						<td id='alamatPengiriman'>
-							<b>{$_SESSION['namalengkap']}</b><br>
-							{$_SESSION['no_telp']} ({$_SESSION['email']})<br>
-							{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
-						</td>
-					</tr>
-					<tr>
-						<td id='optionKurir'>
-							<div class='control-group'>
-								<label class='control-label' for='inputLname'>Pilih Pengiriman<sup>*</sup> : </label>
-								<div class='controls'>
-									<select class='input-block-level mod-width-fit-content' id='biaya' name='paket' required>{$htmls['option_kurir']}</select>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td id='paymentMethod'>
-							<input type='hidden' name='kurir' value=''>
-							<input type='hidden' id='idSession' name='id_session' value='{$data['sid']}'>
-							<input type='hidden' id='idOrders' name='id_orders' value='{$data['id_orders']}'>
-							<input type='hidden' id='idMember' name='id_orders' value='{$_SESSION['member_id']}'>
-
-							<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
-							<form id='formFasapay' target='_blank' method='post' action='https://sci.fasapay.com/'>
-								<input type='hidden' name='fp_acc' value='FP498022'>
-								<input type='hidden' name='fp_acc_from' value='' />
-								<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
-								<input type='hidden' name='fp_item' value='{$data['fp_item']}'>
-								<input type='hidden' name='fp_amnt' value='{$data['grand_total']}'>
-								<input type='hidden' name='fp_currency' value='IDR'>
-								<input type='hidden' name='fp_comments' value='Pembayaran untuk {$data['fp_item']}'>
-								<input type='hidden' name='fp_merchant_ref' value='BL000001' />
-								<!-- baggage fields -->
-								<input type='hidden' name='track_id' value='558421222'>
-								<!--<input type='hidden' name='fp_fail_url' value='localhost/tes.php'>
-								<input type='hidden' name='fp_fail_method' value='localhost/tes.php'>-->
-								<input type='hidden' name='order_id' value='{$data['id_orders']}'>
-								<button type='button' class='btn btn-primary'>Bayar Dengan Fasapay</button>	
-							</form>
-						</td>
-					</tr>
-				</table>
-			</div>
+			$data['id_orders'] 	= acak(6); /* create id orders */
+			$data['kode_unik'] 	= ngacak(3); /* create kode unik */
 	
-		";
+			$data['tbody_data_order'] = []; 		
+			$data['fp_item'] = []; 		
+			$data['total_berat'] = 0;
+			$data['total_harga'] = 0;
+			$no=1;
 
-	// 	echo "
-	// 	<input type='hidden' id='provinsi' value='5' name ='provinsi' >
-	// 	<input type='hidden' id='des' name='kota' value='501'>
-	// 	<div class='control-group'>
-	// 		<label class='control-label'>Provinsi <sup>*</sup></label>
-	// 		<div class='controls'>
-	// 			<select id='provinsi2' name ='provinsi' required>";
-
-	// 			$data2 = RajaOngkir\RajaOngkir::Provinsi()->all();
-	// 			foreach ($data2 as $key => $value2) {
-	// 				echo '<option value="'.$value2['province_id'].'">'.$value2['province'].'</option>';
-	// 			}
-
-	// 			echo "</select>
-	// 		</div>
-	// 	</div>
-
-	// 	<div class='control-group'>
-	// 		<label class='control-label'>Kota Tujuan <sup>*</sup></label>
-	// 		<div class='controls'>
-	// 			<select id='des2' name='kota2' required></select>
-	// 		</div>
-	// 	</div>
-
-	// 	<input type=hidden value='$berat_gram' id='berat' class='form-control' name='berat'>
-	// 	<div class='control-group'>
-	// 		<label class='control-label' for='inputLname'>Kurir<sup>*</sup></label>
-	// 		<div class='controls'>
-	// 			<input type='radio' name='Kurir' value='jne' id='jne' >
-	// 			JNE <br>
-	// 			<input type='radio' name='Kurir' value='pos' id='pos' >
-	// 			POS <br>
-	// 			<input type='radio' name='Kurir' value='tiki' id='tiki' >
-	// 			TIKI
-	// 		</div>
-	// 	</div>
-
-	// 	<div class='control-group'>
-	// 		<label class='control-label' for='inputLname'>Ongkos Kirim<sup>*</sup></label>
-	// 		<div class='controls'>
-	// 			<select id='biaya' name='paket' required></select>
-	// 		</div>
-	// 	</div>
-
-	// 	<div class='control-group'>
-	// 		<label class='control-label' for='inputLname'>Alamat Pengiriman<sup>*</sup></label>
-	// 		<div class='controls'>
-	// 			<textarea style='width:100%' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required>$e[alamat_member]</textarea>
-	// 		</div>
-	// 	</div>
-
-	// 	<div class='control-group'>
-	// 		<div class='controls'>
-	// 			<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn'>
-	// 		</div>
-	// 	</div>
-	// </form>
-	// </td>
-	// 	  </tr>
-	// </table>
-	// 						</div>";
+			while($p=mysql_fetch_assoc($query)){
+				$data['fp_item'][] = "{$p['jumlah']} Item {$p['nama_produk']}"; 
+				$data['total_berat'] += ($p['berat']*$p['jumlah']);
+				$data['total_harga'] += ($p['harga']*$p['jumlah']);
+	
+				$produk_attr = [];
+				if ( $p['kondisi'] ) {
+					$produk_attr[]= "<span class='label label-info'>Kondisi : {$p['kondisi']}</span>";
+				}
+				if ( $p['warna'] ) {
+					$produk_attr[]= "<span class='label label-info'>Warna : {$p['warna']}</span>";
+				}
+				if ( $p['ukuran'] ) {
+					$produk_attr[]= "<span class='label label-info'>Ukuran : {$p['ukuran']}</span>";
+				}
+				$produk_attr = implode('&nbsp',$produk_attr);
+	
+				$data['tbody_data_order'][] = "
+					<tr>
+						<td>{$no}</td>
+						<td>{$p['nama_produk']}<div style='display: inline-flex;width:100%;'>{$produk_attr}</div></td>
+						<td>{$p['jumlah']}</td>
+						<td>".($p['berat']*$p['jumlah'])."</td>
+						<td>Rp.&nbsp;".format_rupiah($p['harga'])."</td>
+						<td>Rp.&nbsp;".format_rupiah($p['harga']*$p['jumlah'])."</td>
+					</tr>
+				";
+				$no++; 
+			}
+			$data['fp_item'] = implode(', ',$data['fp_item']);
+			$data['tbody_data_order'] 	= implode('',$data['tbody_data_order']);
+			$data['total_harga_rupiah'] = format_rupiah($data['total_harga']);
+			$data['grand_total'] 		= $data['total_harga']+$data['kode_unik'];
+			/* end collect data order */
+	
+			/* start ongkos kirim */
+			$data['jne'] 	= RajaOngkir\RajaOngkir::Cost([
+				'origin' 		=> 501, // id kota asal
+				'destination' 	=> $_SESSION['kota'], // id kota tujuan
+				'weight' 		=> $data['total_berat'], // berat satuan gram
+				'courier' 		=> 'jne', // kode kurir pengantar ( jne / tiki / pos )
+			])->get();
+			$data['tiki'] 	= RajaOngkir\RajaOngkir::Cost([
+				'origin' 		=> 501, // id kota asal
+				'destination' 	=> $_SESSION['kota'], // id kota tujuan
+				'weight' 		=> $data['total_berat'], // berat satuan gram
+				'courier' 		=> 'tiki', // kode kurir pengantar ( jne / tiki / pos )
+			])->get();
+			$data['pos'] 	= RajaOngkir\RajaOngkir::Cost([
+				'origin' 		=> 501, // id kota asal
+				'destination' 	=> $_SESSION['kota'], // id kota tujuan
+				'weight' 		=> $data['total_berat'], // berat satuan gram
+				'courier' 		=> 'pos', // kode kurir pengantar ( jne / tiki / pos )
+			])->get();
+			$data['kurir'] = array_merge($data['jne'], $data['tiki'], $data['pos']);
+			
+			$htmls['option_kurir'] = [];
+			foreach ($data['kurir'] as $key => $value) {
+				$kurir= strtoupper($value['code']);
+				foreach ($value['costs'] as $key_ => $value_) {
+					if ( ($key==0) && ($key_==0) ) {
+						$data['ongkos_kirim'] = $value_['cost'][0]['value'];
+						$data['ongkos_kirim_rupiah'] = format_rupiah($value_['cost'][0]['value']);
+					}
+					$service= $value_['service'];
+					$cost_value= format_rupiah($value_['cost'][0]['value']);
+					$cost_etd= "({$value_['cost'][0]['etd']}";
+					$cost_etd.= ($kurir=='POS') ? ')' : ' HARI)' ;
+	
+					$htmls['option_kurir'][] = "<option value='{$value_['cost'][0]['value']}'>{$kurir} {$service} Rp. {$cost_value} {$cost_etd}</option>";
+				}
+			}
+			$htmls['option_kurir'] = implode('',$htmls['option_kurir']);
+			/* end ongkos kirim */
+			$data['grand_total'] += $data['ongkos_kirim'];
+			$data['grand_total_rupiah'] = format_rupiah($data['grand_total']);
+	
+			// echo '<pre>';
+			// print_r($data);
+			// echo '</pre>';
+	
+			echo"							
+				<div class='span9'>
+					<h3> Form Checkout</h3>	
+					<table class='table table-bordered table-condensed'>
+						<tr>
+							<th> Data Order Anda : </th>
+						</tr>
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<th>No</th>
+										<th>Nama Produk</th>
+										<th>Jumlah</th>
+										<th>Berat (Gram)</th>
+										<th>Harga</th>
+										<th>Sub Total</th>
+									</tr>
+									{$data['tbody_data_order']}
+									<tr>
+										<td colspan='5' class='alignR'>Total:	</td>
+										<td id='totalHarga' data-value='{$data['total_harga']}'>Rp.&nbsp;{$data['total_harga_rupiah']}</td>
+									</tr>
+									
+									<tr>
+										<td colspan='5' class='alignR'>Total Berat:	</td>
+										<td id='totalBerat' data-value='{$data['total_berat']}'>{$data['total_berat']} (Gram)</td>
+									</tr>
+									<tr>
+										<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
+										<td id='ongkosKirim' data-value='{$data['ongkos_kirim']}'>Rp.&nbsp;{$data['ongkos_kirim_rupiah']}</td>
+									</tr>
+									<tr>
+										<td colspan='5' class='alignR'>Kode Unik:	</td>
+										<td id='kodeUnik' data-value='{$data['kode_unik']}'>{$data['kode_unik']}</td>
+									</tr>
+									<tr>
+										<td colspan='5' class='alignR'>Grand Total:	</td>
+										<td id='grandTotal' data-value='{$data['grand_total']}'>Rp.&nbsp;{$data['grand_total_rupiah']}</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<table class='table table-bordered'>
+						<tr>
+							<th> Alamat Penerima : <a class='btn btn-info btn-mini pull-right send-to-other-address'>Kirim ke alamat lain</a></th>
+						</tr>
+						<tr>
+							<td id='alamatPengiriman'>
+								<b>{$_SESSION['namalengkap']}</b><br>
+								{$_SESSION['no_telp']} ({$_SESSION['email']})<br>
+								{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
+							</td>
+						</tr>
+						<tr>
+							<td id='optionKurir'>
+								<div class='control-group'>
+									<label class='control-label' for='inputLname'>Pilih Pengiriman<sup>*</sup> : </label>
+									<div class='controls'>
+										<select class='input-block-level mod-width-fit-content' id='biaya' name='paket' required>{$htmls['option_kurir']}</select>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td id='paymentMethod'>
+								<input type='hidden' name='kurir' value=''>
+								<input type='hidden' id='idSession' name='id_session' value='{$data['sid']}'>
+								<input type='hidden' id='idOrders' name='id_orders' value='{$data['id_orders']}'>
+								<input type='hidden' id='idMember' name='id_orders' value='{$_SESSION['member_id']}'>
+	
+								<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
+								<form id='formFasapay' method='post' action='https://sci.fasapay.com/'>
+									<input type='hidden' name='fp_acc' value='FP498022'>
+									<input type='hidden' name='fp_acc_from' value='' />
+									<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
+									<input type='hidden' name='fp_item' value='{$data['fp_item']}'>
+									<input type='hidden' name='fp_amnt' value='{$data['grand_total']}'>
+									<input type='hidden' name='fp_currency' value='IDR'>
+									<input type='hidden' name='fp_comments' value='Pembayaran untuk {$data['fp_item']}'>
+									<input type='hidden' name='fp_merchant_ref' value='BL000001' />
+									<!-- baggage fields -->
+									<input type='hidden' name='track_id' value='558421222'>
+									<!--<input type='hidden' name='fp_fail_url' value='localhost/tes.php'>
+									<input type='hidden' name='fp_fail_method' value='localhost/tes.php'>-->
+									<input type='hidden' name='order_id' value='{$data['id_orders']}'>
+									<button type='button' class='btn btn-primary'>Bayar Dengan Fasapay</button>	
+								</form>
+							</td>
+						</tr>
+					</table>
+				</div>
+		
+			";
+		} else {
+			echo "<script>window.alert('Maaf keranjang masih kosong');
+				window.location.assign(window.location.origin)</script>";
+		}
 	}
 }
 elseif ($_GET['module']=='datatransaksi'){

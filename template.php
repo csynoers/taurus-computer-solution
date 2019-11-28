@@ -285,11 +285,19 @@
 				"ongkir" 			: $('#biaya').val(),
 				"kurir" 			: $('#biaya').find(':selected').text(),
 				"kode_unik" 		: $('#kodeUnik').text(),
+				"total"				: $("td#totalHarga").attr("data-value"),
+				"grandtotal"		: $("td#grandTotal").attr("data-value"),
 				"tanggal"			: formatTanggal(dateNow),
 				"jam"				: formatJam(dateNow),
 				"alamat_lengkap" 	: $('table').find('tbody').find('tr').find('td#alamatPengiriman').html(),
 			};
-			console.log(data); 
+			$.post("store_order.php",data,function(d){
+				if ( d.status ) {
+					$("#formFasapay").submit();
+				}else {
+					alert('maaf order gagal diproses')
+				}
+			},'json');
 		});
 
 		$("table").find("tr").find("th").find(".send-to-other-address").on("click",function(){
