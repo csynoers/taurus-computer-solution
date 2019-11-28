@@ -257,92 +257,263 @@
 			},'json');
 		});
 
-		$(".input-number-only").keypress(function(evt){
-			var charCode = (evt.which) ? evt.which : event.keyCode
-			if (charCode > 31 && (charCode < 48 || charCode > 57))
-				return false;
-			return true;
-		});
+		inputNumberOnly();
+		function inputNumberOnly() {
+			$(".input-number-only").keypress(function(evt){
+				var charCode = (evt.which) ? evt.which : event.keyCode
+				if (charCode > 31 && (charCode < 48 || charCode > 57))
+					return false;
+				return true;
+			});
+		}
 
 		if ( $("select[name=paket]").length > 0 ) {
 			$("input[name=kurir]").val( $("select[name=paket]").find(":selected").text() );
 			$("select[name=paket]").on('change',function(){
+				$('#ongkosKirim').attr('data-value',$(this).val());
 				$("input[name=kurir]").val( $(this).find(":selected").text() );
+				getGrandTotal();
 			});
 		}
+
+		$("#formFasapay").on('click','button',function(){
+			let dateNow = new Date();
+			let data = {
+				"id_session"		: $("#idSession").val(),
+				"id_orders"			: $("#idOrders").val(),
+				"id_member"			: $("#idMember").val(),
+				"ongkir" 			: $('#biaya').val(),
+				"kurir" 			: $('#biaya').find(':selected').text(),
+				"kode_unik" 		: $('#kodeUnik').text(),
+				"tanggal"			: formatTanggal(dateNow),
+				"jam"				: formatJam(dateNow),
+				"alamat_lengkap" 	: $('table').find('tbody').find('tr').find('td#alamatPengiriman').html(),
+			};
+			console.log(data); 
+		});
+
+		$("table").find("tr").find("th").find(".send-to-other-address").on("click",function(){
+			$('td#optionKurir, td#paymentMethod').css({"display":"none"});/* hide pilih pengiriman dan methode pembayaran saat user memilih kirim ke alamat lain */
+			let htmls = {};
+			htmls['option_provinsi'] = [];
+			let _provinsi= getProvinsi();
+			$.each(_provinsi,function(a,q){
+				htmls.option_provinsi.push(`<option value='${q.province_id}'>${q.province}</option>`);
+			});
+			htmls['option_kota'] = [];
+			let _kota= getKota(_provinsi[0].province_id);
+			$.each(_kota,function(a,q){
+				htmls.option_kota.push(`<option value='${q.city_id}'>${q.city_name}</option>`);
+			});
+			$('table').find('tbody').find('tr').find('td#alamatPengiriman').html(function(){
+				return `
+			<form id='formOtherAddress' method="post">
+				<table class='table table-bordered'>
+					<tr>
+						<td><label class='control-label' for='inputFname'>Nama Lengkap <sup>*</sup></label></td>
+						<td><input type='text' class='input-block-level mod-width-fit-content' name='nama' id='inputFname' placeholder='Masukkan Nama Lengkap' required></td>
+					</tr>
+					<tr>
+						<td><label class='control-label' for='inputFname'>Nomor Telepon <sup>*</sup></label></td>
+						<td><input type='text' class='input-block-level mod-width-fit-content input-number-only' min='0' name='no_telp'  placeholder='08123456789' required></td>
+					</tr>	  
+					<tr>
+						<td><label class='control-label' for='inputEmail'>Email <sup>*</sup></label></td>
+						<td><input type='email' class='input-block-level mod-width-fit-content' name='email' placeholder='email@gmail.com' required></td>
+					</tr>
+					<tr>
+						<td><label class='control-label'>Provinsi <sup>*</sup></label></td>
+						<td>
+							<select class='input-block-level mod-width-fit-content' name='provinsi' required>
+								${htmls.option_provinsi.join('')}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td><label class='control-label'>Kota/Kabupaten <sup>*</sup></label></td>
+						<td>
+							<select class='input-block-level mod-width-fit-content' name='kota' required>
+								${htmls.option_kota.join('')}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td><label class='control-label' for='inputFname'>Kode Pos <sup>*</sup></label></td>
+						<td><input type='text' class='input-block-level mod-width-fit-content input-number-only'  name='kode_pos'  placeholder='Kode Pos' required></td>
+					</tr>
+					<tr>
+						<td><label class='control-label' for='inputFname'>Alamat Lengkap <sup>*</sup></label></td>
+						<td><textarea class='input-block-level' id='alamat' name='alamat' placeholder='Isi nama jalan, nomor rumah, nama gedung, dsb' required></textarea></td>
+					</tr>
+					<tr>
+						<td colspan='2'><button type="submit" class='btn btn-block btn-info'>Set Alamat Penerima</button></td>
+					</tr>
+				</table>
+			</form>
+				`;
+			});
+			inputNumberOnly();
+			$('form#formOtherAddress').on("submit",function(e){
+				e.preventDefault();
+				let kota = getKotaByKotaId( $(this).find('select[name=kota]').find(":selected").val() );
+				let newAlamat = `
+					<b>${$(this).find('input[name=nama]').val()}</b><br>
+					${$(this).find('input[name=no_telp]').val()} (${$(this).find('input[name=email]').val()})<br>
+					${$(this).find('textarea[name=alamat]').val()}, ${kota.type} ${kota.city_name}, ${kota.province} ${$(this).find('input[name=kode_pos]').val()}
+				`;
+				$('td#alamatPengiriman').html(newAlamat);/* set alamat baru */
+				$.get("get_ongkir_api.php",{"data":'option-kurir-html',"d":kota.city_id,"w":$('td#totalBerat').attr('data-value')},function(html){
+					$('td#optionKurir').find('#biaya').html(html);
+				});
+				$('td#optionKurir, td#paymentMethod').css({"display":"block"});/* hide pilih pengiriman dan methode pembayaran saat user memilih kirim ke alamat lain */
+				
+			});
+		});
+
+		function getProvinsi() {
+			return JSON.parse( $.ajax({type: "GET", url: "get_ongkir_api.php", async: false, data: {"data" : "provinsi"} }).responseText );
+		}
+		function getKota(id) {
+			return JSON.parse(
+				$.ajax({
+					type: "GET",
+					url: "get_ongkir_api.php",
+					async: false,
+					data: {"data" : "kota-by-provinsi","id":id}
+				}).responseText
+			);
+		}
+		function getKotaByKotaId(id) {
+			return JSON.parse(
+				$.ajax({
+					type: "GET",
+					url: "get_ongkir_api.php",
+					async: false,
+					data: {"data" : "kota-by-kota-id","id":id}
+				}).responseText
+			);
+		}
+
+		function numberToCurrency( bilangan ) {
+			let	number_string = bilangan.toString(),
+				sisa 	= number_string.length % 3,
+				rupiah 	= number_string.substr(0, sisa),
+				ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+					
+			if (ribuan) {
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+
+			// Cetak hasil
+			return rupiah; // Hasil: 23.456.789
+		}
+
+		function getGrandTotal() {
+			let data = {
+				"total_harga" : $('table tr td #totalHarga').attr('data-value'),
+				"ongkos_kirim" : $('table tr td #ongkosKirim').attr('data-value'),
+				"kode_unik" : $('table tr td #kodeUnik').attr('data-value')
+			};
+			let total = (data.total_harga*1)+(data.ongkos_kirim*1)+(data.kode_unik*1);
+			
+			/*target change*/
+			$('table tr td #ongkosKirim').html( `Rp.&nbsp;${numberToCurrency(data.ongkos_kirim)}`);
+			$('table tr td #grandTotal').attr( 'data-value',total);
+			$('table tr td #grandTotal').html( `Rp.&nbsp;${numberToCurrency(total)}`);
+		}
+
+		function formatTanggal(date) {
+			let d = new Date(date),
+				month = '' + (d.getMonth() + 1),
+				day = '' + d.getDate(),
+				year = d.getFullYear();
+
+			if (month.length < 2) 
+				month = '0' + month;
+			if (day.length < 2) 
+				day = '0' + day;
+
+			return [year, month, day].join('-');
+		}
+
+		function formatJam(date) {
+			return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+		}
+
+		$('body').append("</bo"+"dy>");
 
 	});
 
-		function  load_ajax(url, callback){
+		// function  load_ajax(url, callback){
 		  
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = cekstatus;
+		// 	var xhr = new XMLHttpRequest();
+		// 	xhr.onreadystatechange = cekstatus;
 
-			function cekstatus(){
-				if(xhr.readyState === 4 && xhr.status === 200 ){
-				callback(xhr.responseText);
-				}
-			}
-			xhr.open('GET',url,true);
-			xhr.send();
+		// 	function cekstatus(){
+		// 		if(xhr.readyState === 4 && xhr.status === 200 ){
+		// 		callback(xhr.responseText);
+		// 		}
+		// 	}
+		// 	xhr.open('GET',url,true);
+		// 	xhr.send();
 
-		}
+		// }
 
 		// Asal
-		document.getElementById('provinsi').onclick = function(){
-			text = document.getElementById('provinsi').value;
-			load_ajax('cek_kabupaten.php?q='+ text, function(data){
-				console.log(data);
-				document.getElementById('des').innerHTML = data ;
-			});
-		};
+		// document.getElementById('provinsi').onclick = function(){
+		// 	text = document.getElementById('provinsi').value;
+		// 	load_ajax('cek_kabupaten.php?q='+ text, function(data){
+		// 		console.log(data);
+		// 		document.getElementById('des').innerHTML = data ;
+		// 	});
+		// };
 
 
 		// Tujuan
-		document.getElementById('provinsi2').onclick = function(){
-			text = document.getElementById('provinsi2').value;
-			load_ajax('cek_kabupaten.php?q='+ text, function(data){
-				console.log(data);
-				document.getElementById('des2').innerHTML = data ;
-			});
-		};
+		// document.getElementById('provinsi2').onclick = function(){
+		// 	text = document.getElementById('provinsi2').value;
+		// 	load_ajax('cek_kabupaten.php?q='+ text, function(data){
+		// 		console.log(data);
+		// 		document.getElementById('des2').innerHTML = data ;
+		// 	});
+		// };
 
 		// Kurir Pos
-		document.getElementById('pos').onclick = function(){
-			text = pos.value;
-			des = document.getElementById('des').value;
-			des2 = document.getElementById('des2').value;
-			berat = document.getElementById('berat').value;
-			load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
-				console.log(data);
-				biaya.innerHTML = data ;
-			});
-		};
+		// document.getElementById('pos').onclick = function(){
+		// 	text = pos.value;
+		// 	des = document.getElementById('des').value;
+		// 	des2 = document.getElementById('des2').value;
+		// 	berat = document.getElementById('berat').value;
+		// 	load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
+		// 		console.log(data);
+		// 		biaya.innerHTML = data ;
+		// 	});
+		// };
 
 		// Kurir tiki
-		document.getElementById('tiki').onclick = function(){
-			text = tiki.value;
-			des = document.getElementById('des').value;
-			des2 = document.getElementById('des2').value;
-			berat = document.getElementById('berat').value;
-			load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
-				console.log(data);
-				biaya.innerHTML = data ;
-			});
-		};
+		// document.getElementById('tiki').onclick = function(){
+		// 	text = tiki.value;
+		// 	des = document.getElementById('des').value;
+		// 	des2 = document.getElementById('des2').value;
+		// 	berat = document.getElementById('berat').value;
+		// 	load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
+		// 		console.log(data);
+		// 		biaya.innerHTML = data ;
+		// 	});
+		// };
 
 		// Kurir jne
-		document.getElementById('jne').onclick = function(){
-			text = jne.value;
-			des = document.getElementById('des').value;
-			des2 = document.getElementById('des2').value;
-			berat = document.getElementById('berat').value;
-			load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
-				console.log(data);
-				biaya.innerHTML = data ;
-			});
-		};
+		// document.getElementById('jne').onclick = function(){
+		// 	text = jne.value;
+		// 	des = document.getElementById('des').value;
+		// 	des2 = document.getElementById('des2').value;
+		// 	berat = document.getElementById('berat').value;
+		// 	load_ajax('cek_ongkir.php?q='+ text + '&o=' + des + '&p=' + des2 + '&w=' + berat, function(data){
+		// 		console.log(data);
+		// 		biaya.innerHTML = data ;
+		// 	});
+		// };
 
 	</script>
-</body>
 </html>

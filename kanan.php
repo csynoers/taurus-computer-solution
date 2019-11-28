@@ -697,11 +697,13 @@ elseif ($_GET['module']=='selesaibelanja'){
 		$data['kode_unik'] 	= ngacak(3); /* create kode unik */
 
 		$data['tbody_data_order'] = []; 		
+		$data['fp_item'] = []; 		
 		$data['total_berat'] = 0;
 		$data['total_harga'] = 0;
 		$no=1;
         $query = mysql_query("SELECT * FROM keranjang,produk WHERE keranjang.id_produk=produk.id_produk AND keranjang.id_session='{$data['sid']}'");
         while($p=mysql_fetch_assoc($query)){
+			$data['fp_item'][] = "{$p['jumlah']} Item {$p['nama_produk']}"; 
             $data['total_berat'] += ($p['berat']*$p['jumlah']);
             $data['total_harga'] += ($p['harga']*$p['jumlah']);
 
@@ -729,6 +731,7 @@ elseif ($_GET['module']=='selesaibelanja'){
 			";
 			$no++; 
 		}
+		$data['fp_item'] = implode(', ',$data['fp_item']);
 		$data['tbody_data_order'] 	= implode('',$data['tbody_data_order']);
 		$data['total_harga_rupiah'] = format_rupiah($data['total_harga']);
 		$data['grand_total'] 		= $data['total_harga']+$data['kode_unik'];
@@ -776,84 +779,102 @@ elseif ($_GET['module']=='selesaibelanja'){
 		$data['grand_total'] += $data['ongkos_kirim'];
 		$data['grand_total_rupiah'] = format_rupiah($data['grand_total']);
 
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
 
 		echo"							
 			<div class='span9'>
 				<h3> Form Checkout</h3>	
-				<form action=simpantransaksi.php method=POST class='form-horizontal'>
-					<table class='table table-bordered table-condensed'>
-						<tr>
-							<th> Data Order Anda : </th>
-						</tr>
-						<tr>
-							<td>
-								<table>
-									<tr>
-										<th>No</th>
-										<th>Nama Produk</th>
-										<th>Jumlah</th>
-										<th>Berat (Gram)</th>
-										<th>Harga</th>
-										<th>Sub Total</th>
-									</tr>
-									{$data['tbody_data_order']}
-									<tr>
-										<td colspan='5' class='alignR'>Total:	</td>
-										<td>Rp.&nbsp;{$data['total_harga_rupiah']}</td>
-									</tr>
-									
-									<tr>
-										<td colspan='5' class='alignR'>Total Berat:	</td>
-										<td>{$data['total_berat']} (Gram)</td>
-									</tr>
-									<tr>
-										<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
-										<td>Rp.&nbsp;{$data['ongkos_kirim_rupiah']}</td>
-									</tr>
-									<tr>
-										<td colspan='5' class='alignR'>Kode Unik:	</td>
-										<td>{$data['kode_unik']}</td>
-									</tr>
-									<tr>
-										<td colspan='5' class='alignR'>Grand Total:	</td>
-										<td>Rp.&nbsp;{$data['grand_total_rupiah']}</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-					<table class='table table-bordered'>
-						<tr>
-							<th> Alamat Penerima : <a class='btn btn-info btn-mini pull-right'>Kirim ke alamat lain</a></th>
-						</tr>
-						<tr>
-							<td>
-								<b>{$_SESSION['namalengkap']}</b><br>
-								{$_SESSION['no_telp']} ({$_SESSION['email']})<br>
-								{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class='control-group'>
-									<label class='control-label' for='inputLname'>Pilih Pengiriman<sup>*</sup> : </label>
-									<div class='controls'>
-										<select class='input-block-level mod-width-fit-content' id='biaya' name='paket' required>{$htmls['option_kurir']}</select>
-									</div>
+				<table class='table table-bordered table-condensed'>
+					<tr>
+						<th> Data Order Anda : </th>
+					</tr>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<th>No</th>
+									<th>Nama Produk</th>
+									<th>Jumlah</th>
+									<th>Berat (Gram)</th>
+									<th>Harga</th>
+									<th>Sub Total</th>
+								</tr>
+								{$data['tbody_data_order']}
+								<tr>
+									<td colspan='5' class='alignR'>Total:	</td>
+									<td id='totalHarga' data-value='{$data['total_harga']}'>Rp.&nbsp;{$data['total_harga_rupiah']}</td>
+								</tr>
+								
+								<tr>
+									<td colspan='5' class='alignR'>Total Berat:	</td>
+									<td id='totalBerat' data-value='{$data['total_berat']}'>{$data['total_berat']} (Gram)</td>
+								</tr>
+								<tr>
+									<td colspan='5' class='alignR'>Total Ongkos Kirim:	</td>
+									<td id='ongkosKirim' data-value='{$data['ongkos_kirim']}'>Rp.&nbsp;{$data['ongkos_kirim_rupiah']}</td>
+								</tr>
+								<tr>
+									<td colspan='5' class='alignR'>Kode Unik:	</td>
+									<td id='kodeUnik' data-value='{$data['kode_unik']}'>{$data['kode_unik']}</td>
+								</tr>
+								<tr>
+									<td colspan='5' class='alignR'>Grand Total:	</td>
+									<td id='grandTotal' data-value='{$data['grand_total']}'>Rp.&nbsp;{$data['grand_total_rupiah']}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<table class='table table-bordered'>
+					<tr>
+						<th> Alamat Penerima : <a class='btn btn-info btn-mini pull-right send-to-other-address'>Kirim ke alamat lain</a></th>
+					</tr>
+					<tr>
+						<td id='alamatPengiriman'>
+							<b>{$_SESSION['namalengkap']}</b><br>
+							{$_SESSION['no_telp']} ({$_SESSION['email']})<br>
+							{$_SESSION['alamat_member']}, {$kota['type']} {$kota['city_name']}, {$kota['province']} {$_SESSION['kode_pos']}
+						</td>
+					</tr>
+					<tr>
+						<td id='optionKurir'>
+							<div class='control-group'>
+								<label class='control-label' for='inputLname'>Pilih Pengiriman<sup>*</sup> : </label>
+								<div class='controls'>
+									<select class='input-block-level mod-width-fit-content' id='biaya' name='paket' required>{$htmls['option_kurir']}</select>
 								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input type='hidden' name='kurir' value=''>
-								<input type='submit' name='submitAccount' value='Proses' class='exclusive shopBtn btn btn-primary'>
-							</td>
-						</tr>
-					</table>
-				</form>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td id='paymentMethod'>
+							<input type='hidden' name='kurir' value=''>
+							<input type='hidden' id='idSession' name='id_session' value='{$data['sid']}'>
+							<input type='hidden' id='idOrders' name='id_orders' value='{$data['id_orders']}'>
+							<input type='hidden' id='idMember' name='id_orders' value='{$_SESSION['member_id']}'>
+
+							<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
+							<form id='formFasapay' target='_blank' method='post' action='https://sci.fasapay.com/'>
+								<input type='hidden' name='fp_acc' value='FP498022'>
+								<input type='hidden' name='fp_acc_from' value='' />
+								<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
+								<input type='hidden' name='fp_item' value='{$data['fp_item']}'>
+								<input type='hidden' name='fp_amnt' value='{$data['grand_total']}'>
+								<input type='hidden' name='fp_currency' value='IDR'>
+								<input type='hidden' name='fp_comments' value='Pembayaran untuk {$data['fp_item']}'>
+								<input type='hidden' name='fp_merchant_ref' value='BL000001' />
+								<!-- baggage fields -->
+								<input type='hidden' name='track_id' value='558421222'>
+								<!--<input type='hidden' name='fp_fail_url' value='localhost/tes.php'>
+								<input type='hidden' name='fp_fail_method' value='localhost/tes.php'>-->
+								<input type='hidden' name='order_id' value='{$data['id_orders']}'>
+								<button type='button' class='btn btn-primary'>Bayar Dengan Fasapay</button>	
+							</form>
+						</td>
+					</tr>
+				</table>
 			</div>
 	
 		";
@@ -1198,6 +1219,8 @@ elseif ($_GET['module']=='konfirmasipembayaran'){
 					<input type='hidden' name='fp_merchant_ref' value='BL000001' />
 					<!-- baggage fields -->
 					<input type='hidden' name='track_id' value='558421222'>
+					<input type='hidden' name='fp_fail_url' value='localhost/tes.php'>
+					<input type='hidden' name='fp_fail_method' value='localhost/tes.php'>
 					<input type='hidden' name='order_id' value='BJ2993800'>
 					<input name='' type='submit' value='Bayar Dengan Fasapay' />
 				</form>
