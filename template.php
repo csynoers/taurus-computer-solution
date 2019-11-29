@@ -36,6 +36,11 @@
 							?>
 								<a href="media.php?module=daftarmember"><span class="btn btn-mini btn-primary">Register</span></a>
 							<?php
+						} else {
+							?>
+								<a href="media.php?module=editmember" class="btn btn-info btn-mini">Akun Anda</a>
+								<a href="media.php?module=datatransaksi" class="btn btn-info btn-mini">Riwayat Order</a>
+							<?php
 						}
 						
 					?>
@@ -64,9 +69,9 @@
 				<?php
 					if (empty($_SESSION['namalengkap']) AND empty($_SESSION['passuser'])){
 						?>
-							<li class=""><a href="index.php">Home</a></li>
-							<li class=""><a href="semua-produk.html">Produk</a></li>
-							<li class=""><a href="profil-kami.html">Profil</a></li>
+							<li class="<?= ( ($_GET['module']=='home') || empty($_GET['module']) ) ? "active" : NULL ?>"><a href="index.php">Home</a></li>
+							<li class="<?= ( ($_GET['module']=='semuaproduk') || ($_GET['module']=='detailproduk') ) ? "active" : NULL ?>"><a href="semua-produk.html">Produk</a></li>
+							<li class="<?= ( ($_GET['module']=='profilkami') ) ? "active" : NULL ?>"><a href="profil-kami.html">Profil</a></li>
 							<li class="">
 							<a hrefX="#login" href="media.php?module=loginmember" role="button" data-toggleX="modal" style="padding-right:0"><span class="btn btn-large btn-success">Login</span></a>
 							<div id="login" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
@@ -97,9 +102,9 @@
 					}
 					if (!empty($_SESSION['namalengkap']) AND !empty($_SESSION['passuser'])){
 						?>
-							<li class=""><a href="index.php">Home</a></li>
-							<li class=""><a href="semua-produk.html">Produk</a></li>
-							<li class=""><a href="profil-kami.html">Profil</a></li>
+							<li class="<?= ( ($_GET['module']=='home') || empty($_GET['module']) ) ? "active" : NULL ?>"><a href="index.php">Home</a></li>
+							<li class="<?= ( ($_GET['module']=='semuaproduk') || ($_GET['module']=='detailproduk') ) ? "active" : NULL ?>"><a href="semua-produk.html">Produk</a></li>
+							<li class="<?= ( ($_GET['module']=='profilkami') ) ? "active" : NULL ?>"><a href="profil-kami.html">Profil</a></li>
 							<li class=""><a href="logout.php">Logout</a></li>
 						<?php
 					}
