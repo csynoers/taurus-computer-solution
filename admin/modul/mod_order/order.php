@@ -32,9 +32,10 @@
                 ");
                 $data['delete_order'] = ("
                     DELETE
-                        FROM
-                            orders,
-                            orders_detail
+                        orders,
+                        orders_detail
+                    FROM orders 
+                        INNER JOIN orders_detail
                     WHERE orders.id_orders=orders_detail.id_orders
                         AND orders.status='Unpaid'
                         AND orders.tanggal < '{$data['kemarin']}'
