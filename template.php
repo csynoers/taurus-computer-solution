@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		
 		<title>Taurus Computer Solution</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Taurus Computer Solution">
@@ -72,6 +72,8 @@
 							<li class="<?= ( ($_GET['module']=='home') || empty($_GET['module']) ) ? "active" : NULL ?>"><a href="index.php">Home</a></li>
 							<li class="<?= ( ($_GET['module']=='semuaproduk') || ($_GET['module']=='detailproduk') ) ? "active" : NULL ?>"><a href="semua-produk.html">Produk</a></li>
 							<li class="<?= ( ($_GET['module']=='profilkami') ) ? "active" : NULL ?>"><a href="profil-kami.html">Profil</a></li>
+							<li class="<?= ( ($_GET['module']=='carabeli') ) ? "active" : NULL ?>"><a href="media.php?module=carabeli">Cara Pembelian</a></li>
+							<li class="<?= ( ($_GET['module']=='hubungikami') ) ? "active" : NULL ?>"><a href="media.php?module=hubungikami">Hubungi Kami</a></li>
 							<li class="">
 							<a hrefX="#login" href="media.php?module=loginmember" role="button" data-toggleX="modal" style="padding-right:0"><span class="btn btn-large btn-success">Login</span></a>
 							<div id="login" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="false" >
