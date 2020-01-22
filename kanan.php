@@ -1294,6 +1294,24 @@ echo"
 							</div>";
 
 }
+elseif ( $_GET['module']=='konfirmasi-pesanan' ) {
+	if ( $_SESSION['member_id'] ) {
+		$data 								= [];
+		$data['id_orders'] 					= $_GET['id'];
+		$data['query_update_tabel_orders'] 	= "UPDATE `orders` SET `status_order`='selesai' WHERE id_orders='{$data['id_orders']}' ";
+		$data['exec_update_tabel_orders'] 	= mysql_query($data['query_update_tabel_orders']);
+
+		if ( $data['exec_update_tabel_orders'] ) { # update berhasil
+			echo "<script>window.alert('terimakasih telah menyelesaikan pesanan, histori transaksi akan kami simpan pada halaman riwayat order menu Selesai');window.location=('media.php?module=datatransaksi')</script>";
+		} else { # update gagal
+			echo "<script>window.alert('konfirmasi pesanan gagal dilakukan.');window.location=('media.php?module=datatransaksi')</script>";
+		}
+		
+	} else {
+		echo "<script>window.alert('Anda belum Login, Silahkan Login Terlebih dahulu');
+        window.location=('media.php?module=loginmember')</script>";
+	}
+}
 elseif ($_GET['module']=='konfirmasipembayaran'){
 	$htmls = [];
 	$edit 		= mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET[id]}'");
