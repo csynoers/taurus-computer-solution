@@ -26,14 +26,14 @@ echo"<li>
             <li><a href='media.php?module=member'><i class='fa fa-circle-o'></i> Member</a></li>
           </ul>
         </li>
-		<li class='treeview'>
-          <a href='#'>
-            <i class='fa fa-laptop'></i> <span>Manajemen Transaksi</span> <i class='fa fa-angle-left pull-right'></i>
-          </a>
-          <ul class='treeview-menu'>
-		    <li><a href='media.php?module=servis'><i class='fa fa-circle-o'></i> Data Servis</a></li>
-            <li><a href='media.php?module=order'><i class='fa fa-circle-o'></i> Data Orders</a></li>
-          </ul>
+		<li class='treeview ".( ($_GET['module']=='servis') || ($_GET['module']=='order') ? 'active' : NULL )."'>
+            <a href='#'>
+                <i class='fa fa-laptop'></i> <span>Manajemen Transaksi</span> <i class='fa fa-angle-left pull-right'></i>
+            </a>
+            <ul class='treeview-menu'>
+                <li><a href='media.php?module=servis' class='".( $_GET['module']=='servis' ? 'bg-blue-active' : NULL )."'><i class='fa fa-circle-o'></i> Data Servis</a></li>
+                <li><a href='media.php?module=order' class='".( $_GET['module']=='order' ? 'bg-blue-active' : NULL )."'><i class='fa fa-circle-o'></i> Data Orders</a></li>
+            </ul>
         </li>
 		<li>
           <a href='media.php?module=laporan'>
