@@ -1,0 +1,19 @@
+[01-Nov-2019 03:42:17 Asia/Jakarta] PHP Warning:  file_get_contents(../../../json/json.json): failed to open stream: No such file or directory in /home/nsok7753/public_html/noni/config/helper_file.php on line 4
+[01-Nov-2019 03:42:17 Asia/Jakarta] PHP Warning:  getimagesize(): Filename cannot be empty in /home/nsok7753/public_html/noni/config/helper_upload.php on line 28
+[01-Nov-2019 03:42:17 Asia/Jakarta] PHP Fatal error:  Uncaught exception 'Exception' with message 'Unknown image type.' in /home/nsok7753/public_html/noni/config/helper_upload.php:54
+Stack trace:
+#0 /home/nsok7753/public_html/noni/admin/modul/mod_logo/aksi_logo.php(21): img_resize(NULL, 193, '../../../src/lo...')
+#1 {main}
+  thrown in /home/nsok7753/public_html/noni/config/helper_upload.php on line 54
+[01-Nov-2019 03:45:27 Asia/Jakarta] PHP Warning:  getimagesize(): Filename cannot be empty in /home/nsok7753/public_html/noni/config/helper_upload.php on line 28
+[01-Nov-2019 03:45:27 Asia/Jakarta] PHP Fatal error:  Uncaught exception 'Exception' with message 'Unknown image type.' in /home/nsok7753/public_html/noni/config/helper_upload.php:54
+Stack trace:
+#0 /home/nsok7753/public_html/noni/admin/modul/mod_logo/aksi_logo.php(21): img_resize(NULL, 193, '../../../src/lo...')
+#1 {main}
+  thrown in /home/nsok7753/public_html/noni/config/helper_upload.php on line 54
+[01-Nov-2019 03:45:45 Asia/Jakarta] PHP Warning:  getimagesize(): Filename cannot be empty in /home/nsok7753/public_html/noni/config/helper_upload.php on line 28
+[01-Nov-2019 03:45:46 Asia/Jakarta] PHP Fatal error:  Uncaught exception 'Exception' with message 'Unknown image type.' in /home/nsok7753/public_html/noni/config/helper_upload.php:54
+Stack trace:
+#0 /home/nsok7753/public_html/noni/admin/modul/mod_logo/aksi_logo.php(21): img_resize(NULL, 193, '../../../src/lo...')
+#1 {main}
+  thrown in /home/nsok7753/public_html/noni/config/helper_upload.php on line 54

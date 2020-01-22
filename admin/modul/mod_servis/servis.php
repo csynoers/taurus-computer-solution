@@ -1,13 +1,13 @@
 <?php
-session_start();
+// session_start();
  if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
-  echo "<link href='style.css' rel='stylesheet' type='text/css'>
- <center>Untuk mengakses modul, Anda harus login <br>";
-  echo "<a href=../../index.php><b>LOGIN</b></a></center>";
+	echo "<link href='style.css' rel='stylesheet' type='text/css'>
+	<center>Untuk mengakses modul, Anda harus login <br>";
+	echo "<a href=../../index.php><b>LOGIN</b></a></center>";
 }
 else{
 $aksi="modul/mod_servis/aksi_servis.php";
-switch($_GET[act]){
+switch($_GET['act']){
   // Tampil servis
   default:
     echo "<div class='col-xs-12'>
@@ -27,7 +27,7 @@ switch($_GET[act]){
 
    $tampil = mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_member ORDER BY id_servis DESC ");					
     while($r=mysql_fetch_array($tampil)){
-      $tanggal=tgl_indo($r[tanggal]);
+      $tanggal=tgl_indo($r['tanggal']);
 	  
       echo "<tr><td>$r[id_servis]</td>
                 <td>$r[nama]</td>
@@ -105,7 +105,7 @@ switch($_GET[act]){
     
 $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_member AND servis.id_servis='$_GET[id]'");
     $r=mysql_fetch_array($edit);
-	$tanggal=tgl_indo($r[tanggal]);
+	$tanggal=tgl_indo($r['tanggal']);
 	
     echo "<div class='col-xs-12'>
         <div class='box'>
@@ -204,30 +204,30 @@ $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_
     break;  
 	
 	case "transaksiservis":
+	$member= mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.id_member AND servis.id_servis='{$_GET['kode']}'");
+		$p= mysql_fetch_array($member);
+		$tanggal= tgl_indo($r['tgl_servis']);
     
-$member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.id_member AND servis.id_servis='$_GET[kode]'");
-    $p=mysql_fetch_array($member);
-	$tanggal=tgl_indo($r[tgl_servis]);
 	echo"
    	<div class='col-md-6'>  
 		 <div class='box box-primary'>
             <div class='box-header with-border'>
-              <h3 class='box-title'>FORM SERVIS</h3>
+				<h3 class='box-title'>FORM SERVIS</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form method=POST action='$aksi?module=servis&act=input'>
-			<input type=hidden name='id_member' value='$r[id_member]'>
-			<input type=hidden name='id_servis' value='$_GET[kode]'>
-              <div class='box-body'>
+			<form method=POST action='$aksi?module=servis&act=input'>
+				<input type=hidden name='id_member' value='{$r['id_member']}'>
+				<input type=hidden name='id_servis' value='{$_GET['kode']}'>
+				<div class='box-body'>
 				<div class='form-group'>
-                  <label for='exampleInputPassword1'>Cari Sparepart</label>
-                  <select class='form-control' name='sparepart' required>
-            <option value='' selected>- Pilih Sparepart -</option>";
-            $tampil=mysql_query("SELECT * FROM sparepart ORDER BY id_sparepart ASC");
-            while($r=mysql_fetch_array($tampil)){
-              echo "<option value=$r[id_sparepart]>$r[id_sparepart]: $r[nama_sparepart]</option>";
-            }
+					<label for='exampleInputPassword1'>Cari Sparepart</label>
+					<select class='form-control' name='sparepart' required>
+						<option value='' selected>- Pilih Sparepart -</option>";
+							$tampil=mysql_query("SELECT * FROM sparepart ORDER BY id_sparepart ASC");
+							while($r=mysql_fetch_array($tampil)){
+								echo "<option value=$r[id_sparepart]>$r[id_sparepart]: $r[nama_sparepart]</option>";
+							}
     echo "</select>
                 </div>
                 <div class='form-group'>

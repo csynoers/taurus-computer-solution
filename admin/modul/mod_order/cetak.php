@@ -33,6 +33,28 @@
             $customer   = mysql_query("select * from member where id_member='{$r['id_member']}' ");
             $c          = mysql_fetch_assoc($customer);
 
+            $trMod= "";
+            if ( $r['status']== 'PAID' ) {
+              include_once("../../../libs/XenditPHPClient.php");
+          
+              $options['secret_api_key'] = 'xnd_development_2l1SxCJvrhJAHbXdL1Rixrxia7Qd0ls6lUyZMnkm5FWgVD7aqYREGfbsrmFTgru1';
+            
+              $xenditPHPClient = new XenditClient\XenditPHPClient($options);
+            
+              $invoice_id = $r['external_id'];
+            
+              $response = $xenditPHPClient->getInvoice($invoice_id);
+            //   echo '<pre>';
+            //   print_r($response);
+            //   echo '</pre>';
+              $newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
+              $trMod .= "
+                <b>Metode Pembayaran : </b> {$response['payment_method']}<br>
+                <b>Kode Bank : </b> {$response['bank_code']}<br>
+                <b>Tanggal Pembayaran : </b> {$newDate}<br>
+              ";
+            }
+
             // tampilkan rincian produk yang di order
             $data                           = [];
             $data['rows_order_detail_html'] = [];
@@ -53,7 +75,7 @@
 
                 $data['rows_order_detail_html'][] = "
                     <tr>
-                        <td>{$s['nama_produk']} {$produk_attr}</td>
+                        <td>{$s['nama_produk']}<br>{$produk_attr}</td>
                         <td>{$s['berat']}</td>
                         <td>{$s['jumlah']}</td>
                         <td>Rp. ".format_rupiah($s['harga'])."</td>
@@ -103,7 +125,7 @@
                             <div class='col-xs-12 table-responsive'>
                                 <table class='table'>
                                     <tr>
-                                        <td>
+                                        <td class='col-xs-4'>
                                             Dari :
                                             <address>
                                                 <strong>Taurus Computer Solution.</strong><br>
@@ -112,18 +134,19 @@
                                                 Email: tauruscomputer@gmail.com
                                             </address>
                                         </td>
-                                        <td>
+                                        <td class='col-xs-4'>
                                             Kepada :
                                             <address>
                                                 {$r['alamat_pengiriman']}
                                             </address>
                                         </td>
-                                        <td>
+                                        <td class='col-xs-4'>
                                             <b>Invoice</b><br>
                                             <br>
                                             <b>Order ID : </b> {$r['id_orders']}<br>
                                             <b>Tgl. Transaksi : </b> {$tanggal}<br>
                                             <b>Kurir : </b> {$r['kurir']}<br>
+                                            {$trMod}
                                         </td>
                                     </tr>
                                 </table>

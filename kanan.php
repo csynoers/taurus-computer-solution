@@ -139,6 +139,8 @@ elseif ($_GET['module']=='hubungikami'){
 		<div class='span9'>
 			<h2>Hubungi Kami</h2>
 			{$row->hubungi_kami}
+			<h4>Lokasi Kami</h4>
+			<iframe src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15812.53971502891!2d110.3723724!3d-7.7755143!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1edf5047944f878c!2sTaurus%20Computer%20Solution!5e0!3m2!1sid!2sid!4v1578319747123!5m2!1sid!2sid' width='100%' height='450' frameborder='0' style='border:0;' allowfullscreen=''></iframe>
 		</div>
 	";
 }
@@ -376,25 +378,51 @@ elseif ($_GET['module']=='daftaraksi'){
 		");
 
 		/* ========== START SEND EMAIL ========== */
-		include("phpmailer/classes/class.phpmailer.php");
-		$mail = new PHPMailer; 
-		$mail->IsSMTP();
-		$mail->SMTPSecure = 'ssl'; 
-		$mail->Host = "smtp.gmail.com";
-		$mail->SMTPDebug = 0;
-		$mail->Port = 465;
-		$mail->SMTPAuth = true;
-		$mail->Username = "3s0c9m7@gmail.com";
-		$mail->Password = $mail->simple_crypt( 'Q28vcmJtWmxESE1UQjBCazFQL2w3QT09', 'd' );
-		$mail->SetFrom("info@tauruscomputer.com","TAURUS COMPUTER");
-		$mail->Subject = "Verifikasi Email";
-		$mail->AddAddress("{$_POST['email']}","nama email tujuan");
-		$mail->MsgHTML("
-		    Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
-		    <a href='{$_SERVER['HTTP_HOST']}/cek_login.php?q={$q}'>Klik Disini untuk verifikasi email</a>
-		");
+		// include("phpmailer/classes/class.phpmailer.php");
+		// $mail = new PHPMailer; 
+		// $mail->IsSMTP();
+		// $mail->SMTPSecure = 'ssl'; 
+		// $mail->Host = "smtp.gmail.com";
+		// $mail->SMTPDebug = 0;
+		// $mail->Port = 465;
+		// $mail->SMTPAuth = true;
+		// $mail->Username = "3s0c9m7@gmail.com";
+		// $mail->Password = $mail->simple_crypt( 'Q28vcmJtWmxESE1UQjBCazFQL2w3QT09', 'd' );
+		// $mail->SetFrom("info@tauruscomputer.com","TAURUS COMPUTER");
+		// $mail->Subject = "Verifikasi Email";
+		// $mail->AddAddress("{$_POST['email']}","nama email tujuan");
+		// $mail->MsgHTML("
+		//     Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
+		//     <a href='{$_SERVER['HTTP_HOST']}/cek_login.php?q={$q}'>Klik Disini untuk verifikasi email</a>
+		// ");
 		
-		$mail->Send();
+		// $mail->Send();
+
+		$to = $_POST['email'];
+		$subject = 'TAURUS COMPUTER';
+		$message = "
+			<html>
+				<head>
+				<title>TAURUS COMPUTER</title>
+				</head>
+				<body>
+					Silakan verifikasi email kamu dengan mengklik tautan berikut :<br>
+					<a href='{$_SERVER['HTTP_HOST']}/cek_login.php?q={$q}'>Klik Disini untuk verifikasi email</a>
+					<p><strong>NOTE! :</strong> jika link tidak bisa di klik silahkan copy url ini [{$_SERVER['HTTP_HOST']}/cek_login.php?q={$q}]</p>
+				</body>
+			</html>	
+		";
+
+		// Always set content-type when sending HTML email
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+		// More headers
+		$headers .= 'From: tauruscomputer@gmail.com' . "\r\n";
+		// $headers .= 'Cc: myboss@example.com' . "\r\n";
+
+		// send email
+		mail($to,$subject,$message,$headers);
 
 		/* ========== END SEND EMAIL ========== */
 
@@ -695,10 +723,10 @@ elseif ($_GET['module']=='selesaibelanja'){
 			/* load rajaongkir rest api */
 			require_once 'vendor/autoload.php';
 			$kota = RajaOngkir\RajaOngkir::Kota()->find($_SESSION['kota']);
-
+			
 			$data['id_orders'] 	= acak(6); /* create id orders */
 			$data['kode_unik'] 	= ngacak(3); /* create kode unik */
-	
+			
 			$data['tbody_data_order'] = []; 		
 			$data['fp_item'] = []; 		
 			$data['total_berat'] = 0;
@@ -781,10 +809,18 @@ elseif ($_GET['module']=='selesaibelanja'){
 			/* end ongkos kirim */
 			$data['grand_total'] += $data['ongkos_kirim'];
 			$data['grand_total_rupiah'] = format_rupiah($data['grand_total']);
-	
+			
+			/* START XENDIT PAYMENT */			
+			$data['external_id'] = $data['id_orders'];
+			$data['amount'] = $data['grand_total'];
+			$data['payer_email'] = $_SESSION['email'];
+			$data['description'] = "Pembayaran untuk {$data['fp_item']}";
+			/* END XENDIT PAYMENT */
+
 			// echo '<pre>';
 			// print_r($data);
 			// echo '</pre>';
+			// $response = $xenditPHPClient->createInvoice($external_id, $amount, $payer_email, $description);
 	
 			echo"							
 				<div class='span9'>
@@ -857,23 +893,14 @@ elseif ($_GET['module']=='selesaibelanja'){
 								<input type='hidden' id='idSession' name='id_session' value='{$data['sid']}'>
 								<input type='hidden' id='idOrders' name='id_orders' value='{$data['id_orders']}'>
 								<input type='hidden' id='idMember' name='id_orders' value='{$_SESSION['member_id']}'>
+
+								<input type='hidden' id='xenditExternalId' name='external_id' value='{$data['external_id']}'>
+								<input type='hidden' id='xenditPayerEmail' name='payer_email' value='{$data['payer_email']}'>
+								<input type='hidden' id='xenditDescription' name='description' value='{$data['description']}'>
 	
-								<p>Silahkan lanjutkan proses pembayaran melalui Akun Fasapay Anda dengan mengklik tombol di bawah ini<br />
-								<form id='formFasapay' method='post' action='https://sci.fasapay.com/'>
-									<input type='hidden' name='fp_acc' value='FP498022'>
-									<input type='hidden' name='fp_acc_from' value='' />
-									<input type='hidden' name='fp_store' value='Taurus Computer Solution'>
-									<input type='hidden' name='fp_item' value='{$data['fp_item']}'>
-									<input type='hidden' name='fp_amnt' value='{$data['grand_total']}'>
-									<input type='hidden' name='fp_currency' value='IDR'>
-									<input type='hidden' name='fp_comments' value='Pembayaran untuk {$data['fp_item']}'>
-									<input type='hidden' name='fp_merchant_ref' value='BL000001' />
-									<!-- baggage fields -->
-									<input type='hidden' name='track_id' value='558421222'>
-									<!--<input type='hidden' name='fp_fail_url' value='localhost/tes.php'>
-									<input type='hidden' name='fp_fail_method' value='localhost/tes.php'>-->
-									<input type='hidden' name='order_id' value='{$data['id_orders']}'>
-									<button type='button' class='btn btn-primary'>Bayar Dengan Fasapay</button>	
+								<p>Silahkan lanjutkan proses pembayaran mengklik tombol di bawah ini<br />
+								<form id='formFasapay'>
+									<button type='button' class='btn btn-primary'>Bayar Sekarang</button>	
 								</form>
 							</td>
 						</tr>
@@ -881,6 +908,9 @@ elseif ($_GET['module']=='selesaibelanja'){
 				</div>
 		
 			";
+			// echo '<pre>';
+			// print_r();
+			// echo '</pre>';
 		} else {
 			echo "<script>window.alert('Maaf keranjang masih kosong');
 				window.location.assign(window.location.origin)</script>";
@@ -888,54 +918,322 @@ elseif ($_GET['module']=='selesaibelanja'){
 	}
 }
 elseif ($_GET['module']=='datatransaksi'){
-session_start();
+	/*
+	* status data transaksi
+	* Ada 5 status dalam transaksi ini diantaranya : 'belumbBayar','dikemas','dikirim','selesai','dibatalkan'
+	*/
+	session_start();
+	$data = [];
 
-echo"							
-<div class='span9'>
-<h3> Riwayat Data Order Anda</h3>	
-	<hr class='soft'/>
-	<div class='well'>
-	<form action=edit_profil.php method=POST class='form-horizontal'>
-	<input type=hidden name=id value='$r[id_member]'>
-		
-		<table class='table table-bordered table-condensed'>
-                
-	<thead>
-          <tr bgcolor=#D3DCE3><th>No.order</th><th>Tgl. order</th><th>Jam</th><th>Status</th><th>Aksi</th></tr>
-		  <tbody>";
-    $tampil = mysql_query("SELECT * FROM orders,member WHERE orders.id_member=member.id_member AND orders.id_member='$_SESSION[member_id]' ORDER BY id_orders DESC ");
-  
-    while($r=mysql_fetch_array($tampil)){
-      $tanggal=tgl_indo($r[tanggal]);
-	  $status=$r[status];
-      echo "<tr><td align=center>$r[id_orders]</td>
-                <td>$tanggal</td>
-                <td>$r[jam]</td>
-                <td>";
-				if ($status=='Baru') {
-		  echo"<font color='red'>$r[status]</font>";
-		  } else {
-		  echo"<font color='green'>$r[status]</font>";
-		  }
-				echo"</td>
-		            <td><a href=media.php?module=detailtransaksi&id=$r[id_orders]>Detail</a></td></tr>";
-      $no++;
-    }
-    echo "</tbody></table>
-		
-</div>
-							</div>";
+	/* start generate data belum bayar */
+	$tampil = mysql_query("SELECT *, orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member AND orders.id_member='$_SESSION[member_id]' AND orders.status='Unpaid' ORDER BY tanggal DESC ");
+	while($r=mysql_fetch_assoc($tampil)){
+		$r['alamat_pengiriman'] = strip_tags($r['alamat_pengiriman']);
+		$r['tanggal'] 			= tgl_indo($r['tanggal']);
+		if ( $r['status_mod'] ) {
+			$r['status_mod'] 	= "<font color='red'>{$r['status_mod']}</font>"; 
+		} else {
+			$r['status_mod'] 	= "<font color='green'>{$r['status_mod']}</font>"; 
+		}
+
+		$data['belumBayar'][] = "
+			<tr>
+				<td align=center>{$r['id_orders']}</td>
+				<td>{$r['tanggal']}</td>
+				<td>{$r['jam']}</td>
+				<td class='hidden'>{$r['status_mod']}</td>
+				<td><a href=media.php?module=detailtransaksi&id={$r['id_orders']}>Detail</a></td>
+			</tr>
+		";
+	}
+	$data['belumBayar'] = implode('',$data['belumBayar']);
+	$data['belumBayar'] = empty($data['belumBayar']) ? '<tr><td colspan="4" style="padding: 20px 20px 0px 20px;text-align: center;"><div class="alert alert-success">Belum ada pesanan</div></td></tr>' : $data['belumBayar'];
+	/* end generate data belum bayar */
+
+	/* start generate data dikemas */
+	$tampil = mysql_query("SELECT *, orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member AND orders.id_member='$_SESSION[member_id]' AND orders.status='PAID' AND orders.status_order='dikemas' AND orders.no_resi IS NULL ORDER BY tanggal DESC ");
+	while($r=mysql_fetch_assoc($tampil)){
+		$r['alamat_pengiriman'] = strip_tags($r['alamat_pengiriman']);
+		$r['tanggal'] 			= tgl_indo($r['tanggal']);
+		if ( $r['status_mod'] ) {
+			$r['status_mod'] 	= "<font color='red'>{$r['status_mod']}</font>"; 
+		} else {
+			$r['status_mod'] 	= "<font color='green'>{$r['status_mod']}</font>"; 
+		}
+
+		$data['dikemas'][] = "
+			<tr>
+				<td align=center>{$r['id_orders']}</td>
+				<td>{$r['tanggal']}</td>
+				<td>{$r['jam']}</td>
+				<td class='hidden'>{$r['status_mod']}</td>
+				<td><a href=media.php?module=detailtransaksi&id={$r['id_orders']}>Detail</a></td>
+			</tr>
+		";
+	}
+	$data['dikemas'] = implode('',$data['dikemas']);
+	$data['dikemas'] = empty($data['dikemas']) ? '<tr><td colspan="4" style="padding: 20px 20px 0px 20px;text-align: center;"><div class="alert alert-success">Belum ada pesanan</div></td></tr>' : $data['dikemas'];
+	/* end generate data dikemas */
+
+	/* start generate data Dikirim */
+	$tampil = mysql_query("SELECT *, orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member AND orders.id_member='$_SESSION[member_id]' AND orders.status='PAID' AND orders.status_order='dikirim' AND orders.no_resi IS NOT NULL ORDER BY tanggal DESC ");
+	while($r=mysql_fetch_assoc($tampil)){
+		$r['alamat_pengiriman'] = strip_tags($r['alamat_pengiriman']);
+		$r['tanggal'] 			= tgl_indo($r['tanggal']);
+		if ( $r['status_mod'] ) {
+			$r['status_mod'] 	= "<font color='red'>{$r['status_mod']}</font>"; 
+		} else {
+			$r['status_mod'] 	= "<font color='green'>{$r['status_mod']}</font>"; 
+		}
+
+		$data['dikirim'][] = "
+			<tr>
+				<td align=center>{$r['id_orders']}</td>
+				<td align=center>{$r['no_resi']}</td>
+				<td align=center>{$r['kurir']}</td>
+				<td>{$r['tanggal']}</td>
+				<td>{$r['jam']}</td>
+				<td class='hidden'>{$r['status_mod']}</td>
+				<td>
+					<a href='media.php?module=detailtransaksi&id={$r['id_orders']}' class='btn btn-inverse btn-mini'>Detail</a>
+					<a href='media.php?module=konfirmasi-pesanan&id={$r['id_orders']}' class='btn btn-inverse btn-mini'>Konfirmasi</a>
+				</td>
+			</tr>
+		";
+	}
+	$data['dikirim'] = implode('',$data['dikirim']);
+	$data['dikirim'] = empty($data['dikirim']) ? '<tr><td colspan="6" style="padding: 20px 20px 0px 20px;text-align: center;"><div class="alert alert-success">Belum ada pesanan</div></td></tr>' : $data['dikirim'];
+	/* end generate data Dikirim */
+
+	/* start generate data Selesai */
+	$tampil = mysql_query("SELECT *, orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member AND orders.id_member='$_SESSION[member_id]' AND orders.status='PAID' AND orders.status_order='selesai' AND orders.no_resi IS NOT NULL ORDER BY tanggal DESC ");
+	while($r=mysql_fetch_assoc($tampil)){
+		$r['alamat_pengiriman'] = strip_tags($r['alamat_pengiriman']);
+		$r['tanggal'] 			= tgl_indo($r['tanggal']);
+		if ( $r['status_mod'] ) {
+			$r['status_mod'] 	= "<font color='red'>{$r['status_mod']}</font>"; 
+		} else {
+			$r['status_mod'] 	= "<font color='green'>{$r['status_mod']}</font>"; 
+		}
+
+		$data['selesai'][] = "
+			<tr>
+				<td align=center>{$r['id_orders']}</td>
+				<td align=center>{$r['no_resi']}</td>
+				<td align=center>{$r['kurir']}</td>
+				<td>{$r['tanggal']}</td>
+				<td>{$r['jam']}</td>
+				<td class='hidden'>{$r['status_mod']}</td>
+				<td>
+					<a href='media.php?module=detailtransaksi&id={$r['id_orders']}' class='btn btn-inverse btn-mini'>Detail</a>
+				</td>
+			</tr>
+		";
+	}
+	$data['selesai'] = implode('',$data['selesai']);
+	$data['selesai'] = empty($data['selesai']) ? '<tr><td colspan="6" style="padding: 20px 20px 0px 20px;text-align: center;"><div class="alert alert-success">Belum ada pesanan</div></td></tr>' : $data['selesai'];
+	/* end generate data Selesai */
+
+	/* start generate data dibatalkan */
+	$tampil = mysql_query("SELECT *, orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member AND orders.id_member='$_SESSION[member_id]' AND orders.status='EXPIRED' AND orders.status_order='dibatalkan' ORDER BY tanggal DESC ");
+	while($r=mysql_fetch_assoc($tampil)){
+		$r['alamat_pengiriman'] = strip_tags($r['alamat_pengiriman']);
+		$r['tanggal'] 			= tgl_indo($r['tanggal']);
+		if ( $r['status_mod'] ) {
+			$r['status_mod'] 	= "<font color='red'>{$r['status_mod']}</font>"; 
+		} else {
+			$r['status_mod'] 	= "<font color='green'>{$r['status_mod']}</font>"; 
+		}
+
+		$data['dibatalkan'][] = "
+			<tr>
+				<td align=center>{$r['id_orders']}</td>
+				<td>{$r['tanggal']}</td>
+				<td>{$r['jam']}</td>
+				<td class='hidden'>{$r['status_mod']}</td>
+				<td><a href=media.php?module=detailtransaksi&id={$r['id_orders']}>Detail</a></td>
+			</tr>
+		";
+	}
+	$data['dibatalkan'] = implode('',$data['dibatalkan']);
+	$data['dibatalkan'] = empty($data['dibatalkan']) ? '<tr><td colspan="4" style="padding: 20px 20px 0px 20px;text-align: center;"><div class="alert alert-success">Belum ada pesanan</div></td></tr>' : $data['dibatalkan'];
+	/* end generate data dibatalkan */
+
+	$htmls = '
+		<h3> Riwayat Data Order Anda</h3>	
+		<hr class="soft"/>
+		<div class="tabbable">
+			<!-- Only required for left/right tabs -->
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">Belum Bayar</a></li>
+				<li><a href="#tab2" data-toggle="tab">Dikemas</a></li>
+				<li><a href="#tab3" data-toggle="tab">Dikirim</a></li>
+				<li><a href="#tab4" data-toggle="tab">Selesai</a></li>
+				<li><a href="#tab5" data-toggle="tab">Dibatalkan</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<p style="padding:20px;border:1px solid #ddd;border-radius:5px">
+						<b>!info</b><br>
+						untuk melakukan pembayaran silahkan pilih menu detail pada kolom aksi dibawah ini :
+					</p>
+					<table class="table table-bordered table-condensed">
+						<thead>
+							<tr bgcolor=#D3DCE3>
+								<th>No.order</th>
+								<th>Tgl. order</th>
+								<th>Jam</th>
+								<th class="hidden">Status</th>
+								<th>Aksi</th>
+							</tr>
+						<tbody>
+							'.$data['belumBayar'].'
+						</tbody>
+					</table>
+				</div>
+
+				<div class="tab-pane" id="tab2">
+					<p style="padding:20px;border:1px solid #ddd;border-radius:5px">
+						<b>!info</b><br>
+						pesanan anda dalam proses pengemasan mohon menunggu, terimakasih.
+					</p>
+					<table class="table table-bordered table-condensed">
+						<thead>
+							<tr bgcolor=#D3DCE3>
+								<th>No.order</th>
+								<th>Tgl. order</th>
+								<th>Jam</th>
+								<th class="hidden">Status</th>
+								<th>Aksi</th>
+							</tr>
+						<tbody>
+							'.$data['dikemas'].'
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab3">
+					<p style="padding:20px;border:1px solid #ddd;border-radius:5px">
+						<b>!info</b><br>
+						anda sudah bisa melacak pesanan dengan cara :<br>
+						1. copy nomor resi pada kolom No Resi dibawah ini.<br>
+						2. klik jasa pengiriman sesuai dengan kolom Kurir.<br>
+						<a href="https://www.posindonesia.co.id/id/tracking" class="btn btn-inverse btn-mini" target="_blank">Lacak POS</a>
+						<a href="https://www.tiki.id/id/tracking" class="btn btn-inverse btn-mini" target="_blank">Lacak TIKI</a>
+						<a href="https://cekresi.com/" class="btn btn-inverse btn-mini" target="_blank">Lacak JNE</a><br>
+						3. jika pesanan sudah diterima mohon untuk konfirmasi dengan cara memilih menu Konfirmasi pada kolom aksi di bawah ini.
+					</p>
+					<table class="table table-bordered table-condensed">
+						<thead>
+							<tr bgcolor=#D3DCE3>
+								<th>No.order</th>
+								<th>No Resi</th>
+								<th>Kurir</th>
+								<th>Tgl. order</th>
+								<th>Jam</th>
+								<th class="hidden">Status</th>
+								<th>Aksi</th>
+							</tr>
+						<tbody>
+							'.$data['dikirim'].'
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab4">
+					<table class="table table-bordered table-condensed">
+						<thead>
+							<tr bgcolor=#D3DCE3>
+								<th>No.order</th>
+								<th>No Resi</th>
+								<th>Kurir</th>
+								<th>Tgl. order</th>
+								<th>Jam</th>
+								<th class="hidden">Status</th>
+								<th>Aksi</th>
+							</tr>
+						<tbody>
+							'.$data['selesai'].'
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="tab5">
+					<p style="padding:20px;border:1px solid #ddd;border-radius:5px">
+						<b>!info</b><br>
+						pesanan dibatalkan karena tidak melakukan pembayaran dalam waktu 1 jam, untuk lebih jelasnya bisa memilih menu Detail pada kolom aksi di bawah ini.
+					</p>
+					<table class="table table-bordered table-condensed">
+						<thead>
+							<tr bgcolor=#D3DCE3>
+								<th>No.order</th>
+								<th>Tgl. order</th>
+								<th>Jam</th>
+								<th class="hidden">Status</th>
+								<th>Aksi</th>
+							</tr>
+						<tbody>
+							'.$data['dibatalkan'].'
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	';
+	echo $htmls;
+	// echo '<pre>';
+	// print_r($data);
+	// echo '</pre>';
 
 }
 elseif ($_GET['module']=='detailtransaksi'){
 session_start();
 $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
     $r    = mysql_fetch_array($edit);
-	$status=$r[status];
-    $tanggal=tgl_indo($r[tanggal]);
+	$status=$r['status'];
+    $tanggal=tgl_indo($r['tanggal']);
 	$customer=mysql_query("select * from member where id_member='$r[id_member]'");
   $c=mysql_fetch_array($customer);
+//   print_r($r);
+  if ( $r['status']== 'Unpaid' ) {
+	  $r['status'] .= "<a style='
+	  color: darkgreen;
+	  margin-left: 1rem;
+	  background: aqua;
+	  padding: 10px;
+	  border-radius: 50%;
+  ' href='{$r['invoice_url']}'>Bayar Sekarang</a>";
+  }
+  $trMod= "";
+  if ( $r['status']== 'PAID' ) {
+	include_once("libs/XenditPHPClient.php");
+
+	$options['secret_api_key'] = 'xnd_development_2l1SxCJvrhJAHbXdL1Rixrxia7Qd0ls6lUyZMnkm5FWgVD7aqYREGfbsrmFTgru1';
   
+	$xenditPHPClient = new XenditClient\XenditPHPClient($options);
+  
+	$invoice_id = $r['external_id'];
+  
+	$response = $xenditPHPClient->getInvoice($invoice_id);
+	// echo '<pre>';
+	// print_r($response['payment_channel']);
+	// print_r($response['payment_channel']);
+	// echo '</pre>';
+    $newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
+	$trMod .= "
+		<tr>
+			<td>Metode Pembayaran</td>
+			<td>: {$response['payment_method']}</td>
+		</tr>
+		<tr>
+			<td>Kode Bank</td>
+			<td>: {$response['bank_code']}</td>
+		</tr>
+		<tr>
+			<td>Tanggal Pembayaran</td>
+			<td>: {$newDate}</td>
+		</tr>
+	";
+	//   $r['status'] .= "<br>";
+	//   $r['status'] .= $response;
+  }
 echo"							
 <div class='span9'>
 <h3> Riwayat Data Order Anda</h3>	
@@ -945,7 +1243,8 @@ echo"
 	<table id='example1' class='table table-bordered table-striped'>
           <tr><td>No. Order</td>        <td> : $r[id_orders]</td></tr>
           <tr><td>Tgl. & Jam Order</td> <td> : $tanggal & $r[jam]</td></tr>
-          <tr><td>Status Order      </td><td>: $r[status]</td></tr>
+		  <tr><td>Status Order      </td><td>: {$r['status']}</td></tr>
+		  {$trMod}
 		 <tr><td>Alamat Pengiriman</td>        <td> : $r[alamat_pengiriman]</td></tr>
           </table>";
 		

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 	<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		
@@ -107,6 +107,8 @@
 							<li class="<?= ( ($_GET['module']=='home') || empty($_GET['module']) ) ? "active" : NULL ?>"><a href="index.php">Home</a></li>
 							<li class="<?= ( ($_GET['module']=='semuaproduk') || ($_GET['module']=='detailproduk') ) ? "active" : NULL ?>"><a href="semua-produk.html">Produk</a></li>
 							<li class="<?= ( ($_GET['module']=='profilkami') ) ? "active" : NULL ?>"><a href="profil-kami.html">Profil</a></li>
+							<li class="<?= ( ($_GET['module']=='carabeli') ) ? "active" : NULL ?>"><a href="media.php?module=carabeli">Cara Pembelian</a></li>
+							<li class="<?= ( ($_GET['module']=='hubungikami') ) ? "active" : NULL ?>"><a href="media.php?module=hubungikami">Hubungi Kami</a></li>
 							<li class=""><a href="logout.php">Logout</a></li>
 						<?php
 					}
@@ -188,10 +190,11 @@
 				?>
 		  
 				<div class="thumbnail">
-					<img src="themes/images/payment_methods.png" title="Bootshop Payment Methods" alt="Payments Methods">
 					<div class="caption">
-						<h5>Payment Methods</h5>
+						<h5>Metode Pembayaran</h5>
 					</div>
+					<img style="padding:15px; height:25px" src="themes/images/BNI.png" title="Bootshop Payment Methods" alt="Payments Methods">
+					<img style="padding:15px; height:25px" src="themes/images/BCA.png" title="Bootshop Payment Methods" alt="Payments Methods">
 				</div>
 			</div>
 			<!-- Sidebar end=============================================== -->
@@ -297,10 +300,15 @@
 				"tanggal"			: formatTanggal(dateNow),
 				"jam"				: formatJam(dateNow),
 				"alamat_lengkap" 	: $('table').find('tbody').find('tr').find('td#alamatPengiriman').html(),
+				"external_id"		: $("#xenditExternalId").val(),
+				"payer_email"		: $("#xenditPayerEmail").val(),
+				"description"		: $("#xenditDescription").val(),
 			};
 			$.post("store_order.php",data,function(d){
+				console.log(data);
 				if ( d.status ) {
-					$("#formFasapay").submit();
+					window.location.replace(d.q)
+				// 	$("#formFasapay").submit();
 				}else {
 					alert('maaf order gagal diproses')
 				}

@@ -46,16 +46,16 @@
                 }
                 
                 $data['rows_order_html'] = [];
-                $tampil = mysql_query("SELECT * FROM orders,member WHERE orders.id_member=member.id_member ORDER BY orders.tanggal DESC ");					
+                $tampil = mysql_query("SELECT *,orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member ORDER BY orders.tanggal DESC ");					
                 while( $r=mysql_fetch_assoc($tampil) ){
                     $tanggal        = tgl_indo($r['tanggal']);
-                    $status         = $r['status'];
+                    $status         = $r['status_mod'];
                     $grandtotal_rp  = format_rupiah($r['grandtotal']);
                     
                     if ($status=='Unpaid') {
-                        $status_mod = "<font color='red'>{$r['status']}</font>";
+                        $status_mod = "<font color='red'>{$r['status_mod']}</font>";
                     } else {
-                        $status_mod = "<font color='green'>{$r['status']}</font>";
+                        $status_mod = "<font color='green'>{$r['status_mod']}</font>";
                     }
 
                     $data['rows_order_html'][] = "
@@ -111,6 +111,28 @@
                 $edit       = mysql_query("SELECT * FROM orders WHERE id_orders='{$_GET['id']}' ");
                 $r          = mysql_fetch_assoc($edit);
                 $tanggal    = tgl_indo($r['tanggal']);
+                
+                $trMod= "";
+                if ( $r['status']== 'PAID' ) {
+                  include_once("../libs/XenditPHPClient.php");
+              
+                  $options['secret_api_key'] = 'xnd_development_2l1SxCJvrhJAHbXdL1Rixrxia7Qd0ls6lUyZMnkm5FWgVD7aqYREGfbsrmFTgru1';
+                
+                  $xenditPHPClient = new XenditClient\XenditPHPClient($options);
+                
+                  $invoice_id = $r['external_id'];
+                
+                  $response = $xenditPHPClient->getInvoice($invoice_id);
+                //   echo '<pre>';
+                //   print_r($response);
+                //   echo '</pre>';
+                  $newDate = date("d F Y & H:i:s", strtotime($response['paid_at']));
+                  $trMod .= "
+                    <b>Metode Pembayaran : </b> {$response['payment_method']}<br>
+                    <b>Kode Bank : </b> {$response['bank_code']}<br>
+                    <b>Tanggal Pembayaran : </b> {$newDate}<br>
+                  ";
+                }
 
                 $customer       =mysql_query("select * from member where id_member='$r[id_member]'");
                 $c              =mysql_fetch_assoc($customer);
@@ -199,8 +221,9 @@
                                         <b>Order ID : </b> {$r['id_orders']}<br>
                                         <b>Tgl. orders : </b> {$tanggal}<br>
                                         <b>Kurir : </b> {$r['kurir']}<br>
-                                        <b>Status : </b>  <select name='status'>{$pilihan_order}</select> 
-                                        <input type=submit value='Ubah Status'>
+                                        {$trMod}
+                                        <!--<b>Status : </b>  <select name='status'>{$pilihan_order}</select> 
+                                        <input type=submit value='Ubah Status'>-->
                                     </div>
                                     <!-- /.col -->
                                 </form>
