@@ -52,7 +52,7 @@ elseif ($module=='servis' AND $act=='delete'){
 }
 elseif ($module=='servis' AND $act=='biaya'){
 	$data = [];
-	$data['updateServis'] = "UPDATE `servis` SET biaya_servis='{$_POST['biaya_servis']}' WHERE id_servis='{id_servis}' ";
+	$data['updateServis'] = "UPDATE `servis` SET biaya_servis='{$_POST['biaya_servis']}' WHERE id_servis='{$_POST['id_servis']}' ";
 	echo '<pre>';
 	print_r($data);
 	echo '</pre>';
