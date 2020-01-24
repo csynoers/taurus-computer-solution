@@ -12,7 +12,7 @@ if ($module=='servis' AND $act=='input'){
 
 	$data['updateSparepart'] = "UPDATE `sparepart` SET `stok`=(`stok`-{$_POST['jumlah']}) WHERE `id_sparepart`='{$_POST['sparepart']}' ";
 	echo '<pre>';
-	print_r($_POST);
+	print_r($data);
 	echo '</pre>';
 	die();
 	header('location:../../media.php?module=servis&act=transaksiservis&kode='.$kode);							
