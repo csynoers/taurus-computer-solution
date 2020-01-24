@@ -333,7 +333,9 @@ switch($_GET['act']){
 							<td>Rp. $harga_rp</td>		         
 							<td>$r[jumlah]</td>
 							<td>Rp. $subtotal_rp</td>
-							<td><a href=$aksi?module=servis&act=delete&kode=$r[id_detail] class='btn btn-danger' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\">Hapus</a></td>
+								<td>
+									<a href='$aksi?module=servis&act=delete&id_servis={$data['rowServis']['id_servis']}&id_detail={$r['id_detail']}&id_sparepart={$r['id_detail']}&jumlah={$r['jumlah']}' class='btn btn-danger' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\">Hapus</a>
+								</td>
 							</tr>";
 							$no++;
 						}

@@ -39,14 +39,12 @@ elseif ($module=='servis' AND $act=='tambah'){
 }
 // Hapus sparepart
 elseif ($module=='servis' AND $act=='delete'){
-	$edit=mysql_query("SELECT * FROM detail_servis WHERE id_detail='$_GET[kode]'");
-	$r=mysql_fetch_array($edit);
-	$kodes=$r['kode_servis'];
-	$jumlah=$r['jumlah'];
-	$id_sparepart=$r['id_sparepart'];
-	mysql_query("DELETE FROM detail_servis WHERE id_detail='$_GET[kode]'");
-	mysql_query("UPDATE sparepart SET stok   = stok-'$jumlah'                                   
-	WHERE  id_sparepart     = '$id_sparepart'");
-	header('location:../../media.php?module=servis&act=transaksiservis&kode='.$kodes);
+	$data = [];
+	$data['deleteDetailServis'] = "DELETE FROM detail_servis WHERE id_detail='{$_GET['id_detail']}')";
+	$data['updateSparepart'] = "UPDATE `sparepart` SET `stok`=(`stok`+{$_GET['jumlah']}) WHERE `id_sparepart`='{$_GET['id_sparepart']}' ";
+
+	mysql_query($data['deleteDetailServis']);
+	mysql_query($data['updateSparepart']);
+	header('location:../../media.php?module=servis&act=transaksiservis&kode='.$_GET['id_servis']);
 }
 ?>
