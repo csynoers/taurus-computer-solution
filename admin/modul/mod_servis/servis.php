@@ -305,7 +305,7 @@ $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_
 				<form action='' method='GET'>
 					<div class='input-group'>
 						<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
-						<input min='1' type='number' class='form-control' id='basic-url' aria-describedby='basic-addon3' required>
+						<input placeholder='masukan biaya servis disini*' min='1' type='number' class='form-control' id='basic-url' aria-describedby='basic-addon3' required>
 						<div class='input-group-btn'>
 							<button class='btn' type='submit'>Simpan</button>
 							<!-- Buttons -->
