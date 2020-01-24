@@ -127,7 +127,7 @@ switch($_GET['act']){
 		$edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_member AND servis.id_servis='$_GET[id]'");
     
 		$r=mysql_fetch_assoc($edit);
-		print_r($r);
+		$biaya_servis = $r['biaya_servis'];
 		$tanggal=tgl_indo($r['tanggal']);
 	
 		echo "
@@ -203,8 +203,8 @@ switch($_GET['act']){
 			</tr>";
 			$no++;
 			}
-			$biayaServisText = format_rupiah($r['biaya_servis']);
-			$grandTotal = format_rupiah($total+$r['biaya_servis']);
+			$biayaServisText = format_rupiah($biaya_servis);
+			$grandTotal = format_rupiah($total+$biaya_servis);
 			echo"
 			<tr>
 				<td class='text-right' colspan=4>Total :  </td>
