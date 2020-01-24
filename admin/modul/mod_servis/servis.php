@@ -352,7 +352,7 @@ switch($_GET['act']){
 							<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
 							<input placeholder='masukan biaya servis disini*' min='1' type='number' class='form-control' id='basic-url' aria-describedby='basic-addon3' required>
 							<div class='input-group-btn'>
-								<button class='btn' type='submit'>Simpan</button>
+								<button class='btn' type='submit'>Selesai</button>
 								<!-- Buttons -->
 							</div>
 						</div>
