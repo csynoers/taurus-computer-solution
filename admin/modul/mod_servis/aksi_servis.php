@@ -35,19 +35,21 @@ if ($module=='servis' AND $act=='input'){
 							
 }
 elseif ($module=='servis' AND $act=='tambah'){
-	print_r($_REQUEST);
-	die();
 	$kode = $_POST['id_servis'];
-	mysql_query("INSERT INTO servis(id_servis,					 
-	id_member,
-	tanggal,
-	keterangan) 
-	VALUES('$_POST[id_servis]',
-	'$_POST[member]',
-	'$_POST[tgl_servis]',
-	'$_POST[keterangan]')");
-
-	// die();					
+	mysql_query("
+		INSERT INTO servis(
+			id_servis,
+			id_member,
+			tanggal,keterangan
+		) 
+		VALUES(
+			'$_POST[id_servis]',
+			'$_POST[member]',
+			'$_POST[tgl_servis]',
+			'$_POST[keterangan]'
+		)
+	");
+	
 	header('location:../../media.php?module=servis&act=transaksiservis&kode='.$kode);							
 }
 // Hapus sparepart
