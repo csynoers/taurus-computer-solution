@@ -56,8 +56,9 @@ body{
 <center><h5>Struk Servis</h5></center>
 <?php
 $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_member AND servis.id_servis='$_GET[id]'");
-    $r=mysql_fetch_array($edit);
-	$tanggal=tgl_indo($r[tanggal]);
+	$r=mysql_fetch_array($edit);
+	$biaya_servis = $r['biaya_servis'];
+	$tanggal=tgl_indo($r['tanggal']);
 echo"<div class='table-responsive'>
 		  <table class='table'>
           <tr>
@@ -123,9 +124,22 @@ echo"<div class='table-responsive'>
 									<td>Rp. $subtotal_rp</td>
 		  </tr>";
 		  $no++;
-    }
-echo "<tr><td colspan=4>Total :  </td>
-									<td ><b>Rp. $total_rp</b></td></tr>
+	}
+	$biayaServisText = format_rupiah($biaya_servis);
+	$grandTotal = format_rupiah($total+$biaya_servis);
+echo "
+	<tr>
+		<td class='text-right' colspan=4>Total :  </td>
+		<td ><b>Rp. $total_rp</b></td>
+	</tr>
+	<tr>
+		<td class='text-right' colspan=4>Biaya Servis :  </td>
+		<td ><b>Rp. $biayaServisText</b></td>
+	</tr>
+	<tr>
+		<td class='text-right' colspan=4>Grand Total :  </td>
+		<td ><b>Rp. $grandTotal</b></td>
+	</tr>
      ";
     ?>
     </tbody>
