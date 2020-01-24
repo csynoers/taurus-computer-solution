@@ -1,7 +1,7 @@
 <?php
     //start session
     session_start();
-	error_reporting(0);
+	error_reporting(1);
     /* load config required */
     include_once "config/koneksi.php";
 	include_once "config/fungsi_thumb.php";
