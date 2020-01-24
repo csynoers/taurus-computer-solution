@@ -230,49 +230,54 @@ switch($_GET['act']){
 		$data = [];
 		$data['sqlServis'] = "SELECT * FROM `servis` WHERE 1 AND id_servis='{$_GET['kode']}' ";
 		$data['rowServis'] = mysql_fetch_assoc(mysql_query($data['sqlServis']));
+
+		$data['sqlSparepart'] 	= "SELECT * FROM sparepart ORDER BY id_sparepart ASC";
+		$data['querySparepart'] = mysql_query($data['sqlSparepart']);
+
+		$data['optionsSparepart'][] = "<option value='' selected>- Pilih Sparepart -</option>";
+		while ($value=mysql_fetch_assoc($data['querySparepart'])) {
+			$data['optionsSparepart'][] = "<option value='{$value['id_sparepart']}'>{$value['id_sparepart']}: {$value['nama_sparepart']}</option>";
+		}
+		$data['optionsSparepart'] = implode('',$data['optionsSparepart']);
+
 		echo '<pre>';
 		print_r($data);
 		echo '</pre>';
+
 		$member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.id_member AND servis.id_servis='$_GET[kode]'");
     
 		$p=mysql_fetch_assoc($member);
 		$tanggal=tgl_indo($r['tgl_servis']);
 		echo"
 			<div class='col-md-6'>  
-			<div class='box box-primary'>
-			<div class='box-header with-border'>
-			<h3 class='box-title'>FORM SERVIS</h3>
-			</div>
-			<!-- /.box-header -->
-			<!-- form start -->
-			<form method=POST action='$aksi?module=servis&act=input'>
-			<input type=hidden name='id_member' value='$r[id_member]'>
-			<input type=hidden name='id_servis' value='$_GET[kode]'>
-			<div class='box-body'>
-			<div class='form-group'>
-			<label for='exampleInputPassword1'>Cari Sparepart</label>
-			<select class='form-control' name='sparepart' required>
-			<option value='' selected>- Pilih Sparepart -</option>";
-			$tampil=mysql_query("SELECT * FROM sparepart ORDER BY id_sparepart ASC");
-			while($r=mysql_fetch_assoc($tampil)){
-			echo "<option value=$r[id_sparepart]>$r[id_sparepart]: $r[nama_sparepart]</option>";
-			}
-			echo "</select>
-			</div>
-			<div class='form-group'>
-			<label for='exampleInputPassword1'>Jumlah</label>
-			<input type='number' name='jumlah' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Jumlah Sparepart' required>
-			</div>
-			</div>
-			<!-- /.box-body -->
+				<div class='box box-primary'>
+					<div class='box-header with-border'>
+						<h3 class='box-title'>FORM SERVIS</h3>
+					</div>
 
-			<div class='box-footer'>
-			<button type='submit' class='btn btn-primary'>Simpan</button>
+					<form method=POST action='$aksi?module=servis&act=input'>
+						<div class='box-body'>
+							<input type='text' name='id_member' value='{$data['rowServis']['id_servis']}'>
+							<input type='text' name='id_servis' value='{$data['rowServis']['id_member']}'>
+							<div class='form-group'>
+								<label for='exampleInputPassword1'>Cari Sparepart</label>
+								<select class='form-control' name='sparepart' required>
+									{$data['optionsSparepart']}
+								</select>
+							</div>
+							<div class='form-group'>
+								<label for='exampleInputPassword1'>Jumlah</label>
+								<input type='number' name='jumlah' class='form-control' id='exampleInputPassword1' placeholder='Masukkan Jumlah Sparepart' required>
+							</div>
+						</div>
+					
+						<div class='box-footer'>
+							<button type='submit' class='btn btn-primary'>Simpan</button>
+						</div>
+					</form>
+				</div>
 			</div>
-			</form>
-			</div>
-			</div>";
-			echo"
+			
 			<div class='col-md-6'>  
 			<div class='box box-primary'>
 			<div class='box-header with-border'>
