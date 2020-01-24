@@ -11,10 +11,12 @@ if ($module=='servis' AND $act=='input'){
 	$data['insertDetailServis'] = "INSERT INTO `detail_servis`(`id_servis`, `id_sparepart`, `jumlah`) VALUES ('{$_POST['id_servis']}','{$_POST['sparepart']}','{$_POST['jumlah']}')";
 
 	$data['updateSparepart'] = "UPDATE `sparepart` SET `stok`=(`stok`-{$_POST['jumlah']}) WHERE `id_sparepart`='{$_POST['sparepart']}' ";
-	echo '<pre>';
-	print_r($data);
-	echo '</pre>';
-	die();
+	// echo '<pre>';
+	// print_r($data);
+	// echo '</pre>';
+	// die();
+	mysql_query($data['insertDetailServis']);
+	mysql_query($data['updateSparepart']);
 	header('location:../../media.php?module=servis&act=transaksiservis&kode='.$kode);							
 							
 }
