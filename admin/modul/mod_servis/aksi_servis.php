@@ -17,8 +17,7 @@ if ($module=='servis' AND $act=='input'){
 	// die();
 	mysql_query($data['insertDetailServis']);
 	mysql_query($data['updateSparepart']);
-	header('location:../../media.php?module=servis&act=transaksiservis&kode='.$kode);							
-							
+	header("location:../../media.php?module=servis&act=transaksiservis&kode={$_POST['id_servis']}");											
 }
 elseif ($module=='servis' AND $act=='tambah'){
 	$kode = $_POST['id_servis'];
