@@ -304,6 +304,7 @@ $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_
 					<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
 					<input type='text' class='form-control' id='basic-url' aria-describedby='basic-addon3'>
 					<div class='input-group-btn'>
+						<button type='submit'>Simpan</button>
 						<!-- Buttons -->
 					</div>
 				</div>
