@@ -293,34 +293,38 @@ $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_
             
          </div>
 	 </div>";
-    echo "<div class='col-xs-12'>
+
+	echo "
+	<div class='col-xs-12'>
         <div class='box'>
             <div class='box-header'>
               <h3 class='box-title'>DATA SPAREPART</h3>
             </div>
             <!-- /.box-header -->
 			<div class='box-body'>
-				<div class='input-group'>
-					<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
-					<input type='text' class='form-control' id='basic-url' aria-describedby='basic-addon3'>
-					<div class='input-group-btn'>
-						<button type='submit'>Simpan</button>
-						<!-- Buttons -->
+				<form action='' method='GET'>
+					<div class='input-group'>
+						<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
+						<input min='1' type='number' class='form-control' id='basic-url' aria-describedby='basic-addon3' required>
+						<div class='input-group-btn'>
+							<button class='btn' type='submit'>Simpan</button>
+							<!-- Buttons -->
+						</div>
 					</div>
-				</div>
+				</form>
 				<hr>
-<table id='dynamic-table' class='table table-striped table-bordered table-hover'>
-							<thead>
-								<tr>
-									<th>No</th>
-									<th>Nama Sparepart</th>
-									<th>Harga</th>
-									<th>Jumlah</th>
-									<th>Sub total</th>
-									<th>Aksi</th>
-								</tr>
-							</thead>
-							<tbody>"; 
+				<table id='dynamic-table' class='table table-striped table-bordered table-hover'>
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Nama Sparepart</th>
+							<th>Harga</th>
+							<th>Jumlah</th>
+							<th>Sub total</th>
+							<th>Aksi</th>
+						</tr>
+					</thead>
+					<tbody>"; 
 							$no=1;
 							$tampil = mysql_query("SELECT * FROM detail_servis,sparepart WHERE detail_servis.id_sparepart=sparepart.id_sparepart
 																			AND detail_servis.id_servis='$_GET[kode]'");
