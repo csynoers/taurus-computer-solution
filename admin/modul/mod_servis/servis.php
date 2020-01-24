@@ -29,9 +29,9 @@ switch($_GET['act']){
 			";
 		}
 		$data['rows'] = implode('',$data['rows']);
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
 
 		echo "
 			<div class='col-xs-12'>
