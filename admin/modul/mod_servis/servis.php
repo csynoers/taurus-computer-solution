@@ -21,7 +21,7 @@ switch($_GET['act']){
 					<td>{$value['nama']}</td>
 					<td>{$value['tanggal']}</td>
 					<td>
-						<a href='?module=servis&act=editproduk&amp;id=5' class='btn btn-warning btn-xs' title='Edit'><i class='fa fa-edit'></i> Edit</a>
+						<a href='?module=servis&act=transaksiservis&kode={$value['id_servis']}' class='btn btn-primary btn-xs' title='Edit'><i class='fa fa-edit'></i> Edit</a>
 						<a href='?module=servis&act=detailservis&id={$value['id_servis']}' class='btn btn-info btn-xs' title='Detail'><i class='fa fa-folder'> Detail</i></a>
 						<a href='modul/mod_servis/cetak.php?kode={$value['id_servis']}' target='_blank' class='btn btn-warning btn-xs' title='Cetak'><i class='fa fa-print'> Cetak</i></a>
 					</td>
