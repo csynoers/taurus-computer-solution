@@ -225,10 +225,10 @@ $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_
     break;  
 	
 	case "transaksiservis":
+		$member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.id_member AND servis.id_servis='$_GET[kode]'");
     
-$member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.id_member AND servis.id_servis='$_GET[kode]'");
-    $p=mysql_fetch_assoc($member);
-	$tanggal=tgl_indo($r[tgl_servis]);
+		$p=mysql_fetch_assoc($member);
+		$tanggal=tgl_indo($r['tgl_servis']);
 	echo"
    	<div class='col-md-6'>  
 		 <div class='box box-primary'>
@@ -299,7 +299,15 @@ $member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.i
               <h3 class='box-title'>DATA SPAREPART</h3>
             </div>
             <!-- /.box-header -->
-            <div class='box-body'>
+			<div class='box-body'>
+				<div class='input-group'>
+					<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
+					<input type='text' class='form-control' id='basic-url' aria-describedby='basic-addon3'>
+					<div class='input-group-btn'>
+						<!-- Buttons -->
+					</div>
+				</div>
+				<hr>
 <table id='dynamic-table' class='table table-striped table-bordered table-hover'>
 							<thead>
 								<tr>
