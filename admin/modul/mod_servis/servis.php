@@ -10,12 +10,25 @@ $aksi="modul/mod_servis/aksi_servis.php";
 switch($_GET['act']){
 	// Tampil servis
 	default:
-		$data = [];
-		$data['sqlRows'] = "SELECT * FROM servis,member WHERE servis.id_member=member.id_member ORDER BY id_servis DESC";
-		$data['queryRows'] = mysql_query($data['sqlRows']);
+		$data 				= [];
+		$data['sqlRows'] 	= "SELECT * FROM servis,member WHERE servis.id_member=member.id_member ORDER BY id_servis DESC";
+		$data['queryRows'] 	= mysql_query($data['sqlRows']);
 		while ($value=mysql_fetch_assoc($data['queryRows'])) {
-			$data['rows'][] = $value;
+			$value['tanggal'] 	= tgl_indo($value['tanggal']);
+			$data['rows'][]		= "
+				<tr>
+					<td>{$value['id_servis']}</td>
+					<td>{$value['nama']}</td>
+					<td>{$value['tanggal']}</td>
+					<td>
+						<a href='?module=servis&act=editproduk&amp;id=5' class='btn btn-warning btn-xs' title='Edit'><i class='fa fa-edit'></i> Edit</a>
+						<a href='?module=servis&act=detailservis&id={$value['id_servis']}' class='btn btn-info btn-xs' title='Detail'><i class='fa fa-folder'> Detail</i></a>
+						<a href='modul/mod_servis/cetak.php?kode={$value['id_servis']}' target='_blank' class='btn btn-warning btn-xs' title='Cetak'><i class='fa fa-print'> Cetak</i></a>
+					</td>
+				</tr>
+			";
 		}
+		$data['rows'] = implode('',$data['rows']);
 		echo '<pre>';
 		print_r($data);
 		echo '</pre>';
@@ -40,23 +53,8 @@ switch($_GET['act']){
 									<th>Aksi</th>
 								</tr>
 							</thead>
-							<tbody>";
-
-/*    $tampil = mysql_query(" ");					
-    while($r=mysql_fetch_assoc($tampil)){
-      $tanggal = tgl_indo($r['tanggal']);
-	  
-      echo "<tr><td>$r[id_servis]</td>
-                <td>$r[nama]</td>
-                <td>$tanggal</td>
-				<td>
-					<a href='?module=servis&act=editproduk&amp;id=5' class='btn btn-warning btn-xs' title='Edit'><i class='fa fa-edit'></i> Edit</a>
-					<a href=?module=servis&act=detailservis&id=$r[id_servis] class='btn btn-info btn-xs' title='Detail'><i class='fa fa-folder'> Detail</i></a>
-				    <a href=modul/mod_servis/cetak.php?kode=$r[id_servis] target='_blank' class='btn btn-warning btn-xs' title='Cetak'><i class='fa fa-print'> Cetak</i></a>
-				</td></tr>";
-      $no++;
-    } */
-	echo "
+							<tbody>
+								{$data['rows']}
 							</tbody>
 						</table>
 					</div>
