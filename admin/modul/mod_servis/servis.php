@@ -257,8 +257,7 @@ switch($_GET['act']){
 
 					<form method=POST action='$aksi?module=servis&act=input'>
 						<div class='box-body'>
-							<input type='text' name='id_member' value='{$data['rowServis']['id_servis']}'>
-							<input type='text' name='id_servis' value='{$data['rowServis']['id_member']}'>
+							<input type='text' name='id_servis' value='{$data['rowServis']['id_servis']}'>
 							<div class='form-group'>
 								<label for='exampleInputPassword1'>Cari Sparepart</label>
 								<select class='form-control' name='sparepart' required>

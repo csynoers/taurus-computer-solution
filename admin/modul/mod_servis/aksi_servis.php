@@ -7,6 +7,10 @@ $act=$_GET['act'];
 $tgl_skrg = date("Ymd");
 $jam_skrg = date("H:i:s");
 if ($module=='servis' AND $act=='input'){
+	$data = [];
+	$data['insertDetailServis'] = "INSERT INTO `detail_servis`(`id_servis`, `id_sparepart`, `jumlah`) VALUES ('{$_POST['id_servis']}','{$_POST['sparepart']}','{$_POST['jumlah']}')";
+
+	$data['updateSparepart'] = "UPDATE `sparepart` SET `stok`=(`stok`-{$_POST['jumlah']}) WHERE `id_sparepart`='{$_POST['sparepart']}' ";
 	echo '<pre>';
 	print_r($_POST);
 	echo '</pre>';
