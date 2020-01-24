@@ -240,9 +240,9 @@ switch($_GET['act']){
 		}
 		$data['optionsSparepart'] = implode('',$data['optionsSparepart']);
 
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
 
 		$member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.id_member AND servis.id_servis='$_GET[kode]'");
     
@@ -257,7 +257,7 @@ switch($_GET['act']){
 
 					<form method=POST action='$aksi?module=servis&act=input'>
 						<div class='box-body'>
-							<input type='text' name='id_servis' value='{$data['rowServis']['id_servis']}'>
+							<input type='hidden' name='id_servis' value='{$data['rowServis']['id_servis']}'>
 							<div class='form-group'>
 								<label for='exampleInputPassword1'>Cari Sparepart</label>
 								<select class='form-control' name='sparepart' required>
@@ -278,91 +278,81 @@ switch($_GET['act']){
 			</div>
 			
 			<div class='col-md-6'>  
-			<div class='box box-primary'>
-			<div class='box-header with-border'>
-			<h3 class='box-title'>DATA MEMBER</h3>
-			</div>
-			<!-- /.box-header -->
-			<!-- form start -->
-			<div class='box-body'>
-			<div class='form-group'>
-			<label for='exampleInputPassword1'>Kode member</label>
-			<input type='text' value='$p[id_member]' class='form-control' id='exampleInputPassword1' readonly>
-			</div>
-			<div class='form-group'>
-			<label for='exampleInputPassword1'>Nama</label>
-			<input type='text' value='$p[nama]' class='form-control' id='exampleInputPassword1' readonly>
-			</div>
-			<div class='form-group'>
-			<label for='exampleInputPassword1'>No. Telp</label>
-			<input type='text' value='$p[no_telp]' class='form-control' id='exampleInputPassword1' readonly>
+				<div class='box box-primary'>
+					<div class='box-header with-border'>
+						<h3 class='box-title'>DATA MEMBER</h3>
+					</div>
+					<div class='box-body'>
+						<div class='form-group'>
+							<label for='exampleInputPassword1'>Kode member</label>
+							<input type='text' value='$p[id_member]' class='form-control' id='exampleInputPassword1' readonly>
+						</div>
+						<div class='form-group'>
+							<label for='exampleInputPassword1'>Nama</label>
+							<input type='text' value='$p[nama]' class='form-control' id='exampleInputPassword1' readonly>
+						</div>
+						<div class='form-group'>
+							<label for='exampleInputPassword1'>No. Telp</label>
+							<input type='text' value='$p[no_telp]' class='form-control' id='exampleInputPassword1' readonly>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			</div>
-			<!-- /.box-body -->
-
-
-
-			</div>
-			</div>";
-
-			echo "
 			<div class='col-xs-12'>
-			<div class='box'>
-			<div class='box-header'>
-			<h3 class='box-title'>DATA SPAREPART</h3>
-			</div>
-			<!-- /.box-header -->
-			<div class='box-body'>
-			<table id='dynamic-table' class='table table-striped table-bordered table-hover'>
-			<thead>
-			<tr>
-			<th>No</th>
-			<th>Nama Sparepart</th>
-			<th>Harga</th>
-			<th>Jumlah</th>
-			<th>Sub total</th>
-			<th>Aksi</th>
-			</tr>
-			</thead>
-			<tbody>"; 
-			$no=1;
-			$tampil = mysql_query("SELECT * FROM detail_servis,sparepart WHERE detail_servis.id_sparepart=sparepart.id_sparepart
-				AND detail_servis.id_servis='$_GET[kode]'");
-			while ($r=mysql_fetch_assoc($tampil)){
-			$jml=$r[jumlah];
-			$harga=$r[harga];
-			$subtotal=$jml*$harga;
-			$total       = $total + $subtotal;
-			$total_rp    = format_rupiah($total);
-			$subtotal_rp = format_rupiah($subtotal);
-			$harga_rp       = format_rupiah($harga);
-			echo"<tr>
-			<td>$no</td>                         
-			<td>$r[nama_sparepart]</a></td>
-			<td>Rp. $harga_rp</td>		         
-			<td>$r[jumlah]</td>
-			<td>Rp. $subtotal_rp</td>
-			<td><a href=$aksi?module=servis&act=delete&kode=$r[id_detail] class='btn btn-danger' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\">Hapus</a></td>
-			</tr>";
-			$no++;
-			}
-			echo"<tr>
-			<td colspan=4 align=right>Total :  </td>
-			<td align=left><b>Rp. $total_rp</b></td>
-			</tr>
-			</tbody>
-			</table>
+				<div class='box'>
+					<div class='box-header'>
+						<h3 class='box-title'>DATA SPAREPART</h3>
+					</div>
+					<table id='dynamic-table' class='table table-striped table-bordered table-hover'>
+						<thead>
+							<tr>
+								<th>No</th>
+								<th>Nama Sparepart</th>
+								<th>Harga</th>
+								<th>Jumlah</th>
+								<th>Sub total</th>
+								<th>Aksi</th>
+							</tr>
+						</thead>
+					<tbody>"; 
+						$no=1;
+						$tampil = mysql_query("SELECT * FROM detail_servis,sparepart WHERE detail_servis.id_sparepart=sparepart.id_sparepart
+							AND detail_servis.id_servis='$_GET[kode]'");
+						while ($r=mysql_fetch_assoc($tampil)){
+							$jml=$r['jumlah'];
+							$harga=$r['harga'];
+							$subtotal=$jml*$harga;
+							$total       = $total + $subtotal;
+							$total_rp    = format_rupiah($total);
+							$subtotal_rp = format_rupiah($subtotal);
+							$harga_rp       = format_rupiah($harga);
+							echo"<tr>
+							<td>$no</td>                         
+							<td>$r[nama_sparepart]</a></td>
+							<td>Rp. $harga_rp</td>		         
+							<td>$r[jumlah]</td>
+							<td>Rp. $subtotal_rp</td>
+							<td><a href=$aksi?module=servis&act=delete&kode=$r[id_detail] class='btn btn-danger' onClick=\"return confirm('Apakah Anda Yakin Untuk Menghapus Data Ini ?')\">Hapus</a></td>
+							</tr>";
+							$no++;
+						}
+						echo"
+						<tr>
+							<td colspan=4 align=right>Total :  </td>
+							<td align=left><b>Rp. $total_rp</b></td>
+						</tr>
+					</tbody>
+				</table>
 
 				<div class='box round first fullpage'>
 					<form method='POST' action='$aksi?module=servis&act=tambah'>
-						<input type=hidden name='id_member' value='$_GET[id]'>
-						<input type=hidden name='kode_servis' value='$_GET[kode]'>
+						<input type=hidden name='id_servis' value='{$data['rowServis']['id_servis']}'>
 						<div class='input-group'>
 							<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
 							<input placeholder='masukan biaya servis disini*' min='1' type='number' class='form-control' id='basic-url' aria-describedby='basic-addon3' required>
 							<div class='input-group-btn'>
-								<button class='btn' type='submit'>Selesai</button>
+								<button class='btn btn-primary' type='submit' style='width:500px'>Selesai</button>
 								<!-- Buttons -->
 							</div>
 						</div>
