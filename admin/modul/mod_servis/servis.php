@@ -229,6 +229,7 @@ switch($_GET['act']){
 	case "transaksiservis":
 		$data = [];
 		$data['sqlServis'] = "SELECT * FROM `servis` WHERE 1 AND id_servis='{$_GET['kode']}' ";
+		$data['rowServis'] = mysql_fetch_assoc(mysql_query($data['sqlServis']));
 		echo '<pre>';
 		print_r($data);
 		echo '</pre>';
