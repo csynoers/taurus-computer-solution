@@ -50,4 +50,14 @@ elseif ($module=='servis' AND $act=='delete'){
 	mysql_query($data['updateSparepart']);
 	header('location:../../media.php?module=servis&act=transaksiservis&kode='.$_GET['id_servis']);
 }
+elseif ($module=='servis' AND $act=='biaya'){
+	$data = [];
+	$data['updateServis'] = "UPDATE `servis` SET biaya_servis='{$_POST['biaya_servis']}' WHERE id_servis='{id_servis}' ";
+	// echo '<pre>';
+	// print_r($data);
+	// echo '</pre>';
+	// die();
+	mysql_query($data['updateServis']);
+	header('location:../../media.php?module=servis&act=detailservis&id='.$_POST['id_servis']);
+}
 ?>

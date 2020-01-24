@@ -348,11 +348,11 @@ switch($_GET['act']){
 				</table>
 
 				<div class='box round first fullpage'>
-					<form method='POST' action='$aksi?module=servis&act=tambah'>
+					<form method='POST' action='$aksi?module=servis&act=biaya'>
 						<input type=hidden name='id_servis' value='{$data['rowServis']['id_servis']}'>
 						<div class='input-group'>
 							<span class='input-group-addon' id='basic-addon3'>Biaya Servis</span>
-							<input placeholder='masukan biaya servis disini*' min='1' type='number' class='form-control' id='basic-url' aria-describedby='basic-addon3' required>
+							<input name='biaya_servis' placeholder='masukan biaya servis disini*' min='1' type='number' class='form-control' id='basic-url' aria-describedby='basic-addon3' required>
 							<div class='input-group-btn'>
 								<button class='btn btn-primary' type='submit' style='width:500px'>Selesai</button>
 								<!-- Buttons -->
