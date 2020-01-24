@@ -1,53 +1,76 @@
 <?php
 session_start();
- if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
-  echo "<link href='style.css' rel='stylesheet' type='text/css'>
- <center>Untuk mengakses modul, Anda harus login <br>";
-  echo "<a href=../../index.php><b>LOGIN</b></a></center>";
+if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
+	echo "<link href='style.css' rel='stylesheet' type='text/css'>
+	<center>Untuk mengakses modul, Anda harus login <br>";
+	echo "<a href=../../index.php><b>LOGIN</b></a></center>";
 }
 else{
 $aksi="modul/mod_servis/aksi_servis.php";
-switch($_GET[act]){
-  // Tampil servis
-  default:
-    echo "<div class='col-xs-12'>
-        <div class='box'>
-            <div class='box-header'>
-              <h3 class='box-title'>SERVIS</h3>
-            </div>
-			<button type=button class='btn btn-success' onclick=\"window.location.href='?module=servis&act=tambahservis';\"><i class='fa fa-plus'> Tambah</i></button>
-							<p>
-            <!-- /.box-header -->
-            <div class='box-body'>
-			<div class='box-body table-responsive no-padding'>
-             <table id='example1' class='table table-bordered table-striped'> 
-	<thead>
-          <tr><th>ID Servis</th><th>Pelanggan</th><th>Tgl. servis</th><th>Aksi</th></tr>
-		  <tbody>";
+switch($_GET['act']){
+	// Tampil servis
+	default:
+		$data = [];
+		$data['sqlRows'] = "SELECT * FROM servis,member WHERE servis.id_member=member.id_member ORDER BY id_servis DESC";
+		$data['queryRows'] = mysql_query($data['sqlRows']);
+		while ($value=mysql_fetch_assoc($data['queryRows'])) {
+			$data['rows'][] = $value;
+		}
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
 
-   $tampil = mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_member ORDER BY id_servis DESC ");					
-    while($r=mysql_fetch_array($tampil)){
-      $tanggal=tgl_indo($r[tanggal]);
+		echo "
+			<div class='col-xs-12'>
+				<div class='box'>
+					<div class='box-header'>
+					<h3 class='box-title'>SERVIS</h3>
+					</div>
+					<button type=button class='btn btn-success' onclick=\"window.location.href='?module=servis&act=tambahservis';\"><i class='fa fa-plus'> Tambah</i></button>
+									<p>
+					<!-- /.box-header -->
+					<div class='box-body'>
+						<div class='box-body table-responsive no-padding'>
+							<table id='example1' class='table table-bordered table-striped'> 
+							<thead>
+								<tr>
+									<th>ID Servis</th>
+									<th>Pelanggan</th>
+									<th>Tgl. servis</th>
+									<th>Aksi</th>
+								</tr>
+							</thead>
+							<tbody>";
+
+/*    $tampil = mysql_query(" ");					
+    while($r=mysql_fetch_assoc($tampil)){
+      $tanggal = tgl_indo($r['tanggal']);
 	  
       echo "<tr><td>$r[id_servis]</td>
                 <td>$r[nama]</td>
                 <td>$tanggal</td>
-		        <td><a href=?module=servis&act=detailservis&id=$r[id_servis] class='btn btn-info btn-xs' title='Detail'><i class='fa fa-folder'> Detail</i></a>
+				<td>
+					<a href='?module=servis&act=editproduk&amp;id=5' class='btn btn-warning btn-xs' title='Edit'><i class='fa fa-edit'></i> Edit</a>
+					<a href=?module=servis&act=detailservis&id=$r[id_servis] class='btn btn-info btn-xs' title='Detail'><i class='fa fa-folder'> Detail</i></a>
 				    <a href=modul/mod_servis/cetak.php?kode=$r[id_servis] target='_blank' class='btn btn-warning btn-xs' title='Cetak'><i class='fa fa-print'> Cetak</i></a>
 				</td></tr>";
       $no++;
-    }
-    echo "</tbody></table></div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>";
-
+    } */
+	echo "
+							</tbody>
+						</table>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+		";
     
-    break;
-  case "tambahservis":
+		break;
+
+	case "tambahservis":
     $sql=mysql_query("select * from servis order by id_servis DESC LIMIT 0,1");
-	$data=mysql_fetch_array($sql);
+	$data=mysql_fetch_assoc($sql);
 	$kodeawal=substr($data['id_servis'],3,3)+1;
 	if($kodeawal<10){
 		$kode='SRV00'.$kodeawal;
@@ -76,7 +99,7 @@ switch($_GET[act]){
 					<select class='form-control select2' name='member' required>
 						<option value=''>- Pilih Pelanggan -</option>";
 							$tampil=mysql_query("SELECT * FROM member ORDER BY nama ASC");
-							while($r=mysql_fetch_array($tampil)){
+							while($r=mysql_fetch_assoc($tampil)){
 							echo"<option value=$r[id_member]>$r[nama]</option>";
 							}
 							echo"</select>
@@ -104,7 +127,7 @@ switch($_GET[act]){
   case "detailservis":
     
 $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_member AND servis.id_servis='$_GET[id]'");
-    $r=mysql_fetch_array($edit);
+    $r=mysql_fetch_assoc($edit);
 	$tanggal=tgl_indo($r[tanggal]);
 	
     echo "<div class='col-xs-12'>
@@ -163,7 +186,7 @@ $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_
 													ON detail_servis.id_sparepart=sparepart.id_sparepart
 													WHERE servis.id_servis='$_GET[id]'
 													ORDER BY servis.id_servis DESC");
-							while ($r=mysql_fetch_array($tampil)){
+							while ($r=mysql_fetch_assoc($tampil)){
 							$jml=$r[jumlah];
 							$harga=$r[harga];
 							$subtotal=$jml*$harga;
@@ -206,7 +229,7 @@ $edit=mysql_query("SELECT * FROM servis,member WHERE servis.id_member=member.id_
 	case "transaksiservis":
     
 $member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.id_member AND servis.id_servis='$_GET[kode]'");
-    $p=mysql_fetch_array($member);
+    $p=mysql_fetch_assoc($member);
 	$tanggal=tgl_indo($r[tgl_servis]);
 	echo"
    	<div class='col-md-6'>  
@@ -225,7 +248,7 @@ $member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.i
                   <select class='form-control' name='sparepart' required>
             <option value='' selected>- Pilih Sparepart -</option>";
             $tampil=mysql_query("SELECT * FROM sparepart ORDER BY id_sparepart ASC");
-            while($r=mysql_fetch_array($tampil)){
+            while($r=mysql_fetch_assoc($tampil)){
               echo "<option value=$r[id_sparepart]>$r[id_sparepart]: $r[nama_sparepart]</option>";
             }
     echo "</select>
@@ -294,7 +317,7 @@ $member=mysql_query("SELECT * FROM member,servis WHERE member.id_member=servis.i
 							$no=1;
 							$tampil = mysql_query("SELECT * FROM detail_servis,sparepart WHERE detail_servis.id_sparepart=sparepart.id_sparepart
 																			AND detail_servis.id_servis='$_GET[kode]'");
-							while ($r=mysql_fetch_array($tampil)){
+							while ($r=mysql_fetch_assoc($tampil)){
 							$jml=$r[jumlah];
 							$harga=$r[harga];
 							$subtotal=$jml*$harga;
