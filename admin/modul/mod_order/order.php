@@ -14,96 +14,351 @@
         
         switch($_GET['act']){
             default:
-                $data = [];
+                $data                       = [];
 
-                $data['kemarin'] = date('Y-m-d', mktime(0,0,0, date('m'), date('d') - 1, date('Y')));
-                $data['order_expired'] = mysql_num_rows(mysql_query("SELECT * FROM `orders` WHERE 1 AND orders.status='Unpaid' AND orders.tanggal < '2019-12-01'"));
-                $data['update_produk'] = ("
-                    UPDATE
-                        produk,
-                        orders_detail,
-                        orders
-                    SET
-                        produk.stok=produk.stok+orders_detail.jumlah 
-                    WHERE produk.id_produk=orders_detail.id_produk 
-                        AND orders.id_orders=orders_detail.id_orders
-                        AND orders.tanggal < '{$data['kemarin']}' 
-                        AND orders.status='Unpaid'
-                ");
-                $data['delete_order'] = ("
-                    DELETE
-                        orders,
-                        orders_detail
-                    FROM orders 
-                        INNER JOIN orders_detail
-                    WHERE orders.id_orders=orders_detail.id_orders
-                        AND orders.status='Unpaid'
-                        AND orders.tanggal < '{$data['kemarin']}'
-                ");
-                if ( $data['order_expired'] > 0 ) { # jika terdapat order yang sudah lebih dari sehari hapus data order
-                    mysql_query($data['update_produk']); # kembalikan jumlah produk yang ada di detail order ke tabel produk jumlah stok
-                    mysql_query($data['delete_order']); # delete order kadaluarsa/expired
-                }
-                
-                $data['rows_order_html'] = [];
-                $tampil = mysql_query("SELECT *,orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member ORDER BY orders.tanggal DESC ");					
-                while( $r=mysql_fetch_assoc($tampil) ){
-                    $tanggal        = tgl_indo($r['tanggal']);
-                    $status         = $r['status_mod'];
-                    $grandtotal_rp  = format_rupiah($r['grandtotal']);
-                    
-                    if ($status=='Unpaid') {
-                        $status_mod = "<font color='red'>{$r['status_mod']}</font>";
-                    } else {
-                        $status_mod = "<font color='green'>{$r['status_mod']}</font>";
-                    }
-
-                    $data['rows_order_html'][] = "
+                /* start generate data belum bayar */
+                $data['queryBelumBayar']    = mysql_query("SELECT orders.id_orders,member.nama,orders.tanggal,orders.jam,orders.grandtotal FROM orders LEFT JOIN member ON member.id_member=orders.id_member WHERE 1 AND orders.status='Unpaid' ORDER BY orders.tanggal DESC");
+                while ($value = mysql_fetch_assoc($data['queryBelumBayar'])) {
+                    $value['tanggal']    = tgl_indo($value['tanggal']);
+                    $value['grandtotal'] = format_rupiah($value['grandtotal']);
+                    $data['belumBayar'][]  = "
                         <tr>
-                            <td align=center>{$r['id_orders']}</td>
-                            <td>{$r['nama']}</td>
-                            <td>{$tanggal}</td>
-                            <td>{$r['jam']}</td>
-                            <td>{$status_mod}</td>
-                            <td>Rp. {$grandtotal_rp}</td>
+                            <td>{$value['id_orders']}</td>
+                            <td>{$value['nama']}</td>
+                            <td>{$value['tanggal']}</td>
+                            <td>{$value['jam']}</td>
+                            <td>Rp. {$value['grandtotal']}</td>
+                        </tr>
+                    ";
+                }
+                $data['belumBayar']         = implode('',$data['belumBayar']);
+                $data['belumBayar']         = empty($data['belumBayar']) ? NULL : $data['belumBayar'] ;
+                /* end generate data belum bayar */
+
+                /* start generate data sudah bayar */
+                $data['querySudahBayar']    = mysql_query("SELECT orders.id_orders,member.nama,orders.tanggal,orders.jam,orders.grandtotal,orders.kurir FROM orders LEFT JOIN member ON member.id_member=orders.id_member WHERE 1 AND orders.status='PAID' AND orders.no_resi IS NULL ORDER BY orders.tanggal DESC");
+                while ($value = mysql_fetch_assoc($data['querySudahBayar'])) {
+                    $value['tanggal']    = tgl_indo($value['tanggal']);
+                    $value['grandtotal'] = format_rupiah($value['grandtotal']);
+                    $data['sudahBayar'][]  = "
+                        <tr>
+                            <td>{$value['id_orders']}</td>
+                            <td>{$value['nama']}</td>
+                            <td>{$value['tanggal']}</td>
+                            <td>{$value['jam']}</td>
+                            <td>Rp. {$value['grandtotal']}</td>
+                            <td>{$value['kurir']}</td>
                             <td>
-                                <a href=?module=order&act=detailorder&id={$r['id_orders']} class='btn btn-success btn-sm' title='Detail'><i class='fa fa-folder'></i></a>
+                                <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-success btn-sm' title='Detail'><i class='fa fa-folder'></i></a>
                             </td>
                         </tr>
                     ";
-                    // $no++;
                 }
-                $data['rows_order_html'] = implode('', $data['rows_order_html']);
+                $data['sudahBayar']         = implode('',$data['sudahBayar']);
+                $data['sudahBayar']         = empty($data['sudahBayar']) ? NULL : $data['sudahBayar'] ;
+                /* end generate data sudah bayar */
 
-                echo "
+                /* start generate data dikirim */
+                $data['queryDikirim']    = mysql_query("SELECT orders.id_orders,orders.no_resi,member.nama,orders.tanggal,orders.jam,orders.grandtotal,orders.kurir FROM orders LEFT JOIN member ON member.id_member=orders.id_member WHERE 1 AND orders.status='PAID' AND orders.status_order='dikirim' AND orders.no_resi IS NOT NULL ORDER BY orders.tanggal DESC");
+                while ($value = mysql_fetch_assoc($data['queryDikirim'])) {
+                    $value['tanggal']    = tgl_indo($value['tanggal']);
+                    $value['grandtotal'] = format_rupiah($value['grandtotal']);
+                    $data['dikirim'][]  = "
+                        <tr>
+                            <td>{$value['id_orders']}</td>
+                            <td>{$value['no_resi']}</td>
+                            <td>{$value['nama']}</td>
+                            <td>{$value['tanggal']}</td>
+                            <td>{$value['jam']}</td>
+                            <td>Rp. {$value['grandtotal']}</td>
+                            <td>{$value['kurir']}</td>
+                            <td>
+                                <a href='{$aksi}?module=order&act=konfirmasi&id={$value['id_orders']}' class='btn btn-success btn-sm' title='Konfirmasi'><i class='fa fa-check-circle-o'></i> Konfirmasi</a>
+                                <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-success btn-sm' title='Detail'><i class='fa fa-folder'></i></a>
+                            </td>
+                        </tr>
+                    ";
+                }
+                $data['dikirim']         = implode('',$data['dikirim']);
+                $data['dikirim']         = empty($data['dikirim']) ? NULL : $data['dikirim'] ;
+                /* end generate data dikirim */
+
+                /* start generate data selesai */
+                $data['querySelesai']    = mysql_query("SELECT orders.id_orders,orders.no_resi,member.nama,orders.tanggal,orders.jam,orders.grandtotal,orders.kurir FROM orders LEFT JOIN member ON member.id_member=orders.id_member WHERE 1 AND orders.status='PAID' AND orders.status_order='selesai' AND orders.no_resi IS NOT NULL ORDER BY orders.tanggal DESC");
+                while ($value = mysql_fetch_assoc($data['querySelesai'])) {
+                    $value['tanggal']    = tgl_indo($value['tanggal']);
+                    $value['grandtotal'] = format_rupiah($value['grandtotal']);
+                    $data['selesai'][]  = "
+                        <tr>
+                            <td>{$value['id_orders']}</td>
+                            <td>{$value['no_resi']}</td>
+                            <td>{$value['nama']}</td>
+                            <td>{$value['tanggal']}</td>
+                            <td>{$value['jam']}</td>
+                            <td>Rp. {$value['grandtotal']}</td>
+                            <td>{$value['kurir']}</td>
+                            <td>
+                                <a href='?module=order&act=detailorder&id={$value['id_orders']}' class='btn btn-success btn-sm' title='Detail'><i class='fa fa-folder'></i></a>
+                            </td>
+                        </tr>
+                    ";
+                }
+                $data['selesai']         = implode('',$data['selesai']);
+                $data['selesai']         = empty($data['selesai']) ? NULL : $data['selesai'] ;
+                /* end generate data selesai */
+
+                /* start generate data dibatalkan */
+                $data['queryDibatalkan']    = mysql_query("SELECT orders.id_orders,member.nama,orders.tanggal,orders.jam,orders.grandtotal FROM orders LEFT JOIN member ON member.id_member=orders.id_member WHERE 1 AND orders.status='EXPIRED' ORDER BY orders.tanggal DESC");
+                while ($value = mysql_fetch_assoc($data['queryDibatalkan'])) {
+                    $value['tanggal']    = tgl_indo($value['tanggal']);
+                    $value['grandtotal'] = format_rupiah($value['grandtotal']);
+                    $data['dibatalkan'][]  = "
+                        <tr>
+                            <td>{$value['id_orders']}</td>
+                            <td>{$value['nama']}</td>
+                            <td>{$value['tanggal']}</td>
+                            <td>{$value['jam']}</td>
+                            <td>Rp. {$value['grandtotal']}</td>
+                        </tr>
+                    ";
+                }
+                $data['dibatalkan']         = implode('',$data['dibatalkan']);
+                $data['dibatalkan']         = empty($data['dibatalkan']) ? NULL : $data['dibatalkan'] ;
+                /* end generate data dibatalkan */
+
+                // $data['kemarin'] = date('Y-m-d', mktime(0,0,0, date('m'), date('d') - 1, date('Y')));
+                // $data['order_expired'] = mysql_num_rows(mysql_query("SELECT * FROM `orders` WHERE 1 AND orders.status='Unpaid' AND orders.tanggal < '2019-12-01'"));
+                // $data['update_produk'] = ("
+                //     UPDATE
+                //         produk,
+                //         orders_detail,
+                //         orders
+                //     SET
+                //         produk.stok=produk.stok+orders_detail.jumlah 
+                //     WHERE produk.id_produk=orders_detail.id_produk 
+                //         AND orders.id_orders=orders_detail.id_orders
+                //         AND orders.tanggal < '{$data['kemarin']}' 
+                //         AND orders.status='Unpaid'
+                // ");
+                // $data['delete_order'] = ("
+                //     DELETE
+                //         orders,
+                //         orders_detail
+                //     FROM orders 
+                //         INNER JOIN orders_detail
+                //     WHERE orders.id_orders=orders_detail.id_orders
+                //         AND orders.status='Unpaid'
+                //         AND orders.tanggal < '{$data['kemarin']}'
+                // ");
+                // if ( $data['order_expired'] > 0 ) { # jika terdapat order yang sudah lebih dari sehari hapus data order
+                //     mysql_query($data['update_produk']); # kembalikan jumlah produk yang ada di detail order ke tabel produk jumlah stok
+                //     mysql_query($data['delete_order']); # delete order kadaluarsa/expired
+                // }
+                
+                // $data['rows_order_html'] = [];
+                // $tampil = mysql_query("SELECT *,orders.status AS status_mod FROM orders,member WHERE orders.id_member=member.id_member ORDER BY orders.tanggal DESC ");					
+                // while( $r=mysql_fetch_assoc($tampil) ){
+                //     $tanggal        = tgl_indo($r['tanggal']);
+                //     $status         = $r['status_mod'];
+                //     $grandtotal_rp  = format_rupiah($r['grandtotal']);
+                    
+                //     if ($status=='Unpaid') {
+                //         $status_mod = "<font color='red'>{$r['status_mod']}</font>";
+                //     } else {
+                //         $status_mod = "<font color='green'>{$r['status_mod']}</font>";
+                //     }
+
+                //     $data['rows_order_html'][] = "
+                //         <tr>
+                //             <td align=center>{$r['id_orders']}</td>
+                //             <td>{$r['nama']}</td>
+                //             <td>{$tanggal}</td>
+                //             <td>{$r['jam']}</td>
+                //             <td>{$status_mod}</td>
+                //             <td>Rp. {$grandtotal_rp}</td>
+                //             <td>
+                //                 <a href=?module=order&act=detailorder&id={$r['id_orders']} class='btn btn-success btn-sm' title='Detail'><i class='fa fa-folder'></i></a>
+                //             </td>
+                //         </tr>
+                //     ";
+                //     // $no++;
+                // }
+                // $data['rows_order_html'] = implode('', $data['rows_order_html']);
+
+                $htmls = "
                     <div class='col-xs-12'>
                         <div class='box'>
                             <div class='box-header'>
                                 <h3 class='box-title'>Orders</h3>
                             </div>
                             <!-- /.box-header -->
-			
+            
                             <div class='box-body'>
-                                <table id='example1' class='table table-bordered table-striped'> 
-                                    <thead>
-                                        <tr>
-                                            <th>No.order</th>
-                                            <th>Nama Member</th>
-                                            <th>Tgl. order</th>
-                                            <th>Jam</th>
-                                            <th>Status</th>
-                                            <th>Grand Total</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>{$data['rows_order_html']}</tbody>
-                                </table>
+                                <ul class='nav nav-tabs'>
+                                    <li class='active'><a data-toggle='tab' href='#tab1'>Belum Bayar</a></li>
+                                    <li><a data-toggle='tab' href='#tab2'>Sudah Bayar</a></li>
+                                    <li><a data-toggle='tab' href='#tab3'>Sedang Dikirim</a></li>
+                                    <li><a data-toggle='tab' href='#tab4'>Selesai</a></li>
+                                    <li><a data-toggle='tab' href='#tab5'>Dibatalkan</a></li>
+                                </ul>
+
+                                <div class='tab-content'>
+                                    <div id='tab1' class='tab-pane fade in active'>
+                                        <div class='panel panel-default' style='margin-top:20px'>
+                                            <div class='panel-body'>
+                                                Informasi pesanan belum dibayar.
+                                            </div>
+                                        </div>
+                                        <table class='table table-bordered table-striped datatable-class'> 
+                                            <thead>
+                                                <tr>
+                                                    <th>No.order</th>
+                                                    <th>Nama Member</th>
+                                                    <th>Tgl. order</th>
+                                                    <th>Jam</th>
+                                                    <th>Grand Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>{$data['belumBayar']}</tbody>
+                                        </table>
+                                    </div>
+                                    <div id='tab2' class='tab-pane fade'>
+                                        <div class='panel panel-default' style='margin-top:20px'>
+                                            <div class='panel-body'>
+                                                # Informasi pesanan sudah dibayar, harap melakukan pengemasan dan pengiriman paket kepada jasa pengiriman yang sudah dipilih pembeli untuk mendapatkan <b>NO RESI</b>.<br>
+                                                # setelah mendapatkan <b>No RESI</b> harap melakukan <b>INPUT RESI</b> di FORM berikut ini: <br>
+                                                <form action='{$aksi}?module=order&act=inputresi' method='post'>
+                                                    <div class='input-group' style='margin-bottom:4px'>
+                                                        <span class='input-group-addon'>No order</span>
+                                                        <input type='text' class='form-control' name='id_orders' placeholder='Masukan no order disini...'>
+                                                    </div>
+                                                    <div class='input-group'>
+                                                        <span class='input-group-addon'>No Resi</span>
+                                                        <input type='text' class='form-control' name='no_resi' placeholder='Masukan no resi disini...'>
+                                                    </div>
+                                                    <button type='submit' class='btn btn-default' style='margin-top:4px'>Simpan</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <table class='table table-bordered table-striped datatable-class'> 
+                                            <thead>
+                                                <tr>
+                                                    <th>No.order</th>
+                                                    <th>Nama Member</th>
+                                                    <th>Tgl. order</th>
+                                                    <th>Jam</th>
+                                                    <th>Grand Total</th>
+                                                    <th>Kurir</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>{$data['sudahBayar']}</tbody>
+                                        </table>
+                                    </div>
+                                    <div id='tab3' class='tab-pane fade'>
+                                        <div class='panel panel-default' style='margin-top:20px'>
+                                            <div class='panel-body'>
+                                                Untuk melacak pesanan silahkan lakukan seperti langkah berikut ini:<br>
+                                                1. copy nomor resi pada kolom No Resi dibawah ini.<br>
+                                                2. klik jasa pengiriman sesuai dengan kolom Kurir.<br>
+                                                <a href='https://www.posindonesia.co.id/id/tracking' class='badge btn btn-sm' target='_blank'>Lacak POS</a>
+                                                <a href='https://www.tiki.id/id/tracking' class='badge btn btn-sm' target='_blank'>Lacak TIKI</a>
+                                                <a href='https://cekresi.com/' class='badge btn btn-sm' target='_blank'>Lacak JNE</a><br>
+                                                3. jika pesanan sudah sampai mohon untuk konfirmasi dengan cara memilih menu Konfirmasi pada kolom aksi di bawah ini.
+                                            </div>
+                                        </div>
+                                        <table class='table table-bordered table-striped datatable-class'> 
+                                            <thead>
+                                                <tr>
+                                                    <th>No Order</th>
+                                                    <th>No Resi</th>
+                                                    <th>Nama Member</th>
+                                                    <th>Tgl. order</th>
+                                                    <th>Jam</th>
+                                                    <th>Grand Total</th>
+                                                    <th>Kurir</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>{$data['dikirim']}</tbody>
+                                        </table>
+                                    </div>
+                                    <div id='tab4' class='tab-pane fade'>
+                                        <div class='panel panel-default' style='margin-top:20px'>
+                                            <div class='panel-body'>
+                                                Informasi transaksi <b>SUKSES</b>.
+                                            </div>
+                                        </div>
+                                        <table class='table table-bordered table-striped datatable-class'> 
+                                            <thead>
+                                                <tr>
+                                                    <th>No Order</th>
+                                                    <th>No Resi</th>
+                                                    <th>Nama Member</th>
+                                                    <th>Tgl. order</th>
+                                                    <th>Jam</th>
+                                                    <th>Grand Total</th>
+                                                    <th>Kurir</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>{$data['selesai']}</tbody>
+                                        </table>
+                                    </div>
+                                    <div id='tab5' class='tab-pane fade'>
+                                        <div class='panel panel-default' style='margin-top:20px'>
+                                            <div class='panel-body'>
+                                                Transaksi dibatalkan karena tidak melakukan pembayaran dalam waktu 1 jam.
+                                            </div>
+                                        </div>
+                                        <table class='table table-bordered table-striped datatable-class'> 
+                                            <thead>
+                                                <tr>
+                                                    <th>No.order</th>
+                                                    <th>Nama Member</th>
+                                                    <th>Tgl. order</th>
+                                                    <th>Jam</th>
+                                                    <th>Grand Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>{$data['dibatalkan']}</tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box -->
                     </div>
                 ";
+                echo $htmls;
+                // echo "
+                //     <div class='col-xs-12'>
+                //         <div class='box'>
+                //             <div class='box-header'>
+                //                 <h3 class='box-title'>Orders</h3>
+                //             </div>
+                //             <!-- /.box-header -->
+			
+                //             <div class='box-body'>
+                //                 <table id='example1' class='table table-bordered table-striped'> 
+                //                     <thead>
+                //                         <tr>
+                //                             <th>No.order</th>
+                //                             <th>Nama Member</th>
+                //                             <th>Tgl. order</th>
+                //                             <th>Jam</th>
+                //                             <th>Status</th>
+                //                             <th>Grand Total</th>
+                //                             <th>Aksi</th>
+                //                         </tr>
+                //                     </thead>
+                //                     <tbody>{$data['rows_order_html']}</tbody>
+                //                 </table>
+                //             </div>
+                //             <!-- /.box-body -->
+                //         </div>
+                //         <!-- /.box -->
+                //     </div>
+                // ";
                 break;
 
             case "detailorder":

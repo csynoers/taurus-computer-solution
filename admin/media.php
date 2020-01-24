@@ -194,6 +194,7 @@ else{
 
 <script>
   $(function () {
+    $(".datatable-class").DataTable();
     $("#example1").DataTable();
     $('#example2').DataTable({
       "paging": true,
