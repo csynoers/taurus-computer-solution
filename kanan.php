@@ -1205,7 +1205,8 @@ $edit = mysql_query("SELECT * FROM orders WHERE id_orders='$_GET[id]'");
   if ( $r['status']== 'PAID' ) {
 	include_once("libs/XenditPHPClient.php");
 
-	$options['secret_api_key'] = 'xnd_development_2l1SxCJvrhJAHbXdL1Rixrxia7Qd0ls6lUyZMnkm5FWgVD7aqYREGfbsrmFTgru1';
+	// $options['secret_api_key'] = 'xnd_development_2l1SxCJvrhJAHbXdL1Rixrxia7Qd0ls6lUyZMnkm5FWgVD7aqYREGfbsrmFTgru1';
+	$options['secret_api_key'] = 'xnd_public_production_5c4lKuht07wIyMi9ugRxii0sPrM5Z5V1RdULKrey3D2LutBiKra3NRsBnHgKlE';
   
 	$xenditPHPClient = new XenditClient\XenditPHPClient($options);
   
