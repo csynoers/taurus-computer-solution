@@ -1,7 +1,7 @@
 <?php
     include_once("libs/XenditPHPClient.php");
     // define('SECRET_API_KEY', 'xnd_development_2l1SxCJvrhJAHbXdL1Rixrxia7Qd0ls6lUyZMnkm5FWgVD7aqYREGfbsrmFTgru1');
-    define('SECRET_API_KEY', 'xnd_public_production_5c4lKuht07wIyMi9ugRxii0sPrM5Z5V1RdULKrey3D2LutBiKra3NRsBnHgKlE');
+    define('SECRET_API_KEY', 'xnd_production_sPdNCsqzXjCK9RIbjimBZyoMBHtB8hu95USuMkCEsIV6Djc5DUJpDWF3DPmCo');
 
     $options['secret_api_key'] = constant('SECRET_API_KEY');
     $xenditPHPClient = new XenditClient\XenditPHPClient($options);

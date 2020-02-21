@@ -7,7 +7,6 @@
     include_once "config/koneksi.php";
     include_once("libs/XenditPHPClient.php");
     // define('SECRET_API_KEY', 'xnd_development_2l1SxCJvrhJAHbXdL1Rixrxia7Qd0ls6lUyZMnkm5FWgVD7aqYREGfbsrmFTgru1');
-    // define('SECRET_API_KEY', 'xnd_public_production_5c4lKuht07wIyMi9ugRxii0sPrM5Z5V1RdULKrey3D2LutBiKra3NRsBnHgKlE');
     define('SECRET_API_KEY', 'xnd_production_sPdNCsqzXjCK9RIbjimBZyoMBHtB8hu95USuMkCEsIV6Djc5DUJpDWF3DPmCo');
 
     $options['secret_api_key'] = constant('SECRET_API_KEY');
@@ -19,8 +18,8 @@
     $data['description'] = $data['post']['description'];
     $response = $xenditPHPClient->createInvoice($data['external_id'], $data['amount'], $data['payer_email'], $data['description']);
 
-    print_r($response);
-    die();
+    // print_r($response);
+    // die();
 
     $data['sql_get_keranjang']      = ("SELECT * FROM keranjang LEFT JOIN produk ON keranjang.id_produk=produk.id_produk LEFT JOIN merk ON produk.id_merk=merk.id_merk WHERE keranjang.id_session='{$_POST['id_session']}' ");
     $data['query_get_keranjang']    = mysql_query($data['sql_get_keranjang']);
