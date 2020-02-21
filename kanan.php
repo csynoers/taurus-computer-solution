@@ -1284,7 +1284,7 @@ $grandtotal1_rp  = format_rupiah($grandtotal1);
     
 
 echo "<tr><td colspan=4 align=right>Total              Rp. : </td><td align=right><b>$total_rp</b></td></tr>     
-      <tr><td colspan=4 align=right>Total Berat            : </td><td align=right><b>$totalberat</b> Kg</td></tr>      
+      <tr><td colspan=4 align=right>Total Berat            : </td><td align=right><b>$totalberat</b> Gram</td></tr>      
       <tr><td colspan=4 align=right>Total Ongkos Kirim Rp. : </td><td align=right><b>$ongkoskirim_rp</b></td></tr>
       <tr><td colspan=4 align=right>Kode Unik : </td><td align=right><b>$kode</b></td></tr>      
       <tr><td colspan=4 align=right>Grand Total        Rp. : </td><td align=right><b>$grandtotal1_rp</b></td></tr>
