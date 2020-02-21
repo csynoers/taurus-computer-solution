@@ -18,6 +18,9 @@
     $data['description'] = $data['post']['description'];
     $response = $xenditPHPClient->createInvoice($data['external_id'], $data['amount'], $data['payer_email'], $data['description']);
 
+    print_r($response);
+    die();
+
     $data['sql_get_keranjang']      = ("SELECT * FROM keranjang LEFT JOIN produk ON keranjang.id_produk=produk.id_produk LEFT JOIN merk ON produk.id_merk=merk.id_merk WHERE keranjang.id_session='{$_POST['id_session']}' ");
     $data['query_get_keranjang']    = mysql_query($data['sql_get_keranjang']);
     
